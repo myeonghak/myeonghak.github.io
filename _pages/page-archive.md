@@ -1,6 +1,6 @@
 ---
 title: "page archive"
-layout: Pages
+layout: pages
 permalink: /page-archive/
 author_profile: true
 ---
