@@ -10,10 +10,6 @@ tags:
 ---
 
 
-
-Next Item Recommendation with Self-Attentive Metric Learning
-============================================================
-
 > 추천 시스템 논문 읽기 - 1  
 > 고려대학교 DSBA 천우진님의 영상 자료를 보고, 학습한 자료입니다.
 
