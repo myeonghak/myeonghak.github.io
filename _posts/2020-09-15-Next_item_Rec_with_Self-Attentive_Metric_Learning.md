@@ -1,3 +1,16 @@
+---
+title: "Next Item Recommendation with Self-Attentive Metric Learning"
+categories:
+  - Recommender Systems
+tags:
+  - deep-learning
+  - recommender-system
+  - paper review
+  - attention
+---
+
+
+
 Next Item Recommendation with Self-Attentive Metric Learning
 ============================================================
 
@@ -57,14 +70,14 @@ Next Item Recommendation with Self-Attentive Metric Learning
 	8.	최종적으로 얻은 attention map과 L개 아이템의 임베딩을 곱해주어 (value) short-term intent representation을 얻어냄. (L*d의 matrix)
 	9.	모든 시점의 representation을 하나의 벡터 값으로 나타내기 위해 평균 연산 (1*d의 matrix)
 
-![The Overview](next_item_pic_1.png)
+![The Overview](/assets/materials/recsys/next_item_pic_1.png)
 
 ##### AttRec: User Long-Term Preference Modeling
 
 -	기존에는 item embedding과 user embedding간의 matrix factorization을 통해 interaction을 계산했으나, 이러한 dot product가 metric learning의 inequality property를 훼손하여 sub-optimal로 가게 함.
 
 	1.	내적을 사용해 embedding하기 때문에, 유저는 좋아하는 상품과는 직선 상에, 좋아하지 않는 상품에 대해서는 수직을 이루도록 학습이 됨. 그러나 두 상품을 다 선호하는 유저의 경우 두 상품 각각의 가운데 위치하게 됨. 이러한 방식의 표현은 손실이 존재할 수 밖에 없음.
-	2.	따라서 (Euclidean) distance 기반의 유사도 measure를 통해 item과 user간 interaction을 표현 (user u가 item i를 선호하면 둘 사이의 distance가 작을 것이다.) ![The Overview](next_item_pic_2.png)
+	2.	따라서 (Euclidean) distance 기반의 유사도 measure를 통해 item과 user간 interaction을 표현 (user u가 item i를 선호하면 둘 사이의 distance가 작을 것이다.) ![The Overview](/assets/materials/recsys/next_item_pic_2.png)
 
 -	**Objective Function**
 
