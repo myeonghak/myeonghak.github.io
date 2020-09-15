@@ -7,13 +7,7 @@ tags:
   - recommender-system
   - paper review
   - attention
----
 
-
-> 추천 시스템 논문 읽기 - 1  
-> 고려대학교 DSBA 천우진님의 영상 자료를 보고, 학습한 자료입니다.
-
----
 
 ##### Introduction
 
@@ -90,3 +84,11 @@ tags:
 	3.	위의 1.과 2.에 weight parameter를 곱해주어 선형결합한 값을 y_t+1_u로 사용. 이는 t+1 item을 user u가 선호할 확률을 의미함.
 
 	4.	이러한 y를 objective function에 사용, user가 관심 있는 positive item과 관심 없는 negative item 사이의 pairwise ranking method를 사용, X,V,U,W를 모두 학습
+
+
+	---
+
+	> 해당 자료는
+	> 고려대학교 DSBA 천우진님의 영상 자료를 보고, 학습한 자료입니다.
+	> https://www.youtube.com/watch?v=ei_SMGaWJEw&t=891s
+	---
