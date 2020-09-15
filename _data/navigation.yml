@@ -23,7 +23,7 @@
     url: /tags/
   - title: "Pages"
     url: /page-archive/
-  - title: "Collections"
-    url: /collection-archive/
-  - title: "Naver Blog"
+#  - title: "Collections"
+#    url: /collection-archive/
+  - title: "blog"
     url: https://blog.naver.com/nilsine11202
