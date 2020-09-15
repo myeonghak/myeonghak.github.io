@@ -7,7 +7,7 @@ tags:
   - recommender-system
   - paper review
   - attention
-
+---
 
 ##### Introduction
 
@@ -90,5 +90,6 @@ tags:
 
 	> 해당 자료는
 	> 고려대학교 DSBA 천우진님의 영상 자료를 보고, 학습한 자료입니다.
-	> https://www.youtube.com/watch?v=ei_SMGaWJEw&t=891s
+	> https://www.youtube.com/watch?v=ei_SMGaWJEw&t=891s   
+
 	---
