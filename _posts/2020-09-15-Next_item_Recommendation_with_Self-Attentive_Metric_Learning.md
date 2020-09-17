@@ -9,6 +9,15 @@ tags:
   - attention
 ---
 
+> 추천 문제를 해결하는 큰 갈래 중에, 고객 활동의 sequential한 정보를 활용하는 방법론 중 item-item 간의 상관관계를 self-attention 메커니즘을 사용해 파악하고자 한 방법론을 살펴봅니다! :grinning:
+
+안녕하세요! 배우는 기계 러닝머신입니다. :man_technologist:  
+이번 포스트는 고려대학교 DSBA 연구실에서 유튜브에 공개한 논문 리뷰 발표를 들으며 개조식으로 정리한 글입니다. 좋은 발표를 제공해주신 천우진님께 감사드립니다. :pray:  
+
+해당 논문의 원문은 이 [링크](https://arxiv.org/pdf/1808.06414.pdf)에서 확인할 수 있으며,
+발표 영상은 [여기](https://www.youtube.com/watch?v=ei_SMGaWJEw&t=891s)에서, 발표 자료는 [이 곳](http://dsba.korea.ac.kr/seminar/?mod=document&uid=45) 에서 확인하실 수 있습니다.
+
+
 ##### Introduction
 
 -	클릭 로그, 구매 이력, page view 등의 개인화된 데이터가 범람함에 따라 이러한 historical data를 활용해 미래의 유저 행동을 예측하고자 하는 연구가 진행되어 옴
