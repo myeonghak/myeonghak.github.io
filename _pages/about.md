@@ -17,8 +17,7 @@ layout: single
 궁금한 점이 있다면, 언제든 아래의 채널을 통해 연락 주시기 바랍니다!
 
   [![Linkedin Badge](https://img.shields.io/badge/-LinkedIn-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/myeonghak-lee-3a070013b/)](https://www.linkedin.com/in/myeonghak-lee-3a070013b/)   [![Facebook Badge](https://img.shields.io/badge/facebook-1877f2?style=flat-square&logo=facebook&logoColor=white&link=https://www.facebook.com/lee.myunghack)](https://www.facebook.com/lee.myunghack)
-  [![Gmail Badge](https://img.shields.io/badge/Gmail-d14836?style=flat-square&logo=Gmail&logoColor=white&link=mailto:nilsine11202@gmail.com)](mailto:nilsine11202@gmail.com)
- </div>
+  [![Gmail Badge](https://img.shields.io/badge/Gmail-d14836?style=flat-square&logo=Gmail&logoColor=white&link=mailto:nilsine11202@gmail.com)](mailto:nilsine11202@gmail.com)  
 
 
 ## Interests  
