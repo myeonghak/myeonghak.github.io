@@ -9,7 +9,7 @@ tags:
   - attention
 ---
 
-> 추천 문제를 해결하는 큰 갈래 중에, 고객 활동의 sequential한 정보를 활용하는 방법론 중 item-item 간의 상관관계를 self-attention 메커니즘을 사용해 파악하고자 한 방법론을 살펴봅니다! :grinning:
+> :seedling: 추천 문제를 해결하는 큰 갈래 중에, 고객 활동의 sequential한 정보를 활용하는 방법론 중 item-item 간의 상관관계를 self-attention 메커니즘을 사용해 파악하고자 한 방법론을 살펴봅니다!
 
 안녕하세요! 배우는 기계 러닝머신입니다. :man_technologist:  
 이번 포스트는 고려대학교 DSBA 연구실에서 유튜브에 공개한 논문 리뷰 발표를 들으며 개조식으로 정리한 글입니다. 좋은 발표를 제공해주신 천우진님께 감사드립니다. :pray:  
