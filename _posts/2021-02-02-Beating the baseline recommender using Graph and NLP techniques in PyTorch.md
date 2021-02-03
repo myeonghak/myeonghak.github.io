@@ -1,5 +1,5 @@
 ---
-title: "Beating the baseline recommender using Graph and NLP techniques in PyTorch"
+title: "그래프 & 자연어처리 기법으로 추천 시스템 개발하기 - pytorch"
 categories:
   - Graph Neural Networks
   - Recommender Systems
@@ -10,7 +10,9 @@ tags:
 ---
 
 > :collision: NLP와 Graph에서 사용되는 방법론을 적용해 높은 성능의 baseline 추천 시스템을 만들어 봅니다.  
-> 해당 포스트는 이 [링크](https://towardsdatascience.com/recommender-systems-applying-graph-and-nlp-techniques-619dbedd9ecc)의 포스트를 저자의 동의를 얻고 번역한 글입니다!
+
+
+해당 포스트는 "Beating the baseline recommender using Graph and NLP techniques in PyTorch" 포스트를 저자의 동의를 얻고 번역한 글입니다!
 
 ### 들어가며
 
