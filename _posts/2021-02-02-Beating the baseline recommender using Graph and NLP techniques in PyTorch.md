@@ -36,13 +36,21 @@ tags:
 #### Contents
 
 1.	[NLP and Graph](#nlp-and-graph)
-2.	[Creating a Graph](#creating-a-graph)
-3.	[Skip-Gram](#skip-gram)
-4.	[마치며](#-)
+2.	[Creating a Graph](#creating-graph)
+3.  [Generating sequences](#generating-sequences)
+4.	[구현 3: Node2Vec](#implementation-3)
+5.	[구현 4: gensim.word2vec](#implementation-4)
+6.	[구현 5: PyTorch word2vec](#implementation-5)
+7.	[구현 6: PyTorch word2vec with side info](#implementation-6)
+8.	[구현 7: Sequences + Matrix Factorization](#implementation-7)
+9.	[결론](#conclusion)
 
 <br />
 
+<a id="nlp-and-graph"></a>
 ### 자연어처리와 그래프 NLP and Graph  
+
+
 
 자연어처리 분야에서 임베딩 방법론으로 널리 알려진 [word2vec](https://arxiv.org/pdf/1301.3781.pdf) (이하 w2v)은 비지도적 방식으로 의미론적이고 통사론적인 단어의 vector representation을 학습할 수 있음을 잘 보여 주었습니다.  
 
@@ -56,13 +64,13 @@ tags:
 
 <center><img src="/assets/materials/beating_the_baseline/figure_1a.png" align="center" alt="drawing" width="400"/></center>  
 
-<font size="2"><center> 그림 1a. (소셜) 그래프의 임의적인 이미지. </center>  </font>
+<font size="2"><center> 그림 1a. (소셜) 그래프의 임의적인 이미지. </center>  </font>  
 
 
 <br/>  
 
 
-### 알았어요. 그런데 이것들이 추천에서 왜 중요하죠?  
+### 알았어요. 그런데 이것들이 추천에서 왜 중요하죠?
 
 간단히 살펴보면, 요점은 다음과 같습니다.  
 
@@ -76,7 +84,7 @@ tags:
 
 <br />
 
-
+<a id="creating-graph"></a>
 ### 그래프 만들기 Creating a graph   
 
 데이터 셋에 상품 pair가 있고, 각각 연관 점수(associated score)가 있습니다. 이 연관 점수를 (그래프의) 엣지 가중치로 간주할 수 있겠지요. 이 가중치를 사용해, weighted graph를 생성할 수 있습니다. (즉, 각 엣지가 수치적인 가중치를 지니고 있으며, 동일한 가중치를 공유하는 형태의 그래프) 이 작업은 `networkx`를 사용 쉽게 구현될 수 있습니다.  
@@ -84,7 +92,7 @@ tags:
 자! 이제 상품 네트워크 그래프가 만들어 졌네요.
 
 
-
+<a id="generating-sequences"></a>
 ### 시퀀스 만들기 Generating sequences  
 
 앞서 만든 상품 그래프를 통해, random walk로 시퀀스를 만들 수 있습니다.  
@@ -105,7 +113,7 @@ electronics graph 데이터는 42만개의 노드를, books graph는 2백만개�
 
 <center><img src="/assets/materials/beating_the_baseline/figure_1b.png" align="center" alt="drawing" width="400"/></center>  
 
-<font size="2"><center> 그림 1b. 가중 그래프의 예시 </center>  </font>
+<font size="2"><center> 그림 1b. 가중 그래프의 예시 </center>  </font>  
 
 
 이는 인접행렬(adjacency matrix)으로 분해될 수 있습니다. 그래프가 V개의 노드를 가질 경우, 인접행렬은 V*V 차원이 됩니다. 일반적인 인접행렬은 0 혹은 1로 이루어져 있습니다. 엣지가 있으면 1, 없으면 0이 들어가겠죠. 그래프 엣지에 weight가 있으므로, 인접행렬의 값이 엣지의 가중치가 됩니다.  
@@ -115,7 +123,7 @@ electronics graph 데이터는 42만개의 노드를, books graph는 2백만개�
 
 <center><img src="/assets/materials/beating_the_baseline/figure_1c.png" align="center" alt="drawing" width="400"/></center>  
 
-<font size="2"><center> 그림 1c. 가중 인접 행렬의 예시 </center>  </font>
+<font size="2"><center> 그림 1c. 가중 인접 행렬의 예시 </center>  </font>  
 
 이 인접행렬을 row의 합이 1이 되도록 표준화하여 전이행렬(transition matrix)로 변환해야 합니다. 간단히 말해, 각 꼭지점이 다른 꼭지점으로 전이하는 확률을 나타내게 됩니다. (그렇기 때문에 합이 1인 것이죠)  
 
@@ -126,7 +134,7 @@ electronics graph 데이터는 42만개의 노드를, books graph는 2백만개�
 <center><img src="/assets/materials/beating_the_baseline/figure_1d.png" align="center" alt="drawing" width="400"/></center>  
 
 
-<font size="2"><center> 그림 1d. 전이 행렬의 예시 </center>  </font>
+<font size="2"><center> 그림 1d. 전이 행렬의 예시 </center>  </font>  
 
 제가 첫번째 시도한 구현 방법은 `numpy` 어레이를 사용하는 것이었습니다. 그러나 메모리 문제로 잘 작동하지 않았지요.  
 
@@ -144,7 +152,7 @@ electronics graph 데이터는 42만개의 노드를, books graph는 2백만개�
 
 이 방법은 networkx 그래프를 순회하는 것보다 수 자릿수배는 빠릅니다. 주목할 점은, 이 방법은 여전히 graph를 순회하기는 한다는 것이지요.  
 
-
+<a id="implementation-3"></a>
 ### 구현 3: `Node2Vec` / Implementation 3: `Node2Vec`  
 
 
@@ -167,9 +175,9 @@ n2v는 아주 매력적었죠. 우리가 원하는 바로 그 형태였습니다
 <center><img src="/assets/materials/beating_the_baseline/figure_1e.png" align="center" alt="drawing" width="400"/></center>  
 
 
-<font size="2"><center> 그림 1e. electronics 데이터셋의 시퀀스 배열 (42만개의 개별 상품) </center>  </font>
+<font size="2"><center> 그림 1e. electronics 데이터셋의 시퀀스 배열 (42만개의 개별 상품) </center>  </font>  
 
-
+<a id="implementation-4"></a>
 ### 구현 4: `gensim.word2vec` / Implementation 4: `gensim.word2vec`  
 
 Gensim은 시퀀스의 리스트를 받아들이는 w2v 구현을 제공합니다. 또한, 멀티 쓰레드를 지원하지요. 사용하기도 매우 간편했고, 5 에폭 학습을 마치는 데 가장 빨랐습니다.  
@@ -182,7 +190,7 @@ Gensim은 시퀀스의 리스트를 받아들이는 w2v 구현을 제공합니�
 
  <center><img src="/assets/materials/beating_the_baseline/figure_2.png" align="center" alt="drawing" width="400"/></center>  
 
- <font size="2"><center> 그림 2. gensim.word2vec 모델의 Precision/Recall 곡선(전체 상품 대상) </center>  </font>
+ <font size="2"><center> 그림 2. gensim.word2vec 모델의 Precision/Recall 곡선(전체 상품 대상) </center>  </font>  
 
 
 
@@ -195,7 +203,7 @@ Gensim은 시퀀스의 리스트를 받아들이는 w2v 구현을 제공합니�
 
 <center><img src="/assets/materials/beating_the_baseline/figure_2.png" align="center" alt="drawing" width="400"/></center>  
 
- <font size="2"><center> 그림 3. gensim.word2vec 모델의 Precision/Recall 곡선(관측된 seen 상품만 사용)</center>  </font>
+ <font size="2"><center> 그림 3. gensim.word2vec 모델의 Precision/Recall 곡선(관측된 seen 상품만 사용)</center>  </font>  
 
 학습에 얼마나 걸렸게요? 12개 쓰레드를 사용해 2.58분이 걸렸습니다. 이는 _새로운_ 베이스라인이죠. 3분 내로 멋진 성능을 얻었습니다. 프로젝트 완료! 맞나요?  
 
@@ -207,7 +215,7 @@ Gensim은 시퀀스의 리스트를 받아들이는 w2v 구현을 제공합니�
 
 그래서, `pytorch`로 밑단부터 구현해 보기로 했죠.   
 
-
+<a id="implementation-5"></a>
 ### 구현 5: `PyTorch` word2vec / Implementation 5: `PyTorch` word2vec  
 
 파이토치 모델을 학습하는 데에는 두개의 핵심 컴포넌트가 있습니다. 바로 dataloader와 model이죠. 저는 좀 더 지루한, 데이터로더로부터 시작하려 합니다.  
@@ -276,14 +284,14 @@ class SkipGram(nn.Module):
  <center><img src="/assets/materials/beating_the_baseline/figure_4.png" align="center" alt="drawing" width="400"/></center>  
 
 
- <font size="2"><center> 그림 4. PyTorch word2vec 모델의 Precision/Recall 곡선(전체 상품 대상)</center>  </font>
+ <font size="2"><center> 그림 4. PyTorch word2vec 모델의 Precision/Recall 곡선(전체 상품 대상)</center>  </font>  
 
 
   <center><img src="/assets/materials/beating_the_baseline/figure_5.png" align="center" alt="drawing" width="400"/></center>  
 
 
 
-   <font size="2"><center> 그림 5. PyTorch word2vec 모델의 Precision/Recall 곡선(seen 상품 대상) </center>  </font>
+   <font size="2"><center> 그림 5. PyTorch word2vec 모델의 Precision/Recall 곡선(seen 상품 대상) </center>  </font>  
 
 
 
@@ -297,7 +305,7 @@ class SkipGram(nn.Module):
 
   <center><img src="/assets/materials/beating_the_baseline/figure_6.png" align="center" alt="drawing" width="400"/></center>  
 
-   <font size="2"><center> 그림 6. word2vec의 에폭에 걸친 AUC-ROC 결과; 한 에폭이면 충분해 보이네요. </center>  </font>
+   <font size="2"><center> 그림 6. word2vec의 에폭에 걸친 AUC-ROC 결과; 한 에폭이면 충분해 보이네요. </center>  </font>  
 
 전반적으로 훌륭한 결과입니다. `gensim.word2vec`을 복제해 낼 수 있으며, 심지어 성능이 더 좋네요.  
 
@@ -306,7 +314,7 @@ class SkipGram(nn.Module):
 
 한가지 단점은 gensim 구현체와는 달리 훨씬 느리다는 것입니다. (23.63분이 걸렸습니다.) 아마 제가 최적화하지 못한 까닭이겠죠 ㅠㅠ (어떻게 개선할지 제안해 주세요!)  
 
-
+<a id="implementation-6"></a>
 ### 구현 6: 주변 정보를 활용한 `PyTorch` word2vec / Implementation 6: PyTorch word2vec with side info  
 
 w2v를 밑단부터 구현한 이유는 _주변 정보를 추가하여 확장_ 하기 위함이었습니다. 시퀀스 내의 각 상품에 대해, 브랜드/카테고리/가격 등의 중요한 주변 정보를 가지고 있습니다. 이들을 임베딩 학습에 추가하여 학습해 봅시다.  
@@ -333,7 +341,7 @@ Sony          Sony          Phillips          Dyson
 
   <center><img src="/assets/materials/beating_the_baseline/figure_7.png" align="center" alt="drawing" width="400"/></center>  
 
-  <font size="2"><center> 그림 7. 에폭에 걸친 주변 정보를 포함한 word2vec의 AUC-ROC 성능 </center>  </font>
+  <font size="2"><center> 그림 7. 에폭에 걸친 주변 정보를 포함한 word2vec의 AUC-ROC 성능 </center>  </font>  
 
 
 제 구현이 옳았다는 것을 확실히 하기 위해 상당한 시간을 들인 뒤, 포기했습니다. 주변 정보 없이 해본 결과, _구현 5와 동일한 성적_ 을 얻었습니다. 그런데도 더 느렸습니다.  
@@ -354,7 +362,7 @@ Sony          Sony          Phillips          Dyson
 
 <br/>
 
-
+<a id="implementation-7"></a>
 ### 구현 7: 시퀀스 + MF / Implementation 7: Sequences + Matrix Factorization  
 
 
@@ -369,7 +377,9 @@ Sony          Sony          Phillips          Dyson
 
   <center><img src="/assets/materials/beating_the_baseline/figure_8.png" align="center" alt="drawing" width="400"/></center>  
 
-  <font size="2"><center> 그림 8. 시퀀스를 사용한 PyTorch MF-bias의 Precision Recall 곡선  </center>  </font>
+  <font size="2"><center> 그림 8. 시퀀스를 사용한 PyTorch MF-bias의 Precision Recall 곡선  </center>  </font>    
+
+
 
 
 이 결과는, "graph-random-walk-sequence" 접근이 잘 작동한다는 것을 보여줍니다.  
@@ -391,7 +401,9 @@ Sony          Sony          Phillips          Dyson
   <center><img src="/assets/materials/beating_the_baseline/figure_9.png" align="center" alt="drawing" width="400"/></center>  
 
 
-  <font size="2"><center> 그림 9. 시퀀스를 사용한 PyTorch MF-bias 모델의 학습 곡선  </center>  </font>
+  <font size="2"><center> 그림 9. 시퀀스를 사용한 PyTorch MF-bias 모델의 학습 곡선  </center>  </font>      
+
+
 
   또다른 단점은 약 3배에 달하는 시간이 소요된다는 점이었는데, 23.63분이 걸렸던 w2v 구현에서 70.39분이 걸릴 정도로 지연되었습니다 (MF 구현).  
 
@@ -458,18 +470,22 @@ PyTorch w2v 구현체가 `gensim`을 이겼다는 것은 아주 멋진 일입니
 
 <br />
 
+<a id="conclusion"></a>
 ### 결론 Conclusion  
 
 시퀀스에 대한 저의 관심을 추천 시스템과 같은, 시퀀스가 덜 자주 사용되는 머신러닝 분야에 실제로 적용해 보는 것은 아주 흥미로운 일이었습니다.  
 
 여기서 공유된 학습과 코드가 추천 시스템 구현체를 개발하는 사람들에게 유익했으면 좋겠네요. 일에서든, 재미로 하든 말이죠.  
 
-개선을 위한 여러분의 피드백과 제안을 코멘트로 공유해 주세요.
-원문 : https://eugeneyan.com/2020/01/13/recommender-systems-graph-and-nlp-techniques
+개선을 위한 여러분의 피드백과 제안을 코멘트로 공유해 주세요.  
+
+원문 : https://towardsdatascience.com/recommender-systems-applying-graph-and-nlp-techniques-619dbedd9ecc
 
 
 ----------------
 
 ### 옮긴이의 마침말
 
-아주 재밌네요! 제 데이터 셋에도 적용해 봐야겠습니다.
+아주 재밌네요! 제 데이터 셋에도 적용해 봐야겠습니다.  
+
+내용에 대한 질문/지적, 오역 등 제보 환영합니다!  
