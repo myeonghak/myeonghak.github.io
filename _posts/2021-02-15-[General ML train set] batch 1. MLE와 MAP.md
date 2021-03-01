@@ -34,9 +34,10 @@ tags:
 1.	[압정 던지기 예시](#thumbtack-problem)
 2.	[이항 분포](#binomial-distribution)
 3.  [Maximum Likelihood Estimation](#MLE)
-4.	[Simple Error Bound와 PAC learning](#simple-upper-bound)
-5.	[사전지식 결합하기, 베이즈 정리](#incorporation-prior)
-6.	[Maximum a Posteriori Estimation](#MAP)
+4.  [MLE 계산하기](#MLE-calc)
+5.	[Simple Error Bound와 PAC learning](#simple-upper-bound)
+6.	[사전지식 결합하기, 베이즈 정리](#incorporation-prior)
+7.	[Maximum a Posteriori Estimation](#MAP)
 
 <br />
 
@@ -60,6 +61,7 @@ tags:
 
 그 전에, 먼저 알아야 할 몇 가지 개념들이 있습니다.
 
+<br />
 -----
 
 <a id="binomial-distribution"></a>
@@ -72,44 +74,77 @@ tags:
 
 각 시행은 i.i.d (independent and identically distributed) 즉 독립적이고 동일하게 분포되어 있습니다. 다음의 특성을 말합니다.
   - independent한 시행: 이전의 압정 던지기가 다음에 영향을 미치지 않음
-  - 베르누이 분포에 따라 identically distributed: 압정의 손상이 없어서 위와 아래가 일정한 확률로 출현함  
+  - identically distributed(베르누이 분포에 따라): 압정의 손상이 없어서 위와 아래가 일정한 확률로 출현함  
 
 자, 이제 우리의 압정 던지기 문제로 돌아가 봅시다. 이항 분포를 설명한 것은 압정 던지기라는 시행이 따르는 분포가 이항분포이기 때문이라는 것을 눈치 채셨을 것입니다.  
 
   - head가 나올 경우를 승으로 간주하고, 그 확률이 $\theta$ 라고 할 때, $D$(즉 우리가 가진 Dataset)=HHTHT라는 결과가 나왔다고 해 봅시다.
 	- 이런 상황이 나올 확률을 계산 해 보면, 다음처럼 정리될 것 같네요.
     $$\theta^{3}\times (1-\theta )^{2}$$
-  - 일반화해서 정리하면, 아래처럼 나타낼 수 있겠죠.  
-    $$P(D|\theta ) = \theta^{(head)}\times (1-\theta )^{(tail)}$$  
-
-  -  이런 상황에서, 어떻게하면 head가 나올 확률은 3/5이고 tail의 확률은 2/5라는 결론으로 도달할 수 있을까요?  
+  - 일반화해서 정리하면, 아래처럼 나타낼 수 있겠죠. 여기서 $a_{H}$와 $a_{T}$는 각각 Head와 Tail이 등장한 횟수를 의미합니다.
+    $$P(D|\theta ) = \theta^{a_{H}}\times (1-\theta )^{a_{T}}$$  
 
 
+ 이런 상황에서, 어떻게하면 head가 나올 확률은 3/5이고 tail의 확률은 2/5라는 결론으로 도달할 수 있을까요?  
+
+<br />
 
 -----
 
 
 <a id="MLE"></a>
 ### Maximum Likelihood Estimation
-- 데이터: 관측한 시퀀스 데이터 D, a_H와 a_T로 이루어져 있음
-- 우리의 hypothesis: 압정 던지기의 결과는 theta의 이항분포를 따른다
-- 우리의 가설을 더욱 강하게 하는 법
-1) 관측치에 대한 더 나은 분포를 찾는 것: 가능하지만, 더욱 엄밀한 검토가 필요
-2) theta의 최고의 후보군을 만들어 내는 것: theta를 가장 plausible하게 만드는 조건은 무엇인가?
-- 최고의 후보군을 만드는 방법 중 하나로 MLE를 들 수 있음. 이는 관측된 데이터의 확률을 최대화하는 theta를 찾아내는 것.
-- theta^hat=argmax_thata P(D|theta) 즉, MLE인 theta^hat은 theta가 주어졌을 때 D라는 관측이 등장할 확률을 극대화해주는 theta를 가리킴
+지금까지의 이야기를 정리해 보겠습니다.  
+- 데이터: 관측한 시퀀스 데이터셋 $D$는 $a_{H}$, $a_{T}$로 이루어져 있음. 이 $D$의 예시는 "H,H,T,H,T"를 들 수 있음.
+- 우리의 가설: 압정 던지기의 결과는 $\theta$의 이항분포를 따른다.
 
-MLE calculation
-- theta^hat=argmax_thata P(D|theta) =argmax_theta theta^head수*(1-theta)^tail수가 될것인데, 이는 처리하기 어려움
-- 이를 해결하기 위해 흔히 사용하는 테크닉으로, 단조증가함수인 log를 양변에 취해줌. 단조증가 함수의 특성으로 인해 log를 취한 전이나 후나 같은 지점에서 MLE가 구해짐
-- 이 이후에는 maximization problem임. theta에 대해 미분해서 최대화되는 theta 지점을 찾아주면 MLE가 구해짐.
-- 결과적으로 theta^hat=a_H/(a_H+a_T)가 됨. 즉 이 사례에서는 3/5가 되는 것! (여기서 a_H는 H의 등장 횟수, a_T는 T의 등장 횟수)
+여기서, 우리의 가설을 더욱 강하게 하기 위해서는 어떻게 해야 할까요?
+먼저, 이 관측치에 대해 더 나은 분포를 찾아보는 방법이 있겠습니다. 하지만, 둘 중 하나의 결과를 낳는 binomial한 시행을 모델링하는 상황에서는 이항분포를 사용하는 것이 적절해 보입니다.  
+두 번째로, $\theta$의 가장 적절한 후보군을 만들어 내는 방법이 있겠습니다. 이항분포를 따른다고 가정했을 때 우리가 관측한 데이터의 확률을 최대화하는, 달리 말해 우리가 관측한 현상을 잘 설명해내는, 분포의 파라미터 $\theta$를 찾아낸다면 우리의 가설이 강해질 것 같습니다.  
 
-시행 횟수(Number of trials)
-- 만일 50번의 시행을 더 했더니 Head가 30번이 나왔다. 그렇다면?
-- MLE를 통한 theta 값은 동일하게 0.6이 나온다. 그럼 아무것도 얻은 것이 없는건가?
-- 그렇지 않다. 우리의 0.6이라는 theta^hat의 값은 estimation임. 따라서 이 추정의 오차를 줄였다고 할 수 있음
+여기서 어떻게 이 $\theta$를 찾아낼 수 있을까요? 그 방법 중 하나가, **Maximum Likelihood Estimation(최우추정법, MLE)** 을 사용하는 것 입니다. 아래의 수식은 MLE의 추정치를 나타냅니다.
 
+$$\hat{\theta}=argmax_{\theta}P(D|\theta)$$  
+
+풀이하자면, 우리의 파라미터 $\theta$(즉 Head가 나올 확률)가 주어졌을 때, 우리가 관측한 데이터 $D$ (가령 H,H,T,H,T)가 발생할 확률을 극대화하는 그 $\theta$를 추정한 녀석이라는 뜻입니다.  
+
+이 풀이가 바로 MLE의 정의를 나타냅니다. 모델링하고자 하는 사건에 대해 특정 분포를 가정했을 때, 그 분포의 파라미터가 주어진 경우 관측된 데이터셋 $D$를 가장 그럴싸하게 만들어 주는 $\theta$를 추정하는 방법이라고 정리할 수 있겠습니다.  
+
+<br />
+
+<a id="MLE-calc"></a>
+### MLE 계산하기  
+
+그렇다면 이 theta를 어떻게 찾을 수 있을까요? 늘 그래왔듯이, 우리는 미분을 사용해 극점을 찾아 optimize할 수 있겠습니다. 아래의 수식을 $\theta$에 대해 미분하여 도함수가 0이 되는 $\theta$를 찾으면, 그 지점이 최적점이라고 생각할 수 있겠습니다.  
+
+$$\hat{\theta}=argmax_{\theta}P(D|\theta)=argmax_{\theta}\theta^{a_{H}}(1-\theta )^{a_{T}}$$  
+
+그러나 이 식 자체는 그대로 처리하기는 어려울 것 같습니다. 이런 경우, 흔히 단조증가함수인 log를 양변에 취해줍니다. 이 단조증가 함수의 특성 덕분에, log를 취한 뒤 계산하든, 취하지 않고 계산하든 동일한 지점의 $\theta$에서 MLE가 구해집니다.  
+
+$$\hat{\theta}=argmax_{\theta}lnP(D|\theta)=argmax_{\theta}ln\{\theta^{a_{H}}(1-\theta )^{a_{T}}\}=argmax_{\theta}\{a_{H}ln\theta+a_{T}ln(1-\theta)\}$$  
+
+이를 구하기 위해서는 $argmax$ 안의 식을 $\theta$에 대해 미분하여서 도함수를 0으로 놓고 계산하면 되겠습니다.  
+
+- $\frac{\mathrm{d} }{\mathrm{d} x}(a_{H}ln\theta+a_{T}ln(1-\theta))=0$
+- $\frac{a_{H}}{\theta}-\frac{a_{T}}{1-\theta}=0$
+- $\theta = \frac{a_{H}}{a_{T}+a_{H}}$
+
+결과적으로, $\theta$가 $\frac{a_{H}}{a_{T}+a_{H}}$일 때, 이 $\theta$는 MLE의 관점에서 최적의 후보가 된다는 말입니다. 정리하자면,  
+
+- $\hat{\theta} = \frac{a_{H}}{a_{T}+a_{H}}$  
+
+가 됩니다. 이를 우리의 상황에 대입해 볼까요? Head가 등장한 횟수가 $a_{H}$, Tail이 등장한 횟수가 $a_{T}$인데 우리의 데이터 $D$는 "H,H,T,H,T"이므로 $a_{H}=3$이 될 것이고, $a_{T}=2$가 될 것입니다. 이를 그대로 대입하면,  
+
+$$\hat{\theta} = \frac{3}{2+3}=\frac{3}{5}$$
+
+즉, 처음에 구했던 $\frac{3}{5}$이 구해진 것이죠!  
+
+여기까지 간단한 사례를 들어 MLE를 구해 보았습니다. 그런데, 여기서 시행을 더 늘려보면 어떨까요?  
+만일 50번의 시행을 해봤더니 Head가 30번이 나왔다고 해봅시다. 이 경우, MLE를 다시 계산해 보면 그대로 $\frac{3}{5}$가 되겠죠. 그럼 아무 소득이 없는걸까요?  
+
+그렇지 않습니다. MLE로 추정한 $\hat{\theta}$라는 값은 말 그대로 estimation입니다. 많은 시행을 통해 MLE를 구한다면, 이 추정의 오차를 줄였다고 할 수 있습니다.
+
+<br />
 
 <a id="simple-upper-bound"></a>
 ### Simple Error Bound와 PAC learning
