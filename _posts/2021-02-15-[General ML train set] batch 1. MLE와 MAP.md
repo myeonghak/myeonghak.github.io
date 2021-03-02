@@ -45,13 +45,15 @@ tags:
 ### 압정 던지기 예시
 어떤 도박장에서, 압정을 던지는 게임을 하고 있다고 생각해 봅시다. 만약 윗면(뾰족한 면이 위) 혹은 아랫면에 돈을 걸고 맞추면 2배의 돈을 벌게 됩니다.  
 
-어떤 갑부가 찾아와서, 우리에게 과학적이고 엔지니어링적인 도움을 요청했다고 해봅시다. 아주 큰 돈을 주면서 말이죠! 갑부의 질문은 다음과 같습니다:  
+어떤 갑부가 찾아와서, 우리에게 과학적이고 엔지니어링적인 도움을 요청했다고 해봅시다. 아주 큰 돈을 주면서 말이죠! 갑부의 질문은 다음과 같습니다.
 
-압정을 던졌을 때 나오는 윗면이 확률은 어떻게되지?!  
+"압정을 던졌을 때 나오는 윗면이 확률은 어떻게되지?!"
 
 
 
 <center><img src="/assets/materials/generalML/batch1/thumbtack.png" align="center" alt="drawing" width="300"/></center>    
+
+<br/>
 
 이 질문에 답하기 위해, 우리는 아마 몇번 던져보는 시도를 먼저 해볼 것 같습니다.  
 
@@ -96,7 +98,7 @@ tags:
 ### Maximum Likelihood Estimation
 지금까지의 이야기를 정리해 보겠습니다.  
 - 데이터: 관측한 시퀀스 데이터셋 $D$는 $a_{H}$, $a_{T}$로 이루어져 있음. 이 $D$의 예시는 "H,H,T,H,T"를 들 수 있음.
-- 우리의 가설: 압정 던지기의 결과는 $\theta$의 이항분포를 따른다.
+- 우리의 가설: 압정 던지기의 결과는 $\theta$의 이항분포를 따름.
 
 여기서, 우리의 가설을 더욱 강하게 하기 위해서는 어떻게 해야 할까요?
 먼저, 이 관측치에 대해 더 나은 분포를 찾아보는 방법이 있겠습니다. 하지만, 둘 중 하나의 결과를 낳는 binomial한 시행을 모델링하는 상황에서는 이항분포를 사용하는 것이 적절해 보입니다.  
@@ -191,7 +193,13 @@ MLE로 0.6이라는 $\hat{\theta}$ 값을 구하고 훈훈하게 마무리 지�
 $$P(\theta|D)=\frac{P(D|\theta)P(\theta)}{P(D)}$$  
 
 이 식을 한 번 뜯어볼까요? 좌변의 $P(\theta|D)$는, $D$가 주어졌을 때 $\theta$가 사실일 확률을 나타냅니다. 즉, 우리가 알고자하는 사후확률(posterior)이죠.  
-이 것을 구하기 위해서는, 우리가 가진 $D$의 확률, 그리고 사전지식을 활용해야 합니다. likelihood는 앞서서 이미 정의했었죠.($P(D|\theta ) = \theta^{a_{H}}\times (1-\theta )^{a_{T}}$) 여기서 우리의 사전지식이 가미될 수 있습니다. $P(\theta)$가 0.5가 아닐까? 하는 방식으로 우리의 사전지식을 수식에 녹여낼 수 있겠네요.   
+
+이 것을 구하기 위해서는, 우리가 가진 $D$의 확률, 그리고 사전지식을 활용해야 합니다. likelihood는 앞서서 이미 정의했었죠.  
+
+$$P(D|\theta ) = \theta^{a_{H}}\times (1-\theta )^{a_{T}}$$   
+
+
+여기서 우리의 사전지식이 가미될 수 있습니다. $P(\theta)$가 0.5가 아닐까? 하는 방식으로 우리의 사전지식을 수식에 녹여낼 수 있겠네요.   
 
 다시 정리하면, 아래처럼 나타낼 수 있겠습니다.
 
@@ -219,8 +227,8 @@ $$P(D|\theta ) = \theta^{a_{H}}\times (1-\theta )^{a_{T}}$$
 
 베타 분포란, 아래의 pdf(probability density function)를 갖습니다.  
 
-$$P(\theta)={\frac {\theta^{\alpha -1}(1-\theta)^{\beta -1}}{\Beta(\alpha,\beta)}},$$
-$$\Beta(\alpha,\beta)={\frac {\Gamma (\alpha )\Gamma (\beta )}{\Gamma (\alpha +\beta )}}, \Gamma(\alpha)=(\alpha - 1)!$$  
+$$P(\theta)={\frac {\theta^{\alpha -1}(1-\theta)^{\beta -1}}{B(\alpha,\beta)}},$$
+$$B(\alpha,\beta)={\frac {\Gamma (\alpha )\Gamma (\beta )}{\Gamma (\alpha +\beta )}}, \Gamma(\alpha)=(\alpha - 1)!$$  
 
 베타 분포는 0과 1사이에 cdf(cumulative density function)가 confine 되어 있기 때문에, 확률을 나타내기가 용이하다는 특성을 가지고 있습니다. 위의 식이 다소 기괴해 보일 수 있지만, 식 안의 $\alpha와 \beta$는 단순히 앞면이 나오는 횟수와 뒷면이 나오는 횟수로 생각하시면 됩니다. 저 두개의 파라미터를 입력으로 받아 확률값을 나타내는 것이지요.  
 
@@ -261,13 +269,17 @@ $$\hat{\theta}=\frac{a_{H}+\alpha-1}{a_{H}+\alpha+a_{T}+\beta-2}$$
 
 MLE와 MAP는 각각 이렇게 정리됩니다.
 
-<font size="5"><center> **MLE (Maximum Likelihood Estimation)** </center>  </font>   
+<font size="5"><center> MLE (Maximum Likelihood Estimation) </center>  </font>   
 
 $$\hat{\theta} = \frac{a_{H}}{a_{T}+a_{H}}$$  
 
-<font size="5"><center> **MAP (Maximum A Posteriori)** </center>  </font>   
+<br/>
+
+<font size="5"><center> MAP (Maximum A Posteriori) </center>  </font>   
 
 $$\hat{\theta}=\frac{a_{H}+\alpha-1}{a_{H}+\alpha+a_{T}+\beta-2}$$   
+
+<br/>
 
 이 둘의 차이는 무엇일까요? 간단히 말해, "**사전지식을 반영할 것인가, 그렇지 않을 것인가**"하는 관점의 차이입니다. 전자의 경우 사전지식이 반영될 여지가 전혀 없는데 반해, 후자에는 $\alpha와 \beta$를 통해 사전지식을 반영할 수 있습니다. 만일 $\alpha와 \beta$를 1로 둔다면 위의 MLE와 MAP는 완전히 동일한 식임을 알 수 있습니다.  
 
