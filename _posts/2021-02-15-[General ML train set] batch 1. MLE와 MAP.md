@@ -211,9 +211,10 @@ $$P(Posterior)=\frac{P(Likelihood) \times P(Prior\space Knowledge)}{P(Evidence, 
 
 #### 베이지안 관점에서의 더 많은 공식  
 
-앞서서 Evidence 부분이었던 $P(D)$는 이미 주어진 상수이므로 우리의 관심 밖입니다. 따라서 이를 소거하되, 등호를 비례기호로 바꾸어주겠습니다. (참고: 기호 $\propto$는 proportion으로 읽습니다)
+앞서서 Evidence 부분이었던 $P(D)$는 이미 주어진 상수이므로 우리의 관심 밖입니다. 따라서 이를 소거하되, 등호를 비례기호로 바꾸어주겠습니다. (참고: 기호 $\propto$는 proportion으로 읽습니다)  
 
 $$P(\theta|D) \propto P(D|\theta)P(\theta)$$  
+
 또, 다음과 같은 식을 미리 구해 놓았습니다.  
 
 $$P(D|\theta ) = \theta^{a_{H}}\times (1-\theta )^{a_{T}}$$  
