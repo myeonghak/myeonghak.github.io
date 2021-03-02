@@ -6,8 +6,6 @@ tags:
   - NLP
   - transformer
 ---
-### Longformer
-
 
 > 기존 transformer의 input sequence 길이의 한계를 극복하고자 하는 시도인 longformer를 알아봅니다.
 
@@ -61,7 +59,7 @@ Longformer는 기존의 트랜스포머의 입력토큰의 한계를 극복하�
 가령 이 문장 내에서, 사용 가능한 입력값이 1 문장의 길이 정도밖에 되지 않는다고 해봅시다. 이 document를 통째로 넣어서 "$\theta$를 찾아내는 방법론 중 하나는 MLE를 사용하는 것이다" 라는 Question이 주어졌을 때 yes/no를 예측하는 QA 문제를 해결해 보겠습니다. 기존의 트랜스포머를 사용한다면 아래처럼 문장마다 끊어서 입력으로 사용할 수 있을만큼으로 잘라주어 각각 모델에 태워 그 결과를 종합하는 방식으로 해결할 수 있겠습니다.  
 
 
-<center><img src="/assets/materials/nlp/longformer/document_marked.png" align="center" alt="drawing" width="400"/></center>    
+<center><img src="/assets/materials/nlp/longformer/document_marked.jpg" align="center" alt="drawing" width="400"/></center>    
 
 
 그러나 이렇게 처리할 경우 개별 chunk 내의 토큰들 사이의 의존성은 반영할 수 없게 됩니다. 즉, 정답의 핵심이 담겨있는 "여기서 어떻게 이 $\theta$를 찾을 수 있을까요?"라는 문장과 "그 방법 중 하나가, MLE를 사용하는 것입니다"라는 문장 내의 토큰 사이의 의존성을 살릴 수 없는 것이지요. 어떻게 하면 이 문제를 해결할 수 있을까요? 긴 문장을 그대로 넣을 수는 없을까요?  
@@ -118,8 +116,12 @@ Longformer의 마지막 아이디어는 global attention입니다. 이 어텐션
 <center><img src="/assets/materials/nlp/longformer/memory-comparison.png" align="center" alt="drawing" width="400"/></center>    
 
 
-새로운 메모리 소모량은 다음과 같이 계산됩니다. $(n*w+s*n*w*2)*L$ 여기서 n은 토큰 수, w는 window, s는 special token 수, L은 레이어의 수를 의미합니다.  
-계산 복잡도는 따라서 $O(n)$으로 기존의 $O(n^{2})$에 비해 매우 낮습니다.  
+새로운 메모리 소모량은 다음과 같이 계산됩니다.  
+
+$$(n*w+s*n*w*2)*L$$   
+
+ 여기서 n은 토큰 수, w는 window, s는 special token 수, L은 레이어의 수를 의미합니다.  
+계산 복잡도는 따라서 $O(n)$ 으로 기존의 $O(n^{2})$ 에 비해 매우 낮습니다.  
 
 
 
