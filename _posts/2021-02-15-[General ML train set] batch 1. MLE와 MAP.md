@@ -131,7 +131,7 @@ $$\hat{\theta}=argmax_{\theta}lnP(D|\theta)=argmax_{\theta}ln\{\theta^{a_{H}}(1-
 
 결과적으로, $\theta$가 $\frac{a_{H}}{a_{T}+a_{H}}$일 때, 이 $\theta$는 MLE의 관점에서 최적의 후보가 된다는 말입니다. 정리하자면,  
 
-- $\hat{\theta} = \frac{a_{H}}{a_{T}+a_{H}}$  
+$$\hat{\theta} = \frac{a_{H}}{a_{T}+a_{H}}$$
 
 가 됩니다. 이를 우리의 상황에 대입해 볼까요? Head가 등장한 횟수가 $a_{H}$, Tail이 등장한 횟수가 $a_{T}$인데 우리의 데이터 $D$는 "H,H,T,H,T"이므로 $a_{H}=3$이 될 것이고, $a_{T}=2$가 될 것입니다. 이를 그대로 대입하면,  
 
@@ -149,56 +149,134 @@ $$\hat{\theta} = \frac{3}{2+3}=\frac{3}{5}$$
 <a id="simple-upper-bound"></a>
 ### Simple Error Bound와 PAC learning
 
-Simple Error Bound
-- theta^hat을 우리의 MLE 추정치, N을 시행 횟수, theta*를 우리의 true parameter, trial error>0이라 할 때
-- Hoeffding’s inequality에 의해 확률에 대한 simple upper bound를 가짐.
-- 이는 풀어 설명하면, theta^hat와 theta*의 차이가 특정 error bound보다 클 확률은 시행 횟수 N이 커질수록, error bound가 커질수록 작아진다.
-- 따라서 시행이 늘어났으므로 실제 파라미터 값과 추정 파라미터 값의 차이인 오차가 더 작아졌을 것이라는 주장을 할 수 있음!
-- 이제 역으로, 오차가 0.1이 넘는 확률이 0.01%보다 낮게끔 만들 수 있는 N을 구할 수 있음
+50번 시행해서 도출된 결과와, 5번 시행해서 도출된 결과는 그 값 자체로는 같을지라도 그 값이 주는 신뢰성이 다릅니다.   
 
-PAC learning(Probably Approximate Correct)
-- probably(0.01% 확률)
-- approximate(0.1 오차)
-- 즉 0.01% 확률로 0.1이 넘는 오차가 나타날 theta^hat이 바로 0.6입니다 라고 하는 것이 PAC learning의 결과물임
+$\theta^{*}$를, $\epsilon>0$의 에러를 갖는 압정 던지기 시행의 참값(true parameter)라고 해보겠습니다. 여기에 대해, 수학과에서 온 Hoeffding's inequality에 의해 다소 복잡해 보이는 수식을 simple upper bound로 얻어낼 수 있습니다.  
+
+
+
+$$P(|\hat{\theta}-\theta^{*}| \geq \epsilon)\leq 2e^{-2N\epsilon^{2}}$$  
+
+이 수식을 풀이하자면, $\hat{\theta}$과 $\theta^{*}$의 차이가 특정 error bound보다 클 확률은 시행 횟수 $N$이 커질수록, 또 error bound가 커질수록 작아진다는 의미입니다.  
+
+따라서 시행이 늘어났으므로 실제 파라미터 값과 추정된 파라미터의 값의 차이인 오차($\epsilon$)가 더 작아졌을 것이라는 주장을 할 수 있습니다. 달리 말해 여러번 시행한 결과로 얻은 값이 오차가 적다는 말이지요.  
+
+이제 역으로, 오차가 0.1이 넘는 확률을 0.01보다 낮게끔 만들 수 있는 N을 구할 수도 있겠습니다. 이러한 과정을 **PAC(Probably Approximate Correct) learning**이라고 합니다. "0.01의 확률로 0.1이 넘는 오차가 나타날 $\hat{\theta}$이 바로 0.6입니다"라는 식의 진술이 PAC learning의 결과물의 한 예가 되겠습니다.  
+
 
 
 <a id="incorporation-prior"></a>
-### 사전지식 결합하기
+### 사전지식 결합하기 (Incorporating prior knowledge)
+
+지금까지 MLE의 관점에서 파라미터를 추정하는 방식을 배워왔습니다. 이와는 다른 관점에서 어떻게 접근해볼 수 있을까요? 이번에는 베이지안적 관점인 MAP를 배워보겠습니다.  
+
+지금까지와 마찬가지로, 압정을 던지는 예시를 그대로 가져와 보겠습니다.  
+MLE로 0.6이라는 $\hat{\theta}$ 값을 구하고 훈훈하게 마무리 지어지던 중,
+"잠깐!!" 이라 외치며 베이즈라는 사람이 등장합니다.  
+
+<br/>
 
 
-사전 지식의 결합(Incorporating prior knowledge)
-- 베이지안적인 접근법
-- 앞에서의 압정 예시를 그대로 들고옴. 베이즈가 등장해서, 0.6이라는 확률이 맞는가? 50:50이 아닐까? 하는 의문을 제기하게 됨.
-- 여기서 50:50일거라는 의견은 사전지식으로, 이를 결합하여 추정에 활용할 수 있음을 주장함
-- P(theta|D)=P(D|theta)*P(theta)/P(D)
-- Posterior=Likelihood*Prior Knowledge/Normalizing Constant
-- 앞서, MLE 접근에서 P(D|theta)를 구했음. 여기에 P(theta)라는 사전지식을 가미해보면 좋을 것 같음.
+<center><img src="/assets/materials/generalML/batch1/Thomas_Bayes.png" align="center" alt="drawing" width="300"/></center>    
+<font size="2"><center> 토마스 베이즈(Thomas Bayes, 1701~1761) </center>  </font>   
 
-베이지안 관점에서의 더 많은 공식
-- P(theta|D) £(비례기호, proportion) P(D|theta)*P(theta) -> P(D)는 이미 주어진 상수이므로 소거하되, 등호를 비례기호로 바꾸어줌
-- P(D|theta)=theta^a_H*(1-theta)^a_T로 나타낼 수 있음
-- 이제 P(theta)를 나타내는 것이 관건임. 앞에서 나타낸 방식과 유사하게, 특정 분포에 의존해서 표현해야함.
-- 여기서 베이즈는 beta dist.를 쓸 것을 제안함.
-- 베타 분포는 0-1사이에 cdf(cumulative density function)가 confine되어 있어 확률을 나타내기 용이함.
-- 이 분포에서는 alpha와 beta라는 parameter를 입력으로 받음.
-- 이 식을 정리하면, P(D|theta)*P(theta)을 나타낼 수 있음. P(theta)항의 B(alpha, beta)는 theta에 독립적인 constant term이므로 이는 위에서 P(D)를 처리한 것과 같이 proportion으로 처리할 수 있음. (소거됨)
-- 정리하면, MLE의 식과 유사한 꼴이 됨!
+
+- 베이즈: "회장님, 그거 진짜 0.6맞나요? 50:50 확률 아닙니까?"
+- 회장님: "나도 그렇게 생각하긴 했는데..."
+- 베이즈: "그럼 그 사전정보를 가미한 $\theta$를 찾아보면 어떨까요?"
+- 회장님: "어떻게?"
+
+어떻게 구할 수 있을까요? 우리는 아주 익숙하고 유명한 정리를 떠올려볼 수 있겠습니다.  
+
+$$P(\theta|D)=\frac{P(D|\theta)P(\theta)}{P(D)}$$  
+
+이 식을 한 번 뜯어볼까요? 좌변의 $P(\theta|D)$는, $D$가 주어졌을 때 $\theta$가 사실일 확률을 나타냅니다. 즉, 우리가 알고자하는 사후확률(posterior)이죠.  
+이 것을 구하기 위해서는, 우리가 가진 $D$의 확률, 그리고 사전지식을 활용해야 합니다. likelihood는 앞서서 이미 정의했었죠.($P(D|\theta ) = \theta^{a_{H}}\times (1-\theta )^{a_{T}}$) 여기서 우리의 사전지식이 가미될 수 있습니다. $P(\theta)$가 0.5가 아닐까? 하는 방식으로 우리의 사전지식을 수식에 녹여낼 수 있겠네요.   
+
+다시 정리하면, 아래처럼 나타낼 수 있겠습니다.
+
+$$P(Posterior)=\frac{P(Likelihood) \times P(Prior\space Knowledge)}{P(Evidence, \space Normalizing \space Constant)}$$   
+
+
+
+
+#### 베이지안 관점에서의 더 많은 공식  
+
+앞서서 Evidence 부분이었던 $P(D)$는 이미 주어진 상수이므로 우리의 관심 밖입니다. 따라서 이를 소거하되, 등호를 비례기호로 바꾸어주겠습니다. (참고: 기호 $\propto$는 proportion으로 읽습니다)
+
+$$P(\theta|D) \propto P(D|\theta)P(\theta)$$  
+또, 다음과 같은 식을 미리 구해 놓았습니다.  
+
+$$P(D|\theta ) = \theta^{a_{H}}\times (1-\theta )^{a_{T}}$$  
+
+여기서 $P(\theta)$를 잘 나타내 주는 것이 관건이 되겠습니다. 앞에서 나타낸 방식과 유사하게, 특정 분포에 의존해 표현해 주는 것이 필요합니다. 단순히 0.5를 그대로 쓸 수는 없을 테니까요.  
+
+여기서 베이즈씨는 베타분포(beta distribution)을 사용할 것을 제안합니다.  
+
+<center><img src="/assets/materials/generalML/batch1/Beta_distribution_cdf.png" align="center" alt="drawing" width="300"/></center>    
+<font size="2"><center> 베타 분포의 cumulative density function </center>  </font>   
+
+
+베타 분포란, 아래의 pdf(probability density function)를 갖습니다.  
+
+$$P(\theta)={\frac {\theta^{\alpha -1}(1-\theta)^{\beta -1}}{\Beta(\alpha,\beta)}},$$
+$$\Beta(\alpha,\beta)={\frac {\Gamma (\alpha )\Gamma (\beta )}{\Gamma (\alpha +\beta )}}, \Gamma(\alpha)=(\alpha - 1)!$$  
+
+베타 분포는 0과 1사이에 cdf(cumulative density function)가 confine 되어 있기 때문에, 확률을 나타내기가 용이하다는 특성을 가지고 있습니다. 위의 식이 다소 기괴해 보일 수 있지만, 식 안의 $\alpha와 \beta$는 단순히 앞면이 나오는 횟수와 뒷면이 나오는 횟수로 생각하시면 됩니다. 저 두개의 파라미터를 입력으로 받아 확률값을 나타내는 것이지요.  
+
+이제 베타분포를 사용해 수식을 정리해 보겠습니다.  
+
+$$P(\theta|D) \propto P(D|\theta)P(\theta) \propto\theta^{\alpha_{H}}(1-\theta)^{\alpha_{T}}\theta^{\alpha-1}(1-\theta)^{\beta-1} $$
+
+
+식을 살펴보면, $\theta^{\alpha_{H}}(1-\theta)^{\alpha_{T}}$는 베타분포를 나타낸 $P(\theta)$식의 분자부분을 가져왔음을 알 수 있습니다. 분모는 어디 갔냐구요? 어차피 $\theta$에 대해 미분할 것이기 때문에, 분모 부분은 앞에서와 비슷하게 normalizing constant가 되겠죠. 이를 제거해주며 비례식으로 식을 전개해 줍니다.  
+
+$$=\theta^{a_{H}+\alpha-1}(1-\theta)^{a_{T}+\beta-1}$$  
+
+지수에 대해서 자승으로 처리가 되므로, 위의 식처럼 정리될 수 있습니다. 왠지 봤던 꼴이 또 나온 것 같지 않나요?  
+
+
 
 
 <a id="MAP"></a>
 ### Maximum a Posteriori Estimation
 
-Maximum a Posteriori Estimation
-- MLE에서는 likelihood를 최대화했지만, MAP에서는 사후확률을 최대화하는 전략을 취함!
-- 즉 MLE는 P(D|theta)를 극대화하는 theta^hat을 찾고,MAP는 P(theta|D)를 극대화하는 theta^hat을 찾음
-- 동일한 방식으로 log 변환 후 미분하여 극점을 사용한 최적화를 수행함
-- 때문에 결과값은 MLE나 MAP나 동일함. 관점이 다른 것임!
--MAP에서 구한 공식에서는 alpha, beta에 대한 사전지식을 반영하여 theta^hat의 값을 변화시킬 방법이 있음. 가령 회장이 alpha와 beta가 반반이라고 생각하면 이를 반영할 수 있음.
-- 그러나 MLE에는 그러한 방법이 없음.
+- 회장님: "뭐야, 잠만! 내가 원했던 건 앞면이 나올 확률이였어. 사전정보를 더 넣는다더니 어떻게 흘러가고 있는거야?"
+- 베이즈: "거의 다 왔습니다!"
 
-결론
-- 시행이 아주아주 많아지면, alpha와 beta의 영향은 점점 fade away하고 a_H와 a_T의 영향이 dominant해짐. 결국 MLE와 MAP의 결과는 같아지게 됨
-- 관측치가 많지 않을 경우에는 우리의 사전지식인 alpha와 beta를 반영할 수 있음. 올바른 도메인 지식에 의해 도출될 경우 유용할 것임!
+마저 정리해 봅시다. 지금까지 아래의 식을 도출해 냈습니다.
+
+
+$$P(\theta|D) \propto \theta^{a_{H}+\alpha-1}(1-\theta)^{a_{T}+\beta-1}$$  
+
+이를 극점을 활용한 최적화를 통해 구해보면(즉 미분해서 구해보면) 아래처럼 정리되겠습니다.  
+
+$$\hat{\theta}=\frac{a_{H}+\alpha-1}{a_{H}+\alpha+a_{T}+\beta-2}$$
+
+이 식에 대해서, $\alpha와 \beta$라는 사전지식을 이렇게 저렇게 바꾸어 보면서 최종 결과값인 $\hat{\theta}$값을 0.6이 아닌 다른 값으로 얻어낼 수 있을 것입니다.  
+
+---
+
+### 결론
+
+MLE와 MAP는 각각 이렇게 정리됩니다.
+
+<font size="5"><center> **MLE (Maximum Likelihood Estimation)** </center>  </font>   
+
+$$\hat{\theta} = \frac{a_{H}}{a_{T}+a_{H}}$$  
+
+<font size="5"><center> **MAP (Maximum A Posteriori)** </center>  </font>   
+
+$$\hat{\theta}=\frac{a_{H}+\alpha-1}{a_{H}+\alpha+a_{T}+\beta-2}$$   
+
+이 둘의 차이는 무엇일까요? 간단히 말해, "**사전지식을 반영할 것인가, 그렇지 않을 것인가**"하는 관점의 차이입니다. 전자의 경우 사전지식이 반영될 여지가 전혀 없는데 반해, 후자에는 $\alpha와 \beta$를 통해 사전지식을 반영할 수 있습니다. 만일 $\alpha와 \beta$를 1로 둔다면 위의 MLE와 MAP는 완전히 동일한 식임을 알 수 있습니다.  
+
+또한, 시행이 매우 많아지면, MAP의 식과 MLE의 식은 거의 같아질 것입니다. alpha와 beta라는 파라미터가 가지게 될 영향은 시행이 많아질수록 더욱 약해지겠죠. 단순히 아래와 같은 경우를 생각해 보면 바로 이해할 수 있습니다.
+
+$$  \frac{10000}{4000+10000} \approx \frac{10000+\alpha-1}{10000+\alpha+4000+\beta-2}$$   
+
+여기서 표본의 수가 매우 적을 때, 실제 상황을 충분히 잘 반영하는 사전지식을 사용한다면 MAP의 접근이 더 좋은 결과를 얻을 수 있으리라 기대해 볼 수 있습니다. 반면에 잘못된 사전지식을 사용하여 가설을 세운다면 치명적인 결과를 낳을 수 있는 것도 MAP의 베이지안적 접근법이 갖는 한계라고 볼 수 있겠죠.  
+
 
 ----------------
 
