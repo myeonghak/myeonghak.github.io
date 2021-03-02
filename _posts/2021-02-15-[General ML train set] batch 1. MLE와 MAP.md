@@ -1,5 +1,5 @@
 ---
-title: "[General ML Train set] batch 1. MLE와 MAP (작성중)"
+title: "[General ML Train set] batch 1. MLE와 MAP"
 categories:
   - General Machine Learning
 tags:
