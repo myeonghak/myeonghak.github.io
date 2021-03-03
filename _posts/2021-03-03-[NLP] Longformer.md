@@ -58,9 +58,11 @@ Longformer는 기존의 트랜스포머의 입력토큰의 한계를 극복하�
 
 가령 이 문장 내에서, 사용 가능한 입력값이 1 문장의 길이 정도밖에 되지 않는다고 해봅시다. 이 document를 통째로 넣어서 "$\theta$를 찾아내는 방법론 중 하나는 MLE를 사용하는 것이다" 라는 Question이 주어졌을 때 yes/no를 예측하는 QA 문제를 해결해 보겠습니다. 기존의 트랜스포머를 사용한다면 아래처럼 문장마다 끊어서 입력으로 사용할 수 있을만큼으로 잘라주어 각각 모델에 태워 그 결과를 종합하는 방식으로 해결할 수 있겠습니다.  
 
+<br/>  
 
 <center><img src="/assets/materials/nlp/longformer/document_marked.jpg" align="center" alt="drawing" width="400"/></center>    
 
+<br/>
 
 그러나 이렇게 처리할 경우 개별 chunk 내의 토큰들 사이의 의존성은 반영할 수 없게 됩니다. 즉, 정답의 핵심이 담겨있는 "여기서 어떻게 이 $\theta$를 찾을 수 있을까요?"라는 문장과 "그 방법 중 하나가, MLE를 사용하는 것입니다"라는 문장 내의 토큰 사이의 의존성을 살릴 수 없는 것이지요. 어떻게 하면 이 문제를 해결할 수 있을까요? 긴 문장을 그대로 넣을 수는 없을까요?  
 
@@ -88,19 +90,25 @@ Longformer는 기존의 트랜스포머의 입력토큰의 한계를 극복하�
 
 #### 1) Sliding window attention
 
-<center><img src="/assets/materials/nlp/longformer/sliding-window-attention.png" align="center" alt="drawing" width="400"/></center>    
+<br/>
+
+<center><img src="/assets/materials/nlp/longformer/sliding-window-attention.png" align="center" alt="drawing" width="250"/></center>    
 
 
 먼저 sliding window attention을 제안합니다. 이는 n번째 토큰에 대해 n-w부터 n+w까지의 토큰에 대해서만 attention을 취해주는 것이죠. 기존의 transformer가 n번째 토큰이 0~d-1번 인덱스의 토큰 전체에 대해 attention을 취해주는 것과는 반대되는 것으로 생각할 수 있습니다. 전부 다 보지 않는다는 것이죠.  
 
 #### 2) Dilated sliding window
 
-<center><img src="/assets/materials/nlp/longformer/dilated-sliding-window.png" align="center" alt="drawing" width="400"/></center>    
+<br/>
+
+<center><img src="/assets/materials/nlp/longformer/dilated-sliding-window.png" align="center" alt="drawing" width="250"/></center>    
 
 두번째로 dilated sliding window를 보여줍니다. 이는 한칸 너머 한칸 간격으로 어텐션을 취해주는 방식인데, 이를 통해 윈도를 넓힘으로써 더 넓은 구역에 대해 어텐션 해줄 수 있습니다. 이는 레이어에 걸쳐 훨씬 더 빨리 정보를 전달할 수 있다는 것을 의미합니다. 첫번째 방법인 sliding window attention은 local information을 취합하는 데 유용하고, 두번째 방법은 더 global한 정보를 취합하는 데 유용하므로 두번째 방식의 레이어를 모델의 상단에 붙이는 구조를 취하는 것이 나을 것 같습니다.  
 
 
 #### 3) Global attention
+
+<br/>
 
 <center><img src="/assets/materials/nlp/longformer/global-attention.png" align="center" alt="drawing" width="400"/></center>    
 
@@ -109,12 +117,14 @@ Longformer의 마지막 아이디어는 global attention입니다. 이 어텐션
 
 <center><img src="/assets/materials/nlp/longformer/bert.png" align="center" alt="drawing" width="400"/></center>    
 
+<br/>
 
 가령 앞서 들었던 예시의 BERT QA 모델에서, 입력으로 [CLS] [query] [SEP] [paragraph]이 있을 때, yes/no로 나오는 binary classification을 수행한다고 해 봅시다. 이 때 최종적으로 사용되는 것은 [CLS] 토큰 뿐이죠. 따라서 이 중요한 토큰은 모든 토큰에 대해 attention을 취하도록 해주는 것이 문제 해결에 유리할 것이라고 생각해볼 수 있겠습니다.   
 
 
-<center><img src="/assets/materials/nlp/longformer/memory-comparison.png" align="center" alt="drawing" width="400"/></center>    
+<center><img src="/assets/materials/nlp/longformer/memory-comparison.png" align="center" alt="drawing" width="250"/></center>    
 
+<font size="2"><center> Longformer와 Transformer의 메모리 소모량 비교 </center>  </font>   
 
 새로운 메모리 소모량은 다음과 같이 계산됩니다.  
 
