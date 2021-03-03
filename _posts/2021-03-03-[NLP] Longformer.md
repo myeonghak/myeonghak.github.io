@@ -42,7 +42,7 @@ tags:
 
 ---
 
-[Transformer](https://arxiv.org/abs/1706.03762)는 NLP를 비롯한 다양한 도메인의 문제를 해결하는 Deep Neural Network에 적용되며 새로운 basic component로 자리잡았습니다. 이러한 추세를 따라 트랜스포머의 장단점을 개선하는 다양한 알고리즘이 앞다퉈 나오고 있습니다. 그 중, 긴 input sequence를 효율적으로 처리하지 못한다는 단점을 보완하고자 하는 [Longformer](https://www.facebook.com/groups/753914221898087) 알고리즘을 소개합니다. 구현체는 [여기](https://github.com/allenai/longformer)에서 찾아보실 수 있습니다.  
+[Transformer](https://arxiv.org/abs/1706.03762)는 NLP를 비롯한 다양한 도메인의 문제를 해결하는 Deep Neural Network에 적용되며 새로운 basic component로 자리잡았습니다. 이러한 추세를 따라 트랜스포머의 장단점을 개선하는 다양한 알고리즘이 앞다퉈 나오고 있습니다. 그 중, 긴 input sequence를 효율적으로 처리하지 못한다는 단점을 보완하고자 하는 [Longformer](https://arxiv.org/abs/2004.05150) 알고리즘을 소개합니다. 구현체는 [여기](https://github.com/allenai/longformer)에서 찾아보실 수 있습니다.  
 
 <a id="longformer"></a>
 
@@ -95,6 +95,8 @@ Longformer는 기존의 트랜스포머의 입력토큰의 한계를 극복하�
 <center><img src="/assets/materials/nlp/longformer/sliding-window-attention.png" align="center" alt="drawing" width="250"/></center>    
 
 
+<br/>
+
 먼저 sliding window attention을 제안합니다. 이는 n번째 토큰에 대해 n-w부터 n+w까지의 토큰에 대해서만 attention을 취해주는 것이죠. 기존의 transformer가 n번째 토큰이 0~d-1번 인덱스의 토큰 전체에 대해 attention을 취해주는 것과는 반대되는 것으로 생각할 수 있습니다. 전부 다 보지 않는다는 것이죠.  
 
 #### 2) Dilated sliding window
@@ -102,6 +104,9 @@ Longformer는 기존의 트랜스포머의 입력토큰의 한계를 극복하�
 <br/>
 
 <center><img src="/assets/materials/nlp/longformer/dilated-sliding-window.png" align="center" alt="drawing" width="250"/></center>    
+
+<br/>
+
 
 두번째로 dilated sliding window를 보여줍니다. 이는 한칸 너머 한칸 간격으로 어텐션을 취해주는 방식인데, 이를 통해 윈도를 넓힘으로써 더 넓은 구역에 대해 어텐션 해줄 수 있습니다. 이는 레이어에 걸쳐 훨씬 더 빨리 정보를 전달할 수 있다는 것을 의미합니다. 첫번째 방법인 sliding window attention은 local information을 취합하는 데 유용하고, 두번째 방법은 더 global한 정보를 취합하는 데 유용하므로 두번째 방식의 레이어를 모델의 상단에 붙이는 구조를 취하는 것이 나을 것 같습니다.  
 
@@ -111,6 +116,8 @@ Longformer는 기존의 트랜스포머의 입력토큰의 한계를 극복하�
 <br/>
 
 <center><img src="/assets/materials/nlp/longformer/global-attention.png" align="center" alt="drawing" width="400"/></center>    
+
+<br/>
 
 Longformer의 마지막 아이디어는 global attention입니다. 이 어텐션은 sparse한 형태를 띠는데, special token이 몇 개 존재합니다. 이 토큰들은 시퀀스 내 모든 토큰에 대해 attention할 수 있습니다. 마치 Transformer에서 모든 토큰들이 그렇게 하듯이 말입니다. 이들을 특별히 global attention이라 부릅니다. 이들을 어떤 토큰에 대해 수행할지는 해결하고자하는 task에 맞추어 생각해볼 수 있겠습니다.   
 
