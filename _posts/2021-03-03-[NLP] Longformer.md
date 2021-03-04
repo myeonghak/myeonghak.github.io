@@ -115,7 +115,7 @@ Longformer는 기존의 트랜스포머의 입력토큰의 한계를 극복하�
 
 <br/>
 
-<center><img src="/assets/materials/nlp/longformer/global-attention.png" align="center" alt="drawing" width="400"/></center>    
+<center><img src="/assets/materials/nlp/longformer/global-attention.png" align="center" alt="drawing" width="250"/></center>    
 
 <br/>
 
@@ -132,6 +132,8 @@ Longformer의 마지막 아이디어는 global attention입니다. 이 어텐션
 <center><img src="/assets/materials/nlp/longformer/memory-comparison.png" align="center" alt="drawing" width="250"/></center>    
 
 <font size="2"><center> Longformer와 Transformer의 메모리 소모량 비교 </center>  </font>   
+
+<br/>
 
 새로운 메모리 소모량은 다음과 같이 계산됩니다.  
 
