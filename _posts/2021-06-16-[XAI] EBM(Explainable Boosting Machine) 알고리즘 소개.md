@@ -41,9 +41,11 @@ tags:
 
 ---
 
+<br/>
+
 바야흐로 디지털 시대, 머신러닝 알고리즘이 실제 업계에 적용되는 사례가 심심찮게 들려오고 있습니다. 그 때마다 현업은 이 모델이 불안하고, 머신러닝 엔지니어는 답답합니다.
 
-> **현업**: 이 모델이 왜 잘되는 거예요?  
+> **현업**: 이 모델 이거 왜 잘되는 거예요?  
 > **엔지니어**: 아, 이게 요즘 캐글에서 잘나가는 XGBoost라는 모델인데요. 작은 의사결정 나무를 어쩌고 저쩌고..  
 > **현업**: 그럼 왜 이런 값이 나오는 건지 알 수 있는거네요?  
 > **엔지니어**: 그렇지는 않아요. 수많은 작은 트리가 굉장히 복잡한 규칙을 각각 학습하는 형태라 그 속을 까보기는 어렵습니다.  
@@ -54,6 +56,7 @@ tags:
 
 
 
+<br/>
 
 <a id="tradeoff"></a>
 
@@ -77,6 +80,7 @@ tags:
 
 
 
+<br/>
 <a id="ebm"></a>
 ### EBM이란
 
@@ -104,19 +108,33 @@ $$ g(E[y]) = \beta_0 + \sum f_j(x_j) + \sum f_{i_j}(x_i,x_j) $$
 
 
 
+<br/>
 <center><img src="/assets/materials/XAI/EBMs/learning_01.png" align="center" alt="drawing" width="200"/></center>    
+<br/>
 
 아주 작은 learning rate(학습률)로 학습함으로써, 한 피처에 과적합 되는 것을 방지합니다. 이제 두번째 트리로 residual을 전달합니다. 이 방식은 역시 부스팅 모델의 방식과 동일합니다.  
 
+
+<br/>
 <center><img src="/assets/materials/XAI/EBMs/learning_02.png" align="center" alt="drawing" width="300"/></center>    
+<br/>
 
 이러한 방식으로 모든 피처에 대해 에러를 전달하고, 한 번의 이터레이션이 끝납니다.  
 
+
+<br/>
 <center><img src="/assets/materials/XAI/EBMs/learning_03.png" align="center" alt="drawing" width="600"/></center>    
+
+<br/>
+
 
 다시 반복, 작은 learning rate를 사용하기 떄문에 여러번 돌려 봅니다. 보통은 5,000~10,000번 정도 반복합니다.  
 
+
+<br/>
 <center><img src="/assets/materials/XAI/EBMs/learning_04.png" align="center" alt="drawing" width="500"/></center>    
+
+<br/>
 
 이제 학습이 완료되었습니다. 마지막으로 각 피처별로 생성된 트리를 모두 결합하여 하나의 플롯으로 만듭니다. 이렇게 플롯을 만든 이후에는 기존의 트리가 필요없어지므로 제거합니다. 이제 예측은 각 피처마다 생성된 플롯을 사용합니다.  
 
@@ -126,8 +144,10 @@ $$ g(E[y]) = \beta_0 + \sum f_j(x_j) + \sum f_{i_j}(x_i,x_j) $$
 
 모델의 성능도 빼놓을 수 없겠죠. 논문에서 저자들은 다음과 같이, 기존의 부스팅 모델과 유사하거나 월등한 성능을 보인다고 주장하고 있습니다.
 
+<br/>
 <center><img src="/assets/materials/XAI/EBMs/result.png" align="center" alt="drawing" width="500"/></center>    
 
+<br/>
 
 
 
@@ -139,8 +159,8 @@ $$ g(E[y]) = \beta_0 + \sum f_j(x_j) + \sum f_{i_j}(x_i,x_j) $$
 지금까지 EBM에 대해 알아보았습니다. 처음 이 모델을 접했을 때, 그리고 시각화를 보았을 때 충격과 공포를 금치 못했는데요. 이 충격은 곧 모델의 설명가능성을 다음 지평으로 가져 온 듯한 느낌과 동시에 새로운 비즈니스 가능성들이 많이 열릴 수 있으리라는 기대감으로 바뀌었습니다. 앞으로 또 어떤 새로운 재밌는 것들이 나올까요.  
 
 
-**개선을 위한 여러분의 피드백과 제안을 코멘트로 공유해 주세요.**
+**개선을 위한 여러분의 피드백과 제안을 코멘트로 공유해 주세요.**  
 **내용에 대한 지적, 혹은 질문을 환영합니다.**  
 
-참고: https://jwprogramming.tistory.com/17
+참고: https://jwprogramming.tistory.com/17  
 https://towardsdatascience.com/the-explainable-boosting-machine-f24152509ebb
