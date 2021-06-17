@@ -15,7 +15,7 @@ tags:
 
 >  **1. EBM은 모델 성능과 설명 가능성 사이에 존재하는 trade-off를 극복하는 트리 기반 glass model**
 >
->  **2. 설명 가능성과 동시에 부스팅 알고리즘 수준의 성능을 동시에 보장**
+>  **2. 설명 가능성과 동시에 부스팅 알고리즘 수준의 성능을 보임**
 >
 >  **3. 각 feature별로 개별 트리를 학습, 매우 작은 learning rate으로 5,000-10,000회의 iteration에 걸쳐 모델 구성**
 
@@ -33,6 +33,7 @@ tags:
 1.	[Performance와 Explainability 사이의 trade-off](#tradeoff)
 2.	[EBM이란](#ebm)
 3.  [EBM의 학습 방식](#ebm-under-the-hood)
+4.  [EBM 구현 예제](#example)
 4.  [마치며](#conclusion)
 
 <br />
@@ -139,6 +140,7 @@ $$ g(E[y]) = \beta_0 + \sum f_j(x_j) + \sum f_{i_j}(x_i,x_j) $$
 이제 학습이 완료되었습니다. 마지막으로 각 피처별로 생성된 트리를 모두 결합하여 하나의 플롯으로 만듭니다. 이렇게 플롯을 만든 이후에는 기존의 트리가 필요없어지므로 제거합니다. 이제 예측은 각 피처마다 생성된 플롯을 사용합니다.  
 
 <center><img src="/assets/materials/XAI/EBMs/learning_05.png" align="center" alt="drawing" width="150"/></center>    
+<br/>
 
 아래에 추가한 작은 플롯의 출처는 [gamut](https://msrgamut.microsoft.com/)이라는 대시보드 프로젝트입니다. 들어가 보시면 유명한 집값 예측 데이터셋을 비롯해 다양한 데이터로 pygam, EBM을 활용해 변수 기여도를 시각화한 예쁜 대시보드를 확인할 수 있습니다.  
 
@@ -149,6 +151,93 @@ $$ g(E[y]) = \beta_0 + \sum f_j(x_j) + \sum f_{i_j}(x_i,x_j) $$
 
 <br/>
 
+<a id="example"></a>
+### EBM 구현 예제
+
+코드로 한번 구현해 살펴보겠습니다. 이 예제의 출처는 [여기](https://github.com/interpretml/interpret/blob/develop/examples/python/notebooks/Interpretable%20Regression%20Methods.ipynb)입니다.  
+
+먼저 보스턴 데이터셋을 로드하고, 8:2로 데이터를 split합니다. 특별할 것 없는 루틴입니다.  
+
+```python
+import pandas as pd
+from sklearn.datasets import load_boston
+from sklearn.model_selection import train_test_split
+
+boston = load_boston()
+feature_names = list(boston.feature_names)
+df = pd.DataFrame(boston.data, columns=feature_names)
+df["target"] = boston.target
+# df = df.sample(frac=0.1, random_state=1)
+train_cols = df.columns[0:-1]
+label = df.columns[-1]
+X = df[train_cols]
+y = df[label]
+
+seed = 1
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=seed)
+
+
+```
+
+먼저 모델 적합 전, X와 y 변수 간의 marginal plot을 보여줍니다. 피어슨 상관계수도 확인할 수 있습니다.  
+
+
+```python
+from interpret import show
+from interpret.data import Marginal
+
+marginal = Marginal().explain_data(X_train, y_train, name = 'Train Data')
+show(marginal)
+```
+
+
+<br/>
+<center><img src="/assets/materials/XAI/EBMs/example_01.png" align="center" alt="drawing" width="700"/></center>    
+
+<br/>
+
+그 다음은 global explanation입니다. 이후에 나올 local explanation은 각각의 개별 인스턴스(데이터 샘플)를 상대로 각 피처의 contribution을 보여줌으로써 explanation을 제공하지만, 여기서는 모델이 전체 인스턴스를 학습함으로써 획득한 전반적인 관점에서의 설명가능성을 제공합니다.  
+
+```python
+# Global Explanations: What the model learned overall
+ebm_global = ebm.explain_global(name='EBM')
+show(ebm_global)
+```
+
+
+<br/>
+<center><img src="/assets/materials/XAI/EBMs/example_02.png" align="center" alt="drawing" width="700"/></center>    
+
+<br/>
+
+코드를 실행하면 바로 보이는 것은 전체 feature importance입니다. 여기서는 LSTAT이 가장 중요한 변수라고 말해주고 있습니다.  
+
+<br/>
+<center><img src="/assets/materials/XAI/EBMs/example_03.png" align="center" alt="drawing" width="700"/></center>    
+
+<br/>
+
+위에 있는 드롭다운을 클릭해보면, 변수마다 전체 샘플에 대해 갖는 score의 plot을 볼 수 있습니다. LSTAT 변수는 값이 증가함에 따라 score가 감소하는 경향을 보이는군요. 또, 아래에 있는 히스토그램은 해당 구간에 존재하는 데이터 샘플의 수를 나타냅니다. 오른쪽 끝에 upper bound와 lower bound가 매우 크다는 것은 해당 구간의 score의 분산이 큰 것을 의미합니다. 구체적인 로직은 이해하지 못했지만, 매우 작은 샘플의 수로 인해 confidence interval이 큰 것을 나타내는 듯 합니다.  
+
+마지막으로 local explanation을 살펴 보겠습니다. 5개의 테스트 샘플만을 모델에 넣어 모델의 예측 결과에 대한 설명을 살펴봅니다.  
+```python
+
+# Local Explanations: How an individual prediction was made
+
+ebm_local = ebm.explain_local(X_test[:5], y_test[:5], name='EBM')
+show(ebm_local)
+
+```
+
+
+<br/>
+<center><img src="/assets/materials/XAI/EBMs/example_04.png" align="center" alt="drawing" width="1000"/></center>    
+
+<br/>
+
+이 플롯은 각각의 피처가 모델의 예측 결과에 미친 영향을 나타냅니다. 파란 막대는 음의 기여도를, 주황 막대는 양의 기여도를 보입니다. 이 모든 기여도가 더해져 최종 예측 값이 계산됩니다. EBM이 additive한 알고리즘을 사용하는 것을 떠올려보면 좋을 것 같습니다. 여기서 intercept가 높게 나오는데요. Boosting 모델에서 residual을 전파해 나가며 모델을 학습할 때 baseline 예측 값으로 사용하는 intercept를 떠올리면 납득이 갑니다.  
+
+
 
 
 ----------------
@@ -156,7 +245,7 @@ $$ g(E[y]) = \beta_0 + \sum f_j(x_j) + \sum f_{i_j}(x_i,x_j) $$
 <a id="conclusion"></a>
 ### 마치며
 
-지금까지 EBM에 대해 알아보았습니다. 처음 이 모델을 접했을 때, 그리고 시각화를 보았을 때 충격과 공포를 금치 못했는데요. 이 충격은 곧 모델의 설명가능성을 다음 지평으로 가져 온 듯한 느낌과 동시에 새로운 비즈니스 가능성들이 많이 열릴 수 있으리라는 기대감으로 바뀌었습니다. 앞으로 또 어떤 새로운 재밌는 것들이 나올까요.  
+지금까지 EBM에 대해 살펴보고, 그 구현까지 따라 해 보았습니다. 이 모델이 비즈니스 로직에 녹아들어 갔을 때 만들어낼 파급효과를 상상해보면, 단순히 신박한 새로운 알고리즘에 그치지 않을 것 같네요. 긴 글 읽어 주셔서 감사합니다.  
 
 
 **개선을 위한 여러분의 피드백과 제안을 코멘트로 공유해 주세요.**  
