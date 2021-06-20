@@ -1,9 +1,9 @@
 ---
-title: "[Deep Learning] 비선형 함수를 사용하는 이유에 대한 시각적 설명"
+title: "[DeepLearning] 비선형 함수를 사용하는 이유에 대한 시각적 설명"
 categories:
-  - Deep Learning
+  - DeepLearning
 tags:
-  - Deep Learning
+  - DeepLearning
 ---
 
 > 신경망 모델에서 비선형 활성화함수를 사용하는 이유에 대한 두 가지 접근을 알아봅니다.

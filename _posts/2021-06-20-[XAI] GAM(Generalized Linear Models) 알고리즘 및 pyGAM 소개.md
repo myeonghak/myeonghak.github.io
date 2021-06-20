@@ -76,4 +76,5 @@ tags:
 **개선을 위한 여러분의 피드백과 제안을 코멘트로 공유해 주세요.**  
 **내용에 대한 지적, 혹은 질문을 환영합니다.**  
 
-참고: https://youtu.be/XQ1vk7wEI7c
+참고: https://youtu.be/XQ1vk7wEI7c  
+https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=je1206&logNo=220804476471  

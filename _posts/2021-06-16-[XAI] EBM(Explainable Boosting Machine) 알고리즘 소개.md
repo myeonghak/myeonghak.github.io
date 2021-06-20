@@ -196,7 +196,7 @@ show(marginal)
 
 <br/>
 
-그 다음은 global explanation입니다. 이후에 나올 local explanation은 각각의 개별 인스턴스(데이터 샘플)를 상대로 각 피처의 contribution을 보여줌으로써 explanation을 제공하지만, 여기서는 모델이 전체 인스턴스를 학습함으로써 획득한 전반적인 관점에서의 설명가능성을 제공합니다. 그에 앞서, ebm 인스턴스를 생성하고 학습 데이터에 적합시킵니다. 
+그 다음은 global explanation입니다. 이후에 나올 local explanation은 각각의 개별 인스턴스(데이터 샘플)를 상대로 각 피처의 contribution을 보여줌으로써 explanation을 제공하지만, 여기서는 모델이 전체 인스턴스를 학습함으로써 획득한 전반적인 관점에서의 설명가능성을 제공합니다. 그에 앞서, ebm 인스턴스를 생성하고 학습 데이터에 적합시킵니다.
 
 ```python
 
