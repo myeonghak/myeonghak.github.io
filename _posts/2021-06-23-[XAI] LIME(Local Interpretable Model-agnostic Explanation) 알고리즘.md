@@ -13,7 +13,7 @@ tags:
 
 <center><img src="/assets/materials/XAI/lime/lime_01.png" align="center" alt="drawing" width="400"/></center>    
 
-<font size="2"><center> 출처: Kulma의 [slideshare](https://www.slideshare.net/0xdata/interpretable-machine-learning-using-lime-framework-kasia-kulma-phd-data-scientist) </center>  </font>   
+<font size="2"><center> 출처: Kulma의 slideshare (https://www.slideshare.net/0xdata/interpretable-machine-learning-using-lime-framework-kasia-kulma-phd-data-scientist) </center>  </font>   
 
 
 <br/>
@@ -39,6 +39,7 @@ tags:
 1.	[대리 분석(Surrogate Analysis)이란?](#surrogate)
 2.  [LIME 알고리즘](#lime)
 3.	[LIME의 작동 방식](#lime_under_the_hood)
+4.  [예제 코드](#example)
 5.  [마치며](#conclusion)
 
 <br />
@@ -124,7 +125,7 @@ XAI에서 대리 분석이란, 설명하고자 하는 원래 모델이 지나치
 <center><img src="/assets/materials/XAI/lime/lime_05.png" align="center" alt="drawing" width="300"/></center>    
 
 <br/>
-이 결정경계 가운데에 지역적인 선형회귀 모델(검정색 선)을 적합해서, 이 회귀식의 계수를 사용해 모델의 판단 메커니즘을 분석하는 것이 바로 LIME의 아이디어라고 할 수 있겠습니다.  
+이 결정경계 가운데에 지역적인 선형회귀 모델(검정색 선)을 적합해서, 이 회귀식의 계수를 사용해 모델의 판단 메커니즘을 분석하는 것이 바로 LIME의 아이디어라고 할 수 있겠습니다. 우리의 예시는 분류 문제이므로 엄밀히는 직선의 모델을 적합하는 것은 아니지만 로지스틱 회귀 모형을 통해 선형의 결정경계를 갖게 됩니다.  
 
 <br/>
 
@@ -135,23 +136,42 @@ XAI에서 대리 분석이란, 설명하고자 하는 원래 모델이 지나치
 LIME 알고리즘의 학습 순서는 다음과 같습니다.  
 
 
-1) **permute data**: 각 observation에 대해, 피처 값을 permute하여 새로운 fake dataset을 만듦   
+1) **permute data**: 각 observation에 대해, 피처 값을 permute하여 새로운 fake dataset을 만듭니다.    
 
-2) **calculate distance between permutation and original observation**: 위에서 생성한 fake data와 original data의 distance(즉, similarity score)를 계산하여, 원래 데이터와 새로 만든 데이터가 얼마나 다른가를 측 정 (이를 나중에 weight로 사용)  
+<br/>
 
-3) **make prediction on new data using complex model**: 블랙박스 모델을 사용해 생성한 데이터의 라벨을 예측함.  
 
- 4) **pick m features best describing the complex model outcome from the permuted data**: 블랙박스 모델의 결과로 나온 클래스의 likelihood를 maximize하는, 최소한의 피처 m개를 찾아 냄. 이 과정은 매우 중요한데, 수백개의 피처를 사용해 예측을 수행할 경우에도 몇개의 중요한 피처만을 남겨낼 수 있기 때문임. 이 몇 피처들은 예측을 도출해내기 위해 필요한 정보가 가장 많은(informative) 피처라고 생각할 수 있음.   
-5) **Fit a simple model to the permuted data with m features and similarity scores as weights**: m개의 피처들을 뽑아서, 생성한 데이터에 설명 가능한 linear model과 같은 알고리즘으로 학습, 가중치와 기울기를 구함. 2에서 구한 유사도를 weight로 사용하여 모델을 fitting함.  
+<center><img src="/assets/materials/XAI/lime/lime_06.png" align="center" alt="drawing" width="200"/></center>    
 
- 6) **Feature weights from the simple model make explanation for the complex models local behavior**: 여기서 구한 기울기(coef)는 local scale에서 해당 observation에 대한 설명이 됨.   
+<font size="2"><center> 여기서 우리가 해석하고자 하는 local sample은 보라색 데이터 포인트입니다. 생성된 fake data point는 노란색 점들입니다. </center>  </font>   
+
+<br/>
+
+2) **calculate distance between permutation and original observation**: 위에서 생성한 fake data와 original data의 distance(즉, similarity score)를 계산하여, 원래 데이터와 새로 만든 데이터가 얼마나 다른가를 측 정합니다. (이를 나중에 weight로 사용)  
+
+<br/>
+
+
+<center><img src="/assets/materials/XAI/lime/lime_07.png" align="center" alt="drawing" width="200"/></center>    
+
+<font size="2"><center> 보라색 데이터 포인트 주변에 생성된 샘플들과의 거리를 측정합니다. </center>  </font>   
+
+<br/>  
+
+3) **make prediction on new data using complex model**: 블랙박스 모델을 사용해 생성한 데이터의 라벨을 예측합니다.  
+
+ 4) **pick m features best describing the complex model outcome from the permuted data**: 블랙박스 모델의 결과로 나온 클래스의 likelihood를 maximize하는, 최소한의 피처 m개를 찾아 냅니다. 이 과정은 매우 중요한데, 수백 개의 피처를 사용해 예측을 수행할 경우에도 몇 개의 중요한 피처만을 남겨낼 수 있기 때문입니다. 이 몇 개의 피처들은 예측을 도출해내기 위해 필요한 정보가 가장 많은(informative) 피처라고 생각할 수 있습니다.  
+   
+5) **Fit a simple model to the permuted data with m features and similarity scores as weights**: m개의 피처들을 뽑아서, 생성한 데이터에 설명 가능한 linear model과 같은 알고리즘으로 학습하고, 가중치와 기울기를 구합니다. 2)에서 구한 유사도를 weight로 사용하여 모델을 fitting합니다.    
+
+ 6) **Feature weights from the simple model make explanation for the complex models local behavior**: 여기서 구한 모델의 기울기(coef)는 local scale에서 해당 observation에 대한 설명이 됩니다.   
 
 (여기서 1,2,4,5는 사용자가 customize해서 optimal한 explanation을 얻을 수 있는 부분입니다. 얼마나 permute할지, 어떤 유사도 측도를 쓸지, m의 수를 몇개로 할 지 등.)
 
 
 #### 손실함수  
 
-$$\xi(x) = \underset{g \in G}{\operatorname{\argmin}} L(f, g, \pi_x ) + \Omega(g)$$
+$$\xi(x) = \underset{g \in G}{\operatorname{\arg min}} L(f, g, \pi_x ) + \Omega(g)$$
 
   - 여기서 $G$는 설명가능한 glassbox 모델의 집합을 의미합니다.  
   - 따라서 $g$는 하나의 glassbox 모델로 생각할 수 있습니다.  
@@ -167,6 +187,76 @@ $$\xi(x) = \underset{g \in G}{\operatorname{\argmin}} L(f, g, \pi_x ) + \Omega(g
 
 
 
+<br/>
+
+<a id="example"></a>
+
+### 예제 코드
+여기서 코드를 한번 들여다 보지 않고 넘어가면 서운하겠죠. 뇌졸중 데이터셋으로 예제를 만들고 싶었지만, 꿩 대신 닭으로 sklearn 패키지에서 쉽게 가져다 쓸 수 있는 유방암 예측 문제를 풀어보겠습니다.  
+
+```python
+%pylab inline
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.datasets import load_breast_cancer
+
+cancer = load_breast_cancer()
+
+X_train,X_test,y_train,y_test = train_test_split(cancer.data,cancer.target)
+
+model = RandomForestClassifier()
+model.fit(X_train,y_train)
+
+score = model.score(X_test,y_test)
+print(score)
+```  
+
+> 0.9440559440559441   
+
+<br/>
+
+간단한 모델로 높은 성능을 기록했습니다. 이제 한 샘플의 관점에서 모델을 해석해 봅시다. lime 패키지는 단순히 *pip install lime* 명령어로 설치가 가능합니다.  
+
+
+<br/>
+
+```python
+from lime import lime_tabular
+
+explainer = lime_tabular.LimeTabularExplainer(X_train, mode="classification", feature_names= cancer.feature_names)
+
+idx = random.randint(1, len(X_test))
+
+print("Prediction : ", model.predict(X_test[idx].reshape(1,-1)))
+print("Actual :     ", y_test[idx])
+
+explanation = explainer.explain_instance(X_test[idx], model.predict_proba, num_features=len(cancer.feature_names), labels=(0,) ,num_samples=5000)
+```
+여기서 model.predict가 아닌 model.predict_proba로 넣어주어야 합니다.  
+(NotImplementedError: LIME does not currently support classifier models without probability scores 에러 발생)  
+
+
+```python
+explanation.show_in_notebook()
+```  
+결과를 살펴보겠습니다.  
+
+
+<br/>
+
+
+<center><img src="/assets/materials/XAI/lime/lime_08.png" align="center" alt="drawing" width="700"/></center>    
+
+<font size="2"><center> 위 사진은 95번 인덱스의 분석 결과입니다. </center>  </font>   
+
+
+<br/>  
+
+모델의 예측 결과는 0.76이 음성, 0.24가 양성이며 모델은 종합적으로 음성이라고 판단을 내렸습니다. 실제 값 역시 음성입니다. 그림에서 주황색으로 표시된 부분은 양성으로 판단 내리기에 기여한 특성, 그리고 그 기여도를 의미하며, 그 반대는 음성에 기여한 특성과 그 정도를 의미합니다. 모든 기여도의 총합을 통틀어 최종 출력값을 만드는 구조입니다.  
 
 
 ----------------
