@@ -10,7 +10,7 @@ layout: single
 
 :man_technologist: 안녕하세요! 러닝머신입니다.
 마케팅 영역에 AI 기술을 접목하는 일에 관심이 많습니다.
-현재 AI 컨설팅사에서 Machine Learning Engineer로 근무하고 있습니다.
+현재 카드사에서 Machine Learning Engineer로 근무하고 있습니다.
 
 
 ## Contact
