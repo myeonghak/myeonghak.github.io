@@ -82,7 +82,7 @@ KoBERT는 한국어 위키 데이터 5백만 문장, 5,400만 단어를 사용�
 
 
 <br>
-<center><img src="/assets/materials/nlp/kobert_voc/puppy.jpg" align="center" alt="drawing" width="500"/></center>    
+<center><img src="/assets/materials/nlp/kobert_voc/puppy.jpg" align="center" alt="drawing" width="250"/></center>    
 <br/>
 
 
@@ -98,7 +98,7 @@ KoBERT는 한국어 위키 데이터 5백만 문장, 5,400만 단어를 사용�
 
 
 <br>
-<center><img src="/assets/materials/nlp/kobert_voc/dog_cat_rabbit.jpg" align="center" alt="drawing" width="500"/></center>    
+<center><img src="/assets/materials/nlp/kobert_voc/dog_cat_rabbit.jpg" align="center" alt="drawing" width="400"/></center>    
 <br/>
 
 이와는 달리 "강아지, 고양이, 토끼" 모두가 답으로 가능해 아래처럼 셋 다 1에 가까운 값을 뱉을 수 있는 경우를 멀티 레이블이라고 합니다.  
