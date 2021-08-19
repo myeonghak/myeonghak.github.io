@@ -1,9 +1,11 @@
 ---
 title: "[NLP] KoBERT Multilabel VOC 분류 모델 개발기"
 categories:
-  - XAI
+  - Natural Language Processing
+
 tags:
-  - XAI
+  - NLP
+  - implementation
 ---
 
 > pretrained KoBERT 모델을 사용해 multi-label VOC(Voice of Customers) 분류기를 만들며 얻은 교훈을 공유합니다.
