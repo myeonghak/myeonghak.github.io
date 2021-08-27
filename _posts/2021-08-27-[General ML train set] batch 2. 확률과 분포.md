@@ -109,7 +109,7 @@ $Posterior = \frac{Likelihood * Prior Knowledge}{Normalizing Constant}$
 여기서, 이 공식의 몇 가지 유용한 변형을 살펴보고 가겠습니다.  
 
 
-$P(B|A) = \frac{P(A \mid B)P(B)}{P(A)}$  
+$P(B \mid A) = \frac{P(A \mid B)P(B)}{P(A)}$  
 
 
 앞서 살펴본 식은 B 사건이 주어졌을 경우 A 사건의 발생 확률이었는데, 여기서는 A 사건이 주어졌을 경우 B 사건의 발생 확률에 대한 수식으로 바꾸어 표현하게 되었네요. 달리 말해 조건 사건과 목표 사건을 바꾸어 나타낼 수 있다는 것입니다.   
@@ -133,7 +133,7 @@ $P(A) = \sum_{n}P(A \mid B_n)P(B_n)$
 <center><img src="/assets/materials/generalML/batch2/dices.jpg" align="center" alt="drawing" width="400"/></center>    
 
 
-<center>| 사건 (두 주사위의 합)                 | 확률 | percentage |
+| 사건 (두 주사위의 합)                 | 확률 | percentage |
 |-------------------------|:---------:|:---:|
 | 2              |  1/36  | 3% |
 | 3              |  2/36  | 6% |
@@ -141,7 +141,7 @@ $P(A) = \sum_{n}P(A \mid B_n)P(B_n)$
 | 5              |  4/36  | 11% |
 | 6              |  5/36  | 14% |
 | ...              |  ...  | ... |
-| 12              |  1/36  | 3% |</center>  
+| 12              |  1/36  | 3% |
 
 
 이 표와 같이 사건->확률값으로 맵핑해주는 그 함수가 바로 확률 분포가 되겠습니다.  
