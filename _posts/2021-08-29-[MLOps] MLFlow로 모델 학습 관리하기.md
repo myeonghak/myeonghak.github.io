@@ -13,7 +13,7 @@ tags:
 > 머신러닝 모델 학습 관리 및 배포를 지원하는 MLFlow에 대해 살펴봅니다.  
 
 
-<center><img src="C:\Users\mattias\Desktop\myeonghak.github.io\assets\materials\mlops\mlflow/mlflow_logo.png" align="center" alt="drawing" width="400"/></center>   
+<center><img src="/assets/materials/mlops/mlflow/mlflow_logo.png" align="center" alt="drawing" width="400"/></center>   
 
 
 <!-- <br>
@@ -75,7 +75,7 @@ MLflow에 대해 설명하기 전에, ML 모델을 개발/배포함에 있어 ML
 3. 모델 학습
 4. 모델 배포(deployment)  
 
-<center><img src="C:\Users\mattias\Desktop\myeonghak.github.io\assets\materials\mlops\mlflow/mlflow_cycle.png" align="center" alt="drawing" width="400"/></center>   
+<center><img src="/assets/materials/mlops/mlflow/mlflow/mlflow_cycle.png" align="center" alt="drawing" width="400"/></center>   
 
 
 <font size="2"><center> 출처: databricks slideshare (https://www.slideshare.net/databricks/introduction-fo-mlflow) </center>  </font>   
@@ -144,11 +144,11 @@ MLflow Tracking에는 두 가지 backend store가 있는데, 다음과 같은 �
 2) Artifact Store
 메타데이터와 달리 상대적으로 무거운 데이터를 저장합니다. 이는 학습데이터, 모델파일 등을 포함합니다. 다양한 기존 인프라에 결합할 수 있습니다.  
 
-  - Amazon S3 backend store  
-	- Azure Blob Storage  
-	- Google Cloud Storage  
-	- DBFS(DataBricks FileSystem)  
-	- FTP, SFTP  
+  - Amazon S3 backend store
+  - Azure Blob Storage  
+  - Google Cloud Storage  
+  - DBFS(DataBricks FileSystem)  
+  - FTP, SFTP  
 
 
 #### 2. MLflow Projects
@@ -156,7 +156,7 @@ MLflow Tracking에는 두 가지 backend store가 있는데, 다음과 같은 �
 MLflow Projects는 모델의 재생산성, 재사용성을 확보하기 위한 기능을 제공합니다. 기껏 개발한 모델이 나의 로컬 PC에서만 작동해서는 안되겠지요.  
 
 
-<center><img src="C:\Users\mattias\Desktop\myeonghak.github.io\assets\materials\mlops\mlflow/on_my_machine.jpg" align="center" alt="drawing" width="400"/></center>   
+<center><img src="/assets/materials/mlops/mlflow/on_my_machine.jpg" align="center" alt="drawing" width="400"/></center>   
 
 MLflow는 BART의 꼴이 나지 않도록, 모델을 재현할 수 있는 환경을 손쉽게 확보할 수 있도록 아래의 다양한 기능을 제공합니다.  
 
@@ -176,7 +176,7 @@ MLflow는 BART의 꼴이 나지 않도록, 모델을 재현할 수 있는 환경
 
 모델을 학습하고 재현하는 과정 이후에는, 모델이 정해진 양식에 따른 입력을 받았을 때 추론 결과를 뱉어낼 수 있도록 배포할 수 있어야겠지요. 이를 위해 MLflow는 다양한 환경에서 (Docker, Spark, Kubenetes...) 다양한 툴(Tensorflow, Scikiy-Learn..)로 모델 배포를 할 수 있도록 중간 스탠다드 역할을 수행해 줍니다.  
 
-<center><img src="C:\Users\mattias\Desktop\myeonghak.github.io\assets\materials\mlops\mlflow/mlflow_models.jpg" align="center" alt="drawing" width="400"/></center>   
+<center><img src="/assets/materials/mlops/mlflow/mlflow_models.jpg" align="center" alt="drawing" width="400"/></center>   
 
 <font size="2"><center> 출처: databricks slideshare (https://www.infoq.com/presentations/mlflow-databricks/) </center>  </font>   
 
@@ -191,7 +191,7 @@ ML 모델을 개발하다보면, 하이퍼 파라미터든, 모델의 구조든 
 
 
 
-<center><img src="C:\Users\mattias\Desktop\myeonghak.github.io\assets\materials\mlops\mlflow/mlflow_registry.png" align="center" alt="drawing" width="400"/></center>   
+<center><img src="/assets/materials/mlops/mlflow/mlflow_registry.png" align="center" alt="drawing" width="400"/></center>   
 
 <font size="2"><center> 출처: databricks slideshare (https://adatis.co.uk/mlflow-introduction-to-model-registry/) </center>  </font>   
 
