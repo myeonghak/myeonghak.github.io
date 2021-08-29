@@ -75,11 +75,13 @@ MLflow에 대해 설명하기 전에, ML 모델을 개발/배포함에 있어 ML
 3. 모델 학습
 4. 모델 배포(deployment)  
 
-<center><img src="/assets/materials/mlops/mlflow/mlflow/mlflow_cycle.png" align="center" alt="drawing" width="400"/></center>   
+
+<br>
+<center><img src="/assets/materials/mlops/mlflow/mlflow_cycle.png" align="center" alt="drawing" width="400"/></center>   
 
 
 <font size="2"><center> 출처: databricks slideshare (https://www.slideshare.net/databricks/introduction-fo-mlflow) </center>  </font>   
-
+<br>
 
 이 네 단계는 순차적으로, 그리고 반복적으로 이루어 집니다. 배포가 된 이후에도 끊임없이 데이터는 정제되고, 재학습되고, 재배포되는 식으로 말입니다.  
 
@@ -155,8 +157,11 @@ MLflow Tracking에는 두 가지 backend store가 있는데, 다음과 같은 �
 
 MLflow Projects는 모델의 재생산성, 재사용성을 확보하기 위한 기능을 제공합니다. 기껏 개발한 모델이 나의 로컬 PC에서만 작동해서는 안되겠지요.  
 
+<br>
 
 <center><img src="/assets/materials/mlops/mlflow/on_my_machine.jpg" align="center" alt="drawing" width="400"/></center>   
+
+<br>
 
 MLflow는 BART의 꼴이 나지 않도록, 모델을 재현할 수 있는 환경을 손쉽게 확보할 수 있도록 아래의 다양한 기능을 제공합니다.  
 
@@ -176,9 +181,14 @@ MLflow는 BART의 꼴이 나지 않도록, 모델을 재현할 수 있는 환경
 
 모델을 학습하고 재현하는 과정 이후에는, 모델이 정해진 양식에 따른 입력을 받았을 때 추론 결과를 뱉어낼 수 있도록 배포할 수 있어야겠지요. 이를 위해 MLflow는 다양한 환경에서 (Docker, Spark, Kubenetes...) 다양한 툴(Tensorflow, Scikiy-Learn..)로 모델 배포를 할 수 있도록 중간 스탠다드 역할을 수행해 줍니다.  
 
+<br>
+
 <center><img src="/assets/materials/mlops/mlflow/mlflow_models.jpg" align="center" alt="drawing" width="400"/></center>   
 
 <font size="2"><center> 출처: databricks slideshare (https://www.infoq.com/presentations/mlflow-databricks/) </center>  </font>   
+
+<br>
+
 
 - ML 모델을 위한 패키징 포맷 제공: ML 모델 파일이 있는 어떤 디렉터리든 사용 가능합니다.  
 - 재생산성을 위해 dependency 정의: ML 모델의 config에 콘다 환경등의 dependency에 대한 정보를 제공할 수 있습니다.  
@@ -190,10 +200,15 @@ MLflow는 BART의 꼴이 나지 않도록, 모델을 재현할 수 있는 환경
 ML 모델을 개발하다보면, 하이퍼 파라미터든, 모델의 구조든 다양한 변화를 가한 버전이 생겨나기 마련입니다. 이러한 다양한 버전, 그리고 스테이지를 충돌 없이 쉽게 관리할 수 있는 기능을 제공합니다.  
 
 
+<br>
+
 
 <center><img src="/assets/materials/mlops/mlflow/mlflow_registry.png" align="center" alt="drawing" width="400"/></center>   
 
 <font size="2"><center> 출처: databricks slideshare (https://adatis.co.uk/mlflow-introduction-to-model-registry/) </center>  </font>   
+
+<br>
+
 
 
   - 중앙화된 레포지터리: 이 레포지터리는 모든 등록된 모델들과 그에 상응하는 메타데이터를 포함하고 있습니다. 등록된 모델들의 모든 기존 버전들은 여기에 저장되고 여기에서 접근이 가능합니다.  
