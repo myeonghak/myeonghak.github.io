@@ -45,6 +45,9 @@ tags:
 
 <br />
 
+[지난 포스트](https://myeonghak.github.io/general%20machine%20learning/General-ML-train-set-batch-1.-MLE%EC%99%80-MAP/)에서는 앞으로 머신러닝의 개념을 이해하기 위해 필요한 MLE와 MAP라는 파라미터 최적화 방법에 대해서 배워보았습니다. 이번 시간에는, 머신러닝을 위한 기초적인 확률과 통계에 대한 개념, 그리고 여러가지 자주 쓰이는 분포에 대해서 알아보겠습니다.   
+
+
 <a id="probability"></a>
 ### 확률(Probability)이란?  
 
@@ -141,6 +144,7 @@ $P(A) = \sum_{n}P(A \mid B_n)P(B_n)$
 | 5              |  4/36  | 11% |
 | 6              |  5/36  | 14% |
 | ...              |  ...  | ... |
+| 12              |  1/36  | 3% |
 | 12              |  1/36  | 3% |
 
 
