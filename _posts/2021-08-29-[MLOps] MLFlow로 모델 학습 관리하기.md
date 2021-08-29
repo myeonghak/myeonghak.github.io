@@ -247,7 +247,3 @@ pip install mlflow
 
 **개선을 위한 여러분의 피드백과 제안을 코멘트로 공유해 주세요.**
 **내용에 대한 지적, 혹은 질문을 환영합니다.**  
-
-해당 포스트는 카이스트 문일철 교수님의 동의를 얻고, 강좌 내용과 자료, 그리고 reference의 자료를 참고하여 작성되었습니다. 원 강좌는 [여기](https://www.youtube.com/playlist?list=PLbhbGI_ppZISMV4tAWHlytBqNq1-lb8bz)에서 보실 수 있습니다.
-
-**자료 공유를 허락해 주신 문일철 교수님께 감사의 말씀을 전합니다.**
