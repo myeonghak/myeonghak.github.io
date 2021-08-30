@@ -1,5 +1,5 @@
 ---
-title: "[MLOps] MLflow로 추천 모델 학습 관리하기"
+title: "[MLOps] MLflow 살펴보기"
 categories:
   - MLOps
 tags:
@@ -7,7 +7,7 @@ tags:
   - HPO
   - model deployment
 ---
-### MLflow로 추천 모델 학습 관리하기
+### MLflow란 무엇일까?! Airflow 같은건가?
 
 
 > 머신러닝 모델 학습 관리 및 배포를 지원하는 MLFlow에 대해 살펴봅니다.  
@@ -43,7 +43,7 @@ tags:
 2.	[Why MLflow?](#why)
 3.	[MLflow 소개](#mlflow)
 4.  [MLflow Tracking / Project / Model / Registry](#components)
-5.  [예제 (feat. rankfm)](#example)  
+
 
 
 
@@ -218,23 +218,6 @@ ML 모델을 개발하다보면, 하이퍼 파라미터든, 모델의 구조든 
   - 변화 관리와 모니터링: 사용자들은 모델 레지스트리에 변경사항이 발생했을 때 핵심 정보를 로그로 남길 수 있도록 이벤트를 설계할 수 있습니다. 사용자들은 배포 과정에 다양한 수준의 통제를 실행할 수 있는데, 가령 레지스트리에 가해진 변화를 제출하기 전에 요청을 보내고, 검토한 뒤, 승인되도록 셋팅함으로써 배포 과정을 통제할 수 있습니다.   
 
 
-<a id="example"></a>  
-## 예제 (Factorization Machine)  
-
-#### 0. MLflow 설치  
-
-설치는 매우 간단합니다. pip이 설치된 환경에서 아래의 커맨드를 실행합니다.   
-
-```
-pip install mlflow
-```
-
-
-#### 1. MLflow Tracking
-
-
-
-
 
 <br>
 
@@ -243,7 +226,7 @@ pip install mlflow
 <a id="conclusion"></a>
 ### 닫으며  
 
-지금까지 간단한 확률과 분포에 대해 알아보았습니다.  
+이번 시간에는 MLflow의 개념과 기능에 대해 살펴봤습니다. 다음 시간에는, MLflow를 사용해 추천모델의 하이퍼 파라미터를 실험하고, API로 모델을 서빙하는 방법에 대해 실습해 보겠습니다.
 
 **개선을 위한 여러분의 피드백과 제안을 코멘트로 공유해 주세요.**
 **내용에 대한 지적, 혹은 질문을 환영합니다.**  
