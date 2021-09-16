@@ -110,7 +110,7 @@ tags:
 
 11. Scaling Deep Learning model: partition function, importance sampling, negatives
 	- 시퀀셜 추천 모델은 이벤트에 대한 언어 모델로 볼 수 있음
-	- 유저 맥락/표현 h_t가 있을 때, 다음 이벤트/아이템 y_t에 대한 조건부 확률은 다음과 같이 표현됨: $P(y_t|h_t)=\frac{e^{-\epsilon(y_t, h_t)}}{Z(h_t)}$  
+	- 유저 맥락/표현 $h_t$가 있을 때, 다음 이벤트/아이템 y_t에 대한 조건부 확률은 다음과 같이 표현됨: $P(y_t \mid h_t)=\frac{e^{-\epsilon(y_t, h_t)}}{Z(h_t)}$  
 	- $Z(h_t)$는 추적 가능하지만, 학습 중에 연산 비용이 비쌈  
 	- energy based model: $P(X=z) = \frac{e^{-\epsilon(z)}}{Z}$, 여기서 $z$는 energy, $Z$는 partition function
 	- 경사하강법 기반의 최적화 알고리즘의 핵심은 기울기를 취하는 것임. 여기서는 log likelihood를 취해준 뒤 기울기를 구함.
