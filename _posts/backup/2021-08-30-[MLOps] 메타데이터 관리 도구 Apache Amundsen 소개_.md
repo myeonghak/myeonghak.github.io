@@ -1,19 +1,18 @@
 ---
-title: "[MLOps] MLflow로 추천 모델 학습 관리하기"
+title: "[MLOps] 메타데이터 관리 도구 Apache Amundsen 소개"
 categories:
   - MLOps
 tags:
-  - mlflow
-  - HPO
-  - model deployment
+  - amundsen
+  - metadata
 ---
-### MLflow로 추천 모델 학습 관리하기
+### 메타데이터 관리도구 Apache Amundsen 소개
 
 
-> 머신러닝 모델 학습 관리 및 배포를 지원하는 MLFlow에 대해 살펴봅니다.  
+> 시스템 내 방대한 양의 데이터를 쉽게 찾고 관리하기 위한 Metadata Management Tool인 Apache Amundsen에 대해 알아봅니다.  
 
 
-<center><img src="/assets/materials/mlops/mlflow/mlflow_logo.png" align="center" alt="drawing" width="400"/></center>   
+<center><img src="C:\Users\mattias\Desktop\myeonghak.github.io\assets\materials\mlops\amundsen\amundsen_logo.png" align="center" alt="drawing" width="400"/></center>   
 
 
 <!-- <br>
@@ -24,11 +23,11 @@ tags:
 <br/>
 
 
->  **1. MLflow는 머신러닝 모델의 lifecycle을 관리해주는 오픈소스 툴**
+>  **1. Amundsen은 비효율적인 Data Discovery 작업을 편리하게 도와주는 Metadata 검색 관리 툴**
 >
->  **2. 4개의 컴포넌트로 구성:  1) 모델의 학습을 기록하고, 2) 모델의 환경을 관리하며, 3) 모델의 배포를 지원하고, 4) 다양한 버전의 모델을 관리할 수 있도록 도움**
+>  **2. Metadata를 활용해 Data Discovery 과정을 효율화함으로써, 데이터 과학자의 생산성을 늘릴 수 있고 구성원들 사이의 정보격차를 줄일 수 있음**
 >
->  **3. 다른 MLOps 툴에 비해 확장성과 커버리지 면에서 우수함**
+>  **3. 다른 Apache Project와 쉽게 결합해 활용할 수 있음**
 
 
 <br/>
@@ -39,11 +38,10 @@ tags:
 
 <br/>
 
-1.	[ML lifecycle](#lifecycle)
-2.	[Why MLflow?](#why)
-3.	[MLflow 소개](#mlflow)
-4.  [MLflow Tracking / Project / Model / Registry](#components)
-5.  [예제 (feat. rankfm)](#example)  
+1.	[귀찮고 번거로운 Data Discovery](#discovery)
+2.	[Amundsen이란?](#amundsen)
+3.	[타 Data Discovery Platform과의 비교](#comparison)
+4.  [DEMO](#demo)
 
 
 
@@ -52,17 +50,14 @@ tags:
 <br />
 
 
-
-오늘은 MLOps 시리즈의 첫번째 포스트로, [MLflow](https://mlflow.org/)를 알아보려고 합니다. MLflow가 무엇인지, 왜 필요한지에 대해서 살펴본 뒤, MLflow가 제공하는 자세한 기능에 대해서 배워보고, [Factorization Machine](https://www.csie.ntu.edu.tw/~b97053/paper/Rendle2010FM.pdf) 알고리즘의 구현체인 [rankfm](https://github.com/etlundquist/rankfm)을 사용해 추천 모델의 학습을 관리하고, 서빙까지 진행해 보겠습니다. 매우 minor한 라이브러리를 사용해 예제를 진행하는 이유는, sklearn, tensorflow 과 같이 호환이 잘 이루어지는 라이브러리에 대한 자료는 널리 공개되어있기 때문이기도 하고, MLflow에서 주장하는 높은 호환성에 대해 입증하는 목적도 포함되어 있습니다.   
-
-
-[공식 깃헙 레포지터리](https://github.com/mlflow/mlflow)도 참고하시면 좋습니다. star가 무려 10k네요. (2021/08 기준) 매우 활발하게 발전하고 있는 오픈소스임을 알 수 있습니다.   
+이번 시간에는 MLOps 두번째 포스트로, [Apache Amundsen](https://github.com/amundsen-io/amundsen)에 대해 알아보겠습니다. 모든 툴이 그렇듯이, Amundsen 역시 무언가 불편한 점을 해결하기 위한 수단으로 고안되었습니다. 왜 이 툴이 필요했는지를 이해하면 이 툴을 어떻게 사용하면 좋을지에 대해 알아보기 좋을 것 같습니다. 따라서 왜 Amundsen(이하 아문센)이 필요한지 배경을 알아보고, 아문센이 무엇인지 살펴본 뒤, 비슷한 일을 해주는 다른 툴은 무엇이 있는지 알아보겠습니다. 마지막으로 직접 아문센 웹앱을 도커로 띄워 로컬 환경에서 구축하는 데모를 함께 진행해 보려고 합니다. 시작할게요!   
 
 
 
 
-<a id="lifecycle"></a>
-## Machine Learning Lifecycle  
+<a id="discovery"></a>
+## 귀찮고 번거로운 Data Discovery  
+
 
 MLflow에 대해 설명하기 전에, ML 모델을 개발/배포함에 있어 ML 엔지니어 혹은 데이터 과학자가 관리하는, 모델의 lifecycle에 대해서 살펴봅시다.    
 
@@ -216,6 +211,21 @@ ML 모델을 개발하다보면, 하이퍼 파라미터든, 모델의 구조든 
   - 모델 Staging : 등록된 모델들은 미리 정의된 혹은 커스텀 스테이지에 할당되어 ML lifecycle 내에서 어떤 phase에 있는지를 나타낼 수 있습니다. 이는 개발자들이 프로덕션의 모델에 영향을 미치지 않은채 한 모델의 새로운 버전을 개발 스테이지로 배포할 수 있게 해줍니다.
 
   - 변화 관리와 모니터링: 사용자들은 모델 레지스트리에 변경사항이 발생했을 때 핵심 정보를 로그로 남길 수 있도록 이벤트를 설계할 수 있습니다. 사용자들은 배포 과정에 다양한 수준의 통제를 실행할 수 있는데, 가령 레지스트리에 가해진 변화를 제출하기 전에 요청을 보내고, 검토한 뒤, 승인되도록 셋팅함으로써 배포 과정을 통제할 수 있습니다.   
+
+
+<a id="example"></a>  
+## 예제 (Factorization Machine)  
+
+#### 0. MLflow 설치  
+
+설치는 매우 간단합니다. pip이 설치된 환경에서 아래의 커맨드를 실행합니다.   
+
+```
+pip install mlflow
+```
+
+
+#### 1. MLflow Tracking
 
 
 
