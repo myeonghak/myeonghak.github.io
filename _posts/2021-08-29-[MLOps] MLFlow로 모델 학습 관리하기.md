@@ -1,5 +1,5 @@
 ---
-title: "[MLOps] MLflow로 추천 모델 학습 관리하기"
+title: "[MLOps] MLflow 살펴보기"
 categories:
   - MLOps
 tags:
@@ -7,8 +7,6 @@ tags:
   - HPO
   - model deployment
 ---
-### MLflow로 추천 모델 학습 관리하기
-
 
 > 머신러닝 모델 학습 관리 및 배포를 지원하는 MLFlow에 대해 살펴봅니다.  
 

@@ -74,7 +74,7 @@ tags:
 	6) popularity  
 
 
-6. User Personalization - key features
+6. User Personalization - key features  
 	1) user impression: impression data를 모델링, 노출되었으나 클릭되지 않은 아이템  
 	2) item exploration: 새로운 아이템과 유저가 좋아할만한 아이템 사이를 밸런싱  
 	3) filtering of event: 이벤트 기준에 따라서 추천할 아이템을 포함하거나 배제  
