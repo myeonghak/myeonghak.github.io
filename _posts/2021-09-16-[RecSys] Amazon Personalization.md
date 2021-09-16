@@ -1,5 +1,5 @@
 ---
-title: "[RecSys] Amazon Personalization"
+title: "[RecSys] Amazon Personalization 살펴보기"
 categories:
   - RecSys
 tags:
