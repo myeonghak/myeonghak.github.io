@@ -1,7 +1,7 @@
 ---
 title: "[RecSys] Amazon Personalization 살펴보기"
 categories:
-  - RecSys
+  - Recommender Systems
 tags:
   - aws
   - recommendation

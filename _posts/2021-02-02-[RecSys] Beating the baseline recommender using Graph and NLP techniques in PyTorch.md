@@ -64,7 +64,7 @@ tags:
 <br/>  
 
 
-<center><img src="/assets/materials/beating_the_baseline/figure_1a.png" align="center" alt="drawing" width="400"/></center>  
+<center><img src="/assets/materials/recsys/beating_the_baseline/figure_1a.png" align="center" alt="drawing" width="400"/></center>  
 
 <font size="2"><center> 그림 1a. (소셜) 그래프의 임의적인 이미지. </center></font>  
 
@@ -113,7 +113,7 @@ electronics graph 데이터는 42만개의 노드를, books graph는 2백만개�
 그래프는 꼭지점(vertex)과 엣지(edge)로 이루어져 있습니다. 엣지는 각 노드간의 관계의 강도를 나타내지요.
 
 
-<center><img src="/assets/materials/beating_the_baseline/figure_1b.png" align="center" alt="drawing" width="400"/></center>  
+<center><img src="/assets/materials/recsys/beating_the_baseline/figure_1b.png" align="center" alt="drawing" width="400"/></center>  
 
 <font size="2"><center> 그림 1b. 가중 그래프의 예시 </center>  </font>  
 
@@ -124,7 +124,7 @@ electronics graph 데이터는 42만개의 노드를, books graph는 2백만개�
 
 
 
-<center><img src="/assets/materials/beating_the_baseline/figure_1c.png" align="center" alt="drawing" width="400"/></center>  
+<center><img src="/assets/materials/recsys/beating_the_baseline/figure_1c.png" align="center" alt="drawing" width="400"/></center>  
 
 <font size="2"><center> 그림 1c. 가중 인접 행렬의 예시 </center>  </font>  
 
@@ -136,7 +136,7 @@ electronics graph 데이터는 42만개의 노드를, books graph는 2백만개�
 
 
 
-<center><img src="/assets/materials/beating_the_baseline/figure_1d.png" align="center" alt="drawing" width="400"/></center>  
+<center><img src="/assets/materials/recsys/beating_the_baseline/figure_1d.png" align="center" alt="drawing" width="400"/></center>  
 
 
 <font size="2"><center> 그림 1d. 전이 행렬의 예시 </center>  </font>  
@@ -179,7 +179,7 @@ n2v는 아주 매력적었죠. 우리가 원하는 바로 그 형태였습니다
 아래는 생성한 시퀀스를 보여줍니다.
 
 
-<center><img src="/assets/materials/beating_the_baseline/figure_1e.png" align="center" alt="drawing" width="400"/></center>  
+<center><img src="/assets/materials/recsys/beating_the_baseline/figure_1e.png" align="center" alt="drawing" width="400"/></center>  
 
 
 <font size="2"><center> 그림 1e. electronics 데이터셋의 시퀀스 배열 (42만개의 개별 상품) </center>  </font>  
@@ -197,7 +197,7 @@ Gensim은 시퀀스의 리스트를 받아들이는 w2v 구현을 제공합니�
  그러나, precision recall 곡선을 보면, 0.73에서 급격한 하락이 있음을 볼 수 있었습니다. 왜 그럴까요?  
 
 
- <center><img src="/assets/materials/beating_the_baseline/figure_2.png" align="center" alt="drawing" width="400"/></center>  
+ <center><img src="/assets/materials/recsys/beating_the_baseline/figure_2.png" align="center" alt="drawing" width="400"/></center>  
 
  <font size="2"><center> 그림 2. gensim.word2vec 모델의 Precision/Recall 곡선(전체 상품 대상) </center>  </font>  
 
@@ -210,7 +210,7 @@ Gensim은 시퀀스의 리스트를 받아들이는 w2v 구현을 제공합니�
 
 트레인 셋에 등장하는 상품 pair로 validation set을 구성하면, 성능이 유의미하게 개선되었습니다. AUC-ROC 0.9735였고, 성능 절벽이 없었죠.  
 
-<center><img src="/assets/materials/beating_the_baseline/figure_2.png" align="center" alt="drawing" width="400"/></center>  
+<center><img src="/assets/materials/recsys/beating_the_baseline/figure_2.png" align="center" alt="drawing" width="400"/></center>  
 
  <font size="2"><center> 그림 3. gensim.word2vec 모델의 Precision/Recall 곡선(관측된 seen 상품만 사용)</center>  </font>  
 
@@ -293,13 +293,13 @@ class SkipGram(nn.Module):
 이 방식은 전체 상품 대비 AUC-ROC 0.9554 수준으로 상당히 높은 점수를 보입니다.(그림.4, `gensim`보다 훨씬 낫네요.)  오직 'seen' 상품에 대해서만 고려한다면, 0.9855를 기록하지요. (그림.5, `gensim`보다 약간 낫네요.)  
 
 
- <center><img src="/assets/materials/beating_the_baseline/figure_4.png" align="center" alt="drawing" width="400"/></center>  
+ <center><img src="/assets/materials/recsys/beating_the_baseline/figure_4.png" align="center" alt="drawing" width="400"/></center>  
 
 
  <font size="2"><center> 그림 4. PyTorch word2vec 모델의 Precision/Recall 곡선(전체 상품 대상)</center>  </font>  
 
 
-  <center><img src="/assets/materials/beating_the_baseline/figure_5.png" align="center" alt="drawing" width="400"/></center>  
+  <center><img src="/assets/materials/recsys/beating_the_baseline/figure_5.png" align="center" alt="drawing" width="400"/></center>  
 
 
 
@@ -315,7 +315,7 @@ class SkipGram(nn.Module):
 
 
 
-  <center><img src="/assets/materials/beating_the_baseline/figure_6.png" align="center" alt="drawing" width="400"/></center>  
+  <center><img src="/assets/materials/recsys/beating_the_baseline/figure_6.png" align="center" alt="drawing" width="400"/></center>  
 
    <font size="2"><center> 그림 6. word2vec의 에폭에 걸친 AUC-ROC 결과; 한 에폭이면 충분해 보이네요. </center>  </font>  
 
@@ -355,7 +355,7 @@ Sony          Sony          Phillips          Dyson
 
 
 
-  <center><img src="/assets/materials/beating_the_baseline/figure_7.png" align="center" alt="drawing" width="400"/></center>  
+  <center><img src="/assets/materials/recsys/beating_the_baseline/figure_7.png" align="center" alt="drawing" width="400"/></center>  
 
   <font size="2"><center> 그림 7. 에폭에 걸친 주변 정보를 포함한 word2vec의 AUC-ROC 성능 </center>  </font>  
 
@@ -393,7 +393,7 @@ Sony          Sony          Phillips          Dyson
 
 
 
-  <center><img src="/assets/materials/beating_the_baseline/figure_8.png" align="center" alt="drawing" width="400"/></center>  
+  <center><img src="/assets/materials/recsys/beating_the_baseline/figure_8.png" align="center" alt="drawing" width="400"/></center>  
 
   <font size="2"><center> 그림 8. 시퀀스를 사용한 PyTorch MF-bias의 Precision Recall 곡선  </center>  </font>    
 
@@ -418,7 +418,7 @@ Sony          Sony          Phillips          Dyson
 
 
 
-  <center><img src="/assets/materials/beating_the_baseline/figure_9.png" align="center" alt="drawing" width="400"/></center>  
+  <center><img src="/assets/materials/recsys/beating_the_baseline/figure_9.png" align="center" alt="drawing" width="400"/></center>  
 
 
   <font size="2"><center> 그림 9. 시퀀스를 사용한 PyTorch MF-bias 모델의 학습 곡선  </center>  </font>      
