@@ -1,5 +1,5 @@
 ---
-title: "DeepWalk: Online Learning of Social Representations - Paper Review"
+title: "[GNN] DeepWalk: Online Learning of Social Representations - Paper Review"
 categories:
   - Graph Neural Networks
 tags:

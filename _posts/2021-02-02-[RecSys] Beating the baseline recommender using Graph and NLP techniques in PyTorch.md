@@ -1,5 +1,5 @@
 ---
-title: "그래프 & 자연어처리 기법으로 추천 시스템 개발하기 - pytorch"
+title: "[Recsys] 그래프 & 자연어처리 기법으로 추천 시스템 개발하기 - pytorch"
 categories:
   - Graph Neural Networks
   - Recommender Systems

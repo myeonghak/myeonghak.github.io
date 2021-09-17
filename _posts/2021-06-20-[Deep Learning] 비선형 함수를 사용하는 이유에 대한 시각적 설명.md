@@ -1,5 +1,5 @@
 ---
-title: "[DeepLearning] 비선형 함수를 사용하는 이유에 대한 시각적 설명"
+title: "[Deep Learning] 비선형 함수를 사용하는 이유에 대한 시각적 설명"
 categories:
   - DeepLearning
 tags:
