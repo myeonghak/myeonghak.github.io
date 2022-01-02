@@ -37,40 +37,49 @@ tags:
 
 	3) Weight decay : weight decay 를 크게 줄 수록 오히려 ece 가 좋아지며, weight decay 가 적을 수록 ece 가 증가함.  
 
+<br/>
 
 ##  Calibration 방법  
 
-	- Post-processing calibration 은 모델의 예측 확률로부터 Calibrated probability 를 구하는 과정임.  
+- Post-processing calibration 은 모델의 예측 확률로부터 Calibrated probability 를 구하는 과정임.  
 
-	- 이 방법은 validation set 이 필수적으로 필요  
+- 이 방법은 validation set 이 필수적으로 필요  
 
-	- Post-processing calibration의 목적은 모델의 예측값 p 로부터 calibrated probability q 를 구하는 것  
+- Post-processing calibration의 목적은 모델의 예측값 p 로부터 calibrated probability q 를 구하는 것  
 
-
-## 이중 분류에서의 calibration  
-
-	1. Histogram binning 방법  
-
-		1) 예측값을 M 개의 bin 으로 쪼갬.  
-    -> bin 을 쪼개는 방법에는 같은 interval 로 쪼개는 방법, sample 수에 따라서 쪼개는 방법이 있음.    
-
-		2) 이후에 Bin 마다 Score 를 구함.  
-
-		3) Score 는 bin-wise squared loss 를 최소화하는 방법으로 선택됨.  
+- 아래에는 이중 분류 상황에서의 calibration 방법론을 간략히 소개  
 
 
-	2. Platt scaling  
-		- Platt scaling 은 1999년 Platt 이 제시한 방법으로 SVM 의 출력을 '확률화' 하기 위한 방법으로 제시되었음  
-		- Platt scaling 은 histogram binning 과는 다르게 parametric 방법  
-		- 모형의 출력을 logistic regression의 입력값으로 넣음. 이 때,
-		q_i=σ(az_i+b)의 수식에서 a와 b는 validation set에 대해 NLL을 최소화 하는 방향으로 학습이 됨.  
+**1. Histogram binning**  
 
-	3. Temperature scaling
-		- Temperature scaling 은 Platt scaling 에 기초한 방법  
-		- K 개의 label 이 있는 다중 분류 문제에서 Temperature scaling 방법에서는 단일 scalar parameter T 를 이용해 logit vector z 를 아래와 같이 변환  
-		- 저자는 T 를 temperature 라고 부릅니다. T 는 soft max function 을 "soften" 시키는 일을 함.  
-		- T 의 장점은 argmax 를 바꾸지는 않는다는 것임.  
-		즉, T 는 모델의 정확도에는 영향을 주지 않고, Calibration 에만 영향을 줌.  
+	1) 예측값을 M 개의 bin 으로 쪼갬.  
+  -> bin 을 쪼개는 방법에는 같은 interval 로 쪼개는 방법, sample 수에 따라서 쪼개는 방법이 있음.    
+
+	2) 이후에 Bin 마다 Score 를 구함.  
+
+	3) Score 는 bin-wise squared loss 를 최소화하는 방법으로 선택됨.  
+
+
+**2. Platt scaling**  
+	- Platt scaling 은 1999년 Platt 이 제시한 방법으로 SVM 의 출력을 '확률화' 하기 위한 방법으로 제시되었음  
+
+	- Platt scaling 은 histogram binning 과는 다르게 parametric 방법  
+
+	- 모형의 출력을 logistic regression의 입력값으로 넣음. 이 때,
+	q_i=σ(az_i+b)의 수식에서 a와 b는 validation set에 대해 NLL을 최소화 하는 방향으로 학습이 됨.  
+
+
+**3. Temperature scaling**
+	- Temperature scaling 은 Platt scaling 에 기초한 방법  
+
+	- K 개의 label 이 있는 다중 분류 문제에서 Temperature scaling 방법에서는 단일 scalar parameter T 를 이용해 logit vector z 를 아래와 같이 변환  
+
+	- 저자는 T 를 temperature 라고 부릅니다. T 는 soft max function 을 "soften" 시키는 일을 함.  
+
+	- T 의 장점은 argmax 를 바꾸지는 않는다는 것임.  
+
+	- 즉, T 는 모델의 정확도에는 영향을 주지 않고, Calibration 에만 영향을 줌.  
+
 
 
 ----------------
