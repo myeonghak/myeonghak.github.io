@@ -21,7 +21,7 @@ tags:
 <br/>
 
 
-calibration이란?
+## calibration이란?
 - **모형의 출력값이 실제 confidence (또는 이논문에서 calibrated confidence 로 표현) 를 반영하도록 만드는 것**
 
 - calibration의 measure: 1) Reliability Diagram, 2) Expected Calibration Error (ECE), 3) Negative log likelihood  
@@ -38,19 +38,21 @@ calibration이란?
 	3) Weight decay : weight decay 를 크게 줄 수록 오히려 ece 가 좋아지며, weight decay 가 적을 수록 ece 가 증가함.  
 
 
--  Calibration 방법  
+##  Calibration 방법  
+
 	- Post-processing calibration 은 모델의 예측 확률로부터 Calibrated probability 를 구하는 과정임.  
+
 	- 이 방법은 validation set 이 필수적으로 필요  
 
 	- Post-processing calibration의 목적은 모델의 예측값 p 로부터 calibrated probability q 를 구하는 것  
 
-	- 이중 분류에서의 calibration
+
+## 이중 분류에서의 calibration  
+
 	1. Histogram binning 방법  
 
 		1) 예측값을 M 개의 bin 으로 쪼갬.  
-    -> bin 을 쪼개는 방법  
-    1] 같은 interval 로 쪼개기  
-    2] sample 수로 쪼개기가 있음.    
+    -> bin 을 쪼개는 방법에는 같은 interval 로 쪼개는 방법, sample 수에 따라서 쪼개는 방법이 있음.    
 
 		2) 이후에 Bin 마다 Score 를 구함.  
 
@@ -82,3 +84,4 @@ calibration이란?
 https://3months.tistory.com/490
 https://seing.tistory.com/41
 https://arxiv.org/pdf/1706.04599.pdf
+https://rocreguant.com/calibration-for-deep-learning-models/1734/  
