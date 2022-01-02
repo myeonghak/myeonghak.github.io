@@ -4,7 +4,7 @@ categories:
   - Deep Learning
 tags:
   - Deep Learning
-  - Liquid Neural Network
+  - Calibration
 ---
 ### 딥러닝 모델의 Calibration이란?
 
