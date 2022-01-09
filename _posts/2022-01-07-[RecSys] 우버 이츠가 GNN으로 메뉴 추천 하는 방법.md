@@ -61,7 +61,8 @@ tags:
 본 발표의 제목은 "Enhancing Recommendations on Uber Eats with Graph Convolutional Networks"입니다.
 발표자는 Uber AI의 Ankit Jain이고, Piero Molino와 함께 협업했다고 합니다.  
 
-발표자가 제시하는 3가지의 아젠다는 다음과 같습니다.
+발표자가 제시하는 3가지의 아젠다는 다음과 같습니다.  
+
 1) graph representation learning  
 2) dish recommendation on Uber Eats  
 3) Graph learning on Uber Eats  
@@ -155,7 +156,7 @@ $similarity(u,v) \approx z_{v}^{\top}z_{u}$
 
 **1) 너무 많은 파라미터의 수**  
 
-만약 V개의 꼭지점을 가질 경우, 전체 네트워크 내의 모든 노드의 임베딩을 만들어내려면 $O(|V|*dim)$의 수를 갖는 파라미터를 계산해야 할 것입니다. 여기서 $V$는 꼭지점 수, $dim$은 임베딩 차원이 됩니다. 매우 많은 파라미터를 학습해야 한다는 것이 첫번째 문제입니다.   
+만약 V개의 꼭지점을 가질 경우, 전체 네트워크 내의 모든 노드의 임베딩을 만들어내려면 $O(|V| \times dim)$의 수를 갖는 파라미터를 계산해야 할 것입니다. 여기서 $V$는 꼭지점 수, $dim$은 임베딩 차원이 됩니다. 매우 많은 파라미터를 학습해야 한다는 것이 첫번째 문제입니다.   
 
 
 **2) 새로운 노드(unseen node)에 대한 임베딩을 만들 수 없음**  
@@ -264,11 +265,11 @@ Matrix Factorization 접근법을 취하는 대부분 알고리즘의 문제는 
 
 
 
-<center><img src="/assets/materials/recsys/uber_eats/bipartite.png" align="center" alt="drawing" width="300"/></center>   
+<center><img src="/assets/materials/recsys/uber_eats/bipartite.png" align="center" alt="drawing" width="200"/></center>   
 
 <font size="2"><center> Bipartite graph의 예시. U는 유저, D는 메뉴(Dish), 엣지의 숫자는 주문 빈도를 나타냅니다. </center>  </font>   
 
-
+<br>
 
 발표자인 Ankit Jain은 전체 모델에 대해서 설명하지는 않으나, 모델의 성능에 중요한 영향을 미쳤던 부분에 대해서 깊이있게 다루었습니다.	 
 바로 손실 함수 부분인데요.  
@@ -281,7 +282,7 @@ Max margin loss가 이루고자 하는 주된 아이디어는 "유사도 점수�
 
 $L = \Sigma_{(u,v)\in E}  max(0, -z_u^{\top} z_v + z_u^{\top} z_n + \Delta)$  
 
-여기서 $u,v,n$은 노드집합 E의 원소이고, $v$는 유저 $u$에게 positive한 노드, $n$은 별도로 샘플링한 negative 노드를 의미합니다. 여기에 %\Delta%라는 margin을 붙임으로써, positive pair인 $z_u z_v$와 negative pair인 $z_u z_n$ 사이의 유사도 점수의 차이가 최소 $\Delta$ 만큼의 차이는 만들도록 유도하게 됩니다.  
+여기서 $u,v,n$은 노드집합 E의 원소이고, $v$는 유저 $u$에게 positive한 노드, $n$은 별도로 샘플링한 negative 노드를 의미합니다. 여기에 $\Delta$라는 margin을 붙임으로써, positive pair인 $z_u z_v$와 negative pair인 $z_u z_n$ 사이의 유사도 점수의 차이가 최소 $\Delta$ 만큼의 차이는 만들도록 유도하게 됩니다.  
 
 이러한 방식으로 샘플들 간의 절대적인 유사도보다는, negative 샘플과 positive sample 간의 상대적인 유사도를 기준으로 학습을 수행하게 됩니다. 이는 SVM에서 사용하는 것과 비슷한 방식의 loss function으로 생각할 수 있습니다.   
 
