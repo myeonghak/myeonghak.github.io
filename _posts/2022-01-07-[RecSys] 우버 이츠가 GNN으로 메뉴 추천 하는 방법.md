@@ -62,7 +62,6 @@ tags:
 발표자는 Uber AI의 Ankit Jain이고, Piero Molino와 함께 협업했다고 합니다.  
 
 발표자가 제시하는 3가지의 아젠다는 다음과 같습니다.  
-
 1) graph representation learning  
 2) dish recommendation on Uber Eats  
 3) Graph learning on Uber Eats  
@@ -156,7 +155,7 @@ $similarity(u,v) \approx z_{v}^{\top}z_{u}$
 
 **1) 너무 많은 파라미터의 수**  
 
-만약 V개의 꼭지점을 가질 경우, 전체 네트워크 내의 모든 노드의 임베딩을 만들어내려면 $O(|V| \times dim)$의 수를 갖는 파라미터를 계산해야 할 것입니다. 여기서 $V$는 꼭지점 수, $dim$은 임베딩 차원이 됩니다. 매우 많은 파라미터를 학습해야 한다는 것이 첫번째 문제입니다.   
+만약 V개의 꼭지점을 가질 경우, 전체 네트워크 내의 모든 노드의 임베딩을 만들어내려면 $O( \mid V \mid \times dim)$의 수를 갖는 파라미터를 계산해야 할 것입니다. 여기서 $V$는 꼭지점 수, $dim$은 임베딩 차원이 됩니다. 매우 많은 파라미터를 학습해야 한다는 것이 첫번째 문제입니다.   
 
 
 **2) 새로운 노드(unseen node)에 대한 임베딩을 만들 수 없음**  
