@@ -1,5 +1,6 @@
 ---
-title: "(WIP) [RecSys] 우버 이츠가 GNN으로 메뉴 추천 하는 방법":
+title: "[RecSys] 우버 이츠가 GNN으로 메뉴 추천 하는 방법"
+categories:
   - Recommender Systems
 tags:
   - Business Cases
@@ -42,7 +43,7 @@ tags:
 
 1.	[들어가며](#intro)
 2.  [Graph Learning 소개](#graph-learning)
-3.  [Uber Eats에서의 추천](#uber-eats)
+3.  [Uber Eats에서의 Graph Learning 추천](#uber-eats)
 4.  [데이터 파이프라인](#data)
 5.  [마치며](#outro)
 
@@ -116,6 +117,8 @@ $similarity(u,v) \approx z_{v}^{\top}z_{u}$
 
 <font size="2"><center> graph 내에서의 노드가 임베딩 공간으로 맵핑되는 방식 </center>  </font>   
 
+<br />
+
 
 따라서 노드를 임베딩 공간 내의 벡터 representation으로 맵핑해 인코딩하는 함수를 학습하고자 하는 것이 목적이라 할 수 있습니다. 결과적으로는 그래프 공간 상에서 유사한 노드들이 우리가 결과물로 얻어낸 임베딩 공간 상에서도 유사한 measure를 갖도록 만들어주는, 그러한 인코더 함수를 얻고 싶은 것입니다.  
 
@@ -133,7 +136,9 @@ $similarity(u,v) \approx z_{v}^{\top}z_{u}$
 <center><img src="/assets/materials/recsys/uber_eats/embedding.png" align="center" alt="drawing" width="500"/></center>   
 
 
-<font size="2"><center> embedding lookup table (source: https://towardsdatascience.com/what-the-heck-is-word-embedding-b30f67f01c81) </center>  </font>   
+<font size="2"><center> embedding lookup table ([source](https://towardsdatascience.com/what-the-heck-is-word-embedding-b30f67f01c81)) </center>  </font>   
+
+<br />
 
 
 이러한 방법을 사용하는 예로 Matrix Factorization, Node2vec, Deepwalk 등이 있습니다. 단순한 자연어처리에서의 임베딩 레이어와 같다고 생각할 수 있습니다. "사과"라는 단어는 [0.5, 0.2, 0.62]이고, "배" 라는 단어는 [0.45, 0.24, 0.7] 이런 식으로 조회되는 임베딩 벡터를 떠올릴 수 있겠죠.  
@@ -202,84 +207,191 @@ Matrix Factorization 접근법을 취하는 대부분 알고리즘의 문제는 
 
 
 
-**[Inductive capability]**
-	- 실세계의 응용에서는 새로운 노드가 종종 그래프에 추가되는 경우가 있음
-	- 이 새로 추가된 노드에 대해서 재학습 없이 임베딩을 부여할 필요가 있음
-	- 이는 swallow method로는 어려운 문제임.
-	- 이를 해결하는 방법은, snapshot으로 학습하여 새로운 노드가 도착할 경우 이에 대한 새로운 임베딩을 생성하는 것임.
-	swallow 방법에서와 같이 노드별로 개별적인 임베딩을 학습하는 것이 아니라 네트워크의 parameter를 학습하기 때문에 가능함.
-	simple FCL을 생각해보면 뉴럴넷의 웨이트를 학습만 해 놓으면 어떤 테스트 데이터를 넣는다 할지라도 그에 상응하는 예측값을 출력해 주는 것과 같이 생각하면 됨.
+**[Inductive capability]**  
 
-10. Uber Eats graph for Recommendation
-	- 유저, 레스토랑, 음식 메뉴라는 세 종류의 노드가 존재하고, 과거 내역에 따라 이 노드간에 연결이 이루어짐
+실제 어플리케이션에서는, 새로운 노드가 종종 그래프에 추가되는 경우가 있습니다. 우버 이츠의 경우에는 새로운 메뉴나, 레스토랑이 추가되는 경우를 생각해 볼 수 있겠죠. 이 새로 추가된 노드에 대해서 재학습 없이 임베딩을 부여할 수 있다면 자원이나 운영 측면에서 유리할 것입니다. 이러한 특성을 Inductive Capability라고 부릅니다.
 
-11. Bipartite graph for dish recommendation
-	- 유저가 최근 M일간에 특정 음식을 주문 했다면 그 음식과 연결됨.
-	- weight는 음식 주문의 빈도임.
-	- 그래프의 property
-	1) Graph is dynamic: 새로운 유저와 음식이 매일 추가됨
-	2) 각 노드는 음식 이름의 word2vec 값과 같은 피처 값을 가짐
+그러나 앞서 살펴본 swallow method로는 이렇게 간편하게 새로운 노드에 대한 임베딩을 얻어낼 수 없을 것입니다. 이를 해결하는 방법은, 노드의 임베딩을 snapshot으로 학습하여 새로운 노드가 도착할 경우 이 노드에 대한 새로운 임베딩을 생성하는 것입니다. swallow 방법에서와 같이 노드별로 개별적인 임베딩을 학습하는 것이 아니라, 네트워크의 parameter를 학습하는 것인데요.  
 
-12. Max margin loss
-	유사도 점수보다는 상대적인 “ranking”에 신경을 씀.
-	max margin loss:
-	L=sigma(max(0, -z_u^T*z_v+z_u^T*z_n+delta)
-	여기서 u,v,n은 노드집합 E의 원소이고, v는 유저 u에게 positive한 노드, n은 그렇지 않은 노드를 의미함
-	- 이는 SVM과 비슷한 방식의 loss function임
-	- transZ(?)의 방식으로 볼 수 있음
-
-13. New loss with Low rank positives
-	- low rank positives는, 주문한 이력이 없는 negative sample과는 달리 주문한 이력은 있지만 positive sample만큼은 아닌 샘플들을 의미함.
-	즉 5번 주문한 상품이 positive일 때 1번 주문한 상품은 low rank positive.
-	- 이 low rank positive들과 positive를 비교하는 max margin loss 텀을 하나 더 추가함으로써 성능 향상
-	- 1번 텀(neg vs pos)에서의 margin인 delta n에 비해서 2번 텀(pos vs low rank pos)의 margin인 delta l이 더 ‘작음’
-
-14. 13에서 질문: “저 weight를 그냥 순서로만 놓는게 아니라 다르게 안해봤냐?”
-	- 대답: 가중치 놓고 제곱하는 등의 방법을 해봤는데 잘 안나왔음 이게 짱이었다.
-
-15. Weighted pool aggregation
-	- 엣지의 가중치에 기반해 이웃의 임베딩을 총합하는 방식
-	- 특정 노드의 임베딩을 앞서 말한대로 swallow방식이 아닌 웨이트 파라미터의 계산 결과로써 획득한 뒤, 주변의 임베딩 결과값을 결합한 것으로 보임
-
-16. Offline evaluation
-	- downstream personalized ranking을 그래프 노드 임베딩을 사용해 학습함
-	- 기존 production model 대비 12%의 AUC 성능 향상
-	- 임베딩을 활용해 XGboost와 같은 모델을 붙여 downstream task를 수행하는데,
-	그 feature importance 중 가장 높은 것은 Graph learning cosine similarity였음.
-
-17. Online evaluation
-	- 샌프란시스코 내에서 A/B 테스트를 수행함
-	- CTR 측면에서 유의미한 uplift가 있었음
-	- 결론: 그래프 학습 피처를  사용한 음식 추천이 샌프란시스코에서 사용되고 있으며, 곧 전 지역으로 확대될 예정
-
-18. 데이터 및 학습 파이프라인
-	- 추천시스템에서 그래프 표현 학습의 성능을 확인한 후, 모델 학습과 실시간 프로덕션 환경을 위한 확장가능한 데이터 파이프라인을 구축했음.
-	- 각각의 도시에 대해 모델을 학습했음. 이는 그래프가 느슨하게 연결되어 있었기 때문임.
-	- 구축을 위해, 익명화되고 통합된 주문 데이터를 과거 몇개월에서 가져와 4단계를 거친 데이터 파이프라인을 설계하여 우리의 모델을 학습하기 위해 필요한 networkx 그래프 포맷으로 데이터를 변형시킴.
-	- 이 파이프라인은 raw한 주문 데이터에서 직접적으로 사용할 수 없는 통합된 피처들도 추출하는데, 유저가 해당 음식을 주문한 총 횟수 같은 피처가 포함됨. 이는 그래프의 엣지의 가중치로 사용되었음.
-	- 추가적으로, 이 파이프라인은 오프라인 분석에 사용될 수 있는 과거 시간 프레임을 사용한 그래프를 만드는 것이 가능함.
-
-	1) 첫번째 파이프라인으로, 아파치 하이브 테이블로부터 데이터를 끌어오는 다수의 job이 실행됨. 이들은 parquet 파일 형태로 이 테이블들을 ingest하여 HDFS로 옮김.
-	이 parquet 파일 내에는 노드와 엣지 정보가 각각 들어 있음. 각 노드와 엣지 정보는 timestamp에 따라 버저닝된 특징들(properties)을 가지고 있으며, 이들은 과거 시간을 기준으로 한 그래프를 구축하는데 사용됨
-
-	2) 두번째 단계로는, 특정 날짜가 주어졌을 때 각각의 노드와 엣지의 최신 특성을 유지하고, 이들을 HDFS에 Cypher 포맷을 이용해 저장하는 작업임.
-	프로덕션 모델을 학습할 때, 특정된 날짜는 현재의 날짜이지만 과거 그래프를 가져오기 위해 과거 날짜가 특정지어 지더라도 과정은 동일함.
-
-	3) 세번째 단계는 아파치 스파크 수행 엔진 내에서 Cypher 쿼리 언어를 사용해 도시별로 파티션된 복수의 그래프를 생성함.
-
-	4) 마지막으로, 도시별 그래프를 networkx 그래프 포맷으로 변환해 모델 학습과 임베딩 생성 과정에 투입함. 이 과정은 TensorFlow 프로세스로 구현되며 GPU에서 수행됨.
-
-	생성된 임베딩은 룩업테이블에 저장되어, 앱이 실행되고 제안 요청이 일어날 때 랭킹 모델에 의해 조회되는 룩업테이블에 저장됨.
+즉, 임베딩 그 자체를 학습하는 것이 아니라, 임베딩을 만들어내는 함수의 파라미터를 학습함으로써 unseen node에 대한 임베딩을 필요에 따라 만들어 낼 수 있도록 디자인하는 것입니다.	단순한 Fully Connected layer를 생각해보면, 뉴럴넷의 웨이트를 학습만 해 놓으면 어떤 테스트 데이터를 넣는다 할지라도 그에 상응하는 예측값을 출력해 줄 수 있겠죠. 이처럼 새로운 노드가 등장했을 때 이에 상응하는 임베딩 값을 만들어 낼 수 있는 네트워크를 학습해보자는 전략입니다.  
 
 
 
+<center><img src="/assets/materials/recsys/uber_eats/inductive.png" align="center" alt="drawing" width="800"/></center>   
 
 
-<center><img src="/assets/materials/recsys/coupang_recsys/2_server.png" align="center" alt="drawing" width="400"/></center>   
+<br>
 
 
-<font size="2"><center> 2.1.2 아키텍처 - 서버 </center>  </font>   
-  <br>
+
+<a id="uber-eats"></a>
+### 3. Uber Eats에서의 Graph Learning 추천  
+
+
+**추천을 위한 Uber Eats의 그래프**
+유저, 레스토랑, 음식 메뉴라는 세 종류의 노드가 존재하고, 과거 내역에 따라 이 노드간에 연결이 이루어집니다.  
+
+<center><img src="/assets/materials/recsys/uber_eats/nodes.png" align="center" alt="drawing" width="800"/></center>   
+
+
+<br>
+
+
+**[Bipartite graph for dish recommendation]**
+먼저 유저와 메뉴의 interaction으로부터 bipartite 그래프를 생성합니다. 유저와 레스토랑, 음식 메뉴라는 세 가지 노드가 있을 때, 유저가 최근 M일간에 특정 음식을 주문 했다면 그 음식과 연결하게 됩니다. 이 두 노드를 연결하는 엣지에는 음식 주문의 빈도가 weight로 사용됩니다. 우버 이츠의 추천에 활용되는 그래프에는 다음의 2가지 특성을 가지고 있습니다.
+
+**Uber Eats 그래프의 property**
+1) Graph is dynamic: 새로운 유저와 음식이 매일 추가됨
+2) 각 노드는 음식 이름의 word2vec 값과 같은 피처 값을 가짐  
+
+
+<center><img src="/assets/materials/recsys/uber_eats/bipartite.png" align="center" alt="drawing" width="300"/></center>   
+
+<font size="2"><center> Bipartite graph의 예시. U는 유저, D는 메뉴(Dish), 엣지의 숫자는 주문 빈도를 나타냅니다. </center>  </font>   
+
+
+
+발표자인 Ankit Jain은 전체 모델에 대해서 설명하지는 않으나, 모델의 성능에 중요한 영향을 미쳤던 부분에 대해서 깊이있게 다루었습니다.	 
+바로 손실 함수 부분인데요.  
+
+
+**[Max margin loss]**
+Max margin loss가 이루고자 하는 주된 아이디어는 "유사도 점수보다는 상대적인 'ranking'에 신경을 쓰겠다"는 것인데요, 이는 완전히 새로운 접근법은 아닙니다. 아래와 같은 수식을 통해 이를 실현하고 있습니다.  
+
+
+$L = \Sigma_{(u,v)\in E}  max(0, -z_u^{\top} z_v + z_u^{\top} z_n + \Delta)$  
+
+여기서 u,v,n은 노드집합 E의 원소이고, v는 유저 u에게 positive한 노드, n은 별도로 샘플링한 negative 노드를 의미합니다. 여기에 %\Delta%라는 margin을 붙임으로써, positive pair인 $z_u z_v$와 negative pair인 $z_u z_n$ 사이의 유사도 점수의 차이가 최소 $\Delta$ 만큼의 차이는 만들도록 유도하게 됩니다.  
+
+이러한 방식으로 샘플들 간의 절대적인 유사도보다는, negative 샘플과 positive sample 간의 상대적인 유사도를 기준으로 학습을 수행하게 됩니다. 이는 SVM에서 사용하는 것과 비슷한 방식의 loss function으로 생각할 수 있습니다.  
+
+이 loss function을 통해 유의미한 개선을 얻어내었지만, 여기에 부가적인 조치를 취하여 프로덕션에 적용했다고 합니다.  
+그 부가적인 조치에 대해서 아래에 이어가겠습니다.  
+
+
+
+**[New loss with Low rank positives]**  
+
+low rank positives는, 주문한 이력이 없는 negative sample과는 달리 주문한 이력은 있지만 positive sample만큼은 아닌 샘플들을 의미합니다. 즉 짜장면을 5번 주문했고, 피자는 1번 주문했을 경우 짜장면을 positive로 생각할 때 1번밖에 주문하지 않은 피자는 low rank positive가 됩니다.   
+
+negative sample과 positive sample을 비교하는 것 뿐만아니라, 상대적으로 덜 주문한 상품(low rank positive)과 자주 주문한 상품(positive sample)를 비교하도록 학습을 설계함으로써, 달리 말해 조금 더 구분이 어려운 문제를 모델에게 제공함으로써 성능 향상을 유도한다는 아이디어로 볼 수 있을 것입니다.  
+
+
+<center><img src="/assets/materials/recsys/uber_eats/low_rank_loss.png" align="center" alt="drawing" width="500"/></center>   
+
+
+
+<br>
+
+
+수식은 다음과 같습니다.  
+
+$L = \Sigma_{(u,v)\in E}  \alpha_n max(0, -z_u^{\top} z_v + z_u^{\top} z_n + \Delta_n) + \alpha_l max(0, -z_u^{\top} z_v + z_u^{\top} z_l + \Delta_l)$  
+
+
+이 low rank positive들과 positive를 비교하는 max margin loss 텀을 하나 더 추가함으로써 성능 향상을 얻어냈습니다.  
+1번 텀(negative vs possitive)에서의 margin인 $\Delta_n$에 비해서 2번 텀(positive vs low rank positive)의 margin인 $\Delta_l$이 더 **작습니다.**  ($\Delta_l \lt \Delta_n$)  
+
+
+여기에서 이러한 질문이 나왔습니다.  
+Q: 저 weight를 그냥 단순히 순서로만 놓는게 아니라 다르게 안해봤나? 가령, 주문 빈도 5와 1이 차이가 나는 정도를 반영해서 넣을 수도 있을 것 같은데.  
+A: 가중치 놓고 제곱하는 등 다양한 방법을 해봤는데 잘 안나왔다. 이게 최고였다.  
+
+
+loss function 외에 좋은 개선을 가져온 다른 접근 방법으로는, aggregation rule에 대한 새로운 전략이 있었습니다.  
+
+**[Weighted pool aggregation]**
+Weighted pool aggregation은 엣지의 가중치에 기반해 이웃의 임베딩을 aggregation하는 방식입니다. 즉, 특정 노드의 임베딩을 앞서 말한대로 swallow방식이 아닌 웨이트 파라미터의 계산 결과로써 획득한 뒤, 주변의 임베딩 결과값을 결합하는 식으로 이루어집니다.  
+
+아래의 그림에서, $h_D$라는 노드의 임베딩을 구할 때, 이미 구해진 $h_A$, $h_B$, $h_C$ 노드의 임베딩으로부터 5,2,1이라는 weight가 각각 있을 때 message passing의 과정에서 $A$노드의 임베딩에 5만큼의 가중치를 붙여주는 방식입니다. 이로써 네트워크상에서 노드 사이에 존재하는 영향도의 강도를 반영하여 임베딩을 학습할 수 있습니다.  
+
+
+
+<center><img src="/assets/materials/recsys/uber_eats/weighted_aggregation.png" align="center" alt="drawing" width="300"/></center>   
+
+<br>
+
+Aggregation Function은 다음과 같이 정의됩니다.  
+
+$AGG = \Sigma_{u \in N(v)} w(u,v) Q h^{k-1}_u$  
+
+여기서 $Q$는 Fully connected layer를 의미합니다.  
+
+
+
+**[Offline evaluation]**  
+위에서 설명한 방법을 통해 Downstream personalized ranking을 그래프 노드 임베딩을 사용해 학습했고, 그 결과 다음과 같은 성능을 얻었다고 합니다.  
+
+| Model                 | Test AUC|
+|-------------------------|:---------:|
+| 이전의 프로덕션 모델              |  0.784   |
+| graph embedding을 추가한 모델              |  **0.877**   |   
+
+
+결론적으로 graph embedding을 활용한 결과 기존 production model 대비 12%의 AUC 성능 향상을 얻어낼 수 있었습니다.  
+
+
+<center><img src="/assets/materials/recsys/uber_eats/feature_importance.png" align="center" alt="drawing" width="500"/></center>   
+
+<br>
+
+
+임베딩을 피처로 활용해 XGboost와 같은 모델을 붙여 downstream task를 수행하는데, 그 모델의 feature importance 값이 가장 높은 피처가 바로 이 Graph learning cosine similarity였다고 합니다. 이는 유저-아이템 쌍이 있을 때 이 둘의 그래프 임베딩 값 사이의 내적을 구한 유사도 값으로 생각됩니다.  
+
+
+
+
+**[Online evaluation]**
+이어서 샌프란시스코 내에서 직접 A/B 테스트를 수행했습니다. CTR 측면에서 유의미한 uplift가 있었음을 확인했다고 합니다. 결론적으로, 그래프 학습 피처를 사용한 음식 추천이 샌프란시스코에서 사용되고 있으며, 곧 전 지역으로 확대될 예정이라고 합니다.  
+
+
+
+
+<a id="data"></a>
+### 4. 데이터 및 학습 파이프라인
+
+
+추천시스템에서 그래프 표현 학습의 성능을 확인한 후, 모델 학습과 실시간 프로덕션 환경을 위한 확장가능한 데이터 파이프라인을 구축했다고 합니다. 이번 장에서는 데이터 및 학습 파이프라인이 어떻게 구성되어있는지 살펴 봅니다.  
+
+또한, 각각의 도시에 대해 모델을 학습했다고 합니다. 이는 그래프가 느슨하게 연결되어 있었기 때문이라고 합니다.    
+
+
+구축을 위해, 익명화 처리된 전체 주문 데이터를 과거 몇 개월에서 가져와 4단계를 거친 데이터 파이프라인을 설계하여 우리의 모델을 학습하기 위해 필요한 networkx 그래프 포맷으로 데이터를 변형시킵니다.  이 파이프라인은 raw한 주문 데이터에서 직접적으로 사용할 수 없는 통합된 피처들도 추출하는데, 이 피처 중에는 유저가 해당 음식을 주문한 총 횟수 같은 피처가 포함되어 있습니다. 이는 앞서 살펴 보았듯이 그래프의 엣지의 가중치로 사용됩니다. 또한, 이 파이프라인은 오프라인 분석에 사용될 수 있는 과거 시간 프레임을 사용한 그래프를 만드는 것이 가능합니다.  
+
+아래의 다섯 가지 과정을 그림의 흐름에 따라 설명하겠습니다.  
+
+
+<center><img src="/assets/materials/recsys/uber_eats/pipeline.png" align="center" alt="drawing" width="700"/></center>   
+
+<br>
+
+
+1) 첫번째 파이프라인으로, 아파치 하이브 테이블로부터 데이터를 끌어오는 다수의 job이 실행됨. 이들은 parquet 파일 형태로 이 테이블들을 ingest하여 HDFS로 옮김.
+이 parquet 파일 내에는 노드와 엣지 정보가 각각 들어 있음. 각 노드와 엣지 정보는 timestamp에 따라 버저닝된 특징들(properties)을 가지고 있으며, 이들은 과거 시간을 기준으로 한 그래프를 구축하는데 사용됨
+
+2) 두번째 단계로는, 특정 날짜가 주어졌을 때 각각의 노드와 엣지의 최신 특성을 유지하고, 이들을 HDFS에 Cypher 포맷을 이용해 저장하는 작업임.
+프로덕션 모델을 학습할 때, 특정된 날짜는 현재의 날짜이지만 과거 그래프를 가져오기 위해 과거 날짜가 특정지어 지더라도 과정은 동일함.
+
+3) 세번째 단계는 아파치 스파크 수행 엔진 내에서 Cypher 쿼리 언어를 사용해 도시별로 파티션된 복수의 그래프를 생성함.
+
+4) 마지막으로, 도시별 그래프를 networkx 그래프 포맷으로 변환해 모델 학습과 임베딩 생성 과정에 투입함. 이 과정은 TensorFlow 프로세스로 구현되며 GPU에서 수행됨.
+
+생성된 임베딩은 룩업테이블에 저장되어, 앱이 실행되고 제안 요청이 일어날 때 랭킹 모델에 의해 조회되는 룩업테이블에 저장된다고 합니다.  
+
+
+
+
+
+<a id="outro"></a>
+### 5. 마치며  
+
+지금까지 우버 이츠가 어떻게 GNN을 활용하여 개인화 추천 서비스를 개선했는지를 알아보았습니다.  
+
+GNN 모델에서 link prediction을 활용해 직접적으로 추천을 제공하는 방법만을 생각했었는데, 우버이츠에서 사용하는 방식처럼 피처를 생성하는 방식을 적용한다면 기존의 프로덕션 레벨의 모델이 존재할 경우 큰 부담 없이 PoC를 수행하고, 실제 적용까지 부담 없이 진행할 수 있을 것 같다는 생각이 들었습니다.  
+
+또, 모델을 개션하는 다양한 방법을 접했을 때, 결과물만 놓고 보았을 때는 상당히 놀랍고, 또 *어떻게 이런 생각을 했지?* 하는 막연한 기분이 들곤 했는데, 그 아이디어가 출발한 계기, 즉 그들이 풀고자 했던 문제와 거기에서 해결책으로 제시된 아이디어 자체는 굉장히 직관적이고 간단한 아이디어였음을 새삼 느끼게 되었습니다.  
+
+재미있네요. 앞으로도 이렇게 실제 어플리케이션에 적용한 사례를 공유하는 자료를 자주 공유하려고 합니다. 긴 글 읽어주셔서 감사합니다!  
 
 
 
@@ -293,5 +405,5 @@ Matrix Factorization 접근법을 취하는 대부분 알고리즘의 문제는 
 
 **출처**  
 
-https://tv.naver.com/v/11212875#comment_focus
-https://deview.kr/2019/schedule/276#
+https://eng.uber.com/uber-eats-graph-learning/  
+https://www.youtube.com/watch?v=9O9osybNvyY&t=939s  
