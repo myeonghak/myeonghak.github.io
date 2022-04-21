@@ -10,7 +10,7 @@ tags:
 
 > Workflow & Data Pipeline 관리 플랫폼인 Airflow를 소개합니다.
 
-<center><img src="/assets/materials/recsys/uber_eats/logo.png" align="center" alt="drawing" width="500"/></center>   
+<center><img src="/assets/materials/mlops/airflow/airflow.png" align="center" alt="drawing" width="500"/></center>   
 
 
 >  **Airflow란, 워크플로우와 데이터 파이프라인을 프로그램적으로 인증, 스케줄링, 모니터링하는 플랫폼**
@@ -32,14 +32,16 @@ tags:
 1. Airflow란?  
 	- 워크플로우와 데이터 파이프라인을 프로그램적으로 인증, 스케줄링, 모니터링하는 플랫폼.  
 
-<br/>
+
+
+
 
 2. 워크플로우란?  
 	- 일련의 작업  
 	- 스케줄에 의해 시작되거나 특정 이벤트에 의해 발생됨(trigger)  
 	- 흔히 빅데이터 처리 파이프라인에서 사용됨  
 
-<br/>
+
 
 3. 전형적인 워크플로우  
 	- 원천으로부터 데이터 다운로드  
@@ -48,14 +50,13 @@ tags:
 	- 결과를 받고, 레포트를 생성  
 	- 생성된 레포트를 이메일로 전송  
 
-<br/>
+
 
 4. 전통적인 ETL 프로세스  
 	- DB에서 데이터를 끌어와 HDFS로 보내 데이터를 처리함. 이러한 과정을 스크립트로 처리  
 	- HDFS: Hadoop Distributed File System  
 	- 이 스크립트를 cronjob으로 스케줄링함  
 
-<br/>
 
 5. 전통적인 프로세스의 문제점  
 	- 실패: 실패하면 다시 살려야함  
