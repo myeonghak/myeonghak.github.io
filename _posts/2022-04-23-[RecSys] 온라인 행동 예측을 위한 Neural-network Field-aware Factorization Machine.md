@@ -107,7 +107,7 @@ Inmobi의 엔지니어들이 최종적으로 NFFM (Neural-network Field-aware Fa
 
 
  <br>
- <center><img src="/assets/materials/recsys/inmobi_nfm/fm.png" align="center" alt="drawing" width="400"/></center>   
+ <center><img src="/assets/materials/recsys/inmobi_nfm/fm.png" align="center" alt="drawing" width="600"/></center>   
 
 
  <font size="2"><center> 출처: inmobi youtube 영상 (https://www.youtube.com/watch?v=MMTuoFFRCCs) </center>  </font>   
@@ -143,7 +143,7 @@ Inmobi의 엔지니어들이 최종적으로 NFFM (Neural-network Field-aware Fa
 
 
 <br>
-<center><img src="/assets/materials/recsys/inmobi_nfm/ffm.png" align="center" alt="drawing" width="400"/></center>   
+<center><img src="/assets/materials/recsys/inmobi_nfm/ffm.png" align="center" alt="drawing" width="600"/></center>   
 
 
 <font size="2"><center> 출처: inmobi youtube 영상 (https://www.youtube.com/watch?v=MMTuoFFRCCs) </center>  </font>   
@@ -162,7 +162,7 @@ Inmobi의 엔지니어들이 최종적으로 NFFM (Neural-network Field-aware Fa
 
 
 <br>
-<center><img src="/assets/materials/recsys/inmobi_nfm/deepfm.png" align="center" alt="drawing" width="400"/></center>   
+<center><img src="/assets/materials/recsys/inmobi_nfm/deepfm.png" align="center" alt="drawing" width="600"/></center>   
 
 
 <font size="2"><center> 출처: inmobi youtube 영상 (https://www.youtube.com/watch?v=MMTuoFFRCCs) </center>  </font>   
@@ -183,7 +183,7 @@ Inmobi의 엔지니어들이 최종적으로 NFFM (Neural-network Field-aware Fa
 
 
 <br>
-<center><img src="/assets/materials/recsys/inmobi_nfm/nfm.png" align="center" alt="drawing" width="400"/></center>   
+<center><img src="/assets/materials/recsys/inmobi_nfm/nfm.png" align="center" alt="drawing" width="600"/></center>   
 
 
 <font size="2"><center> 출처: inmobi youtube 영상 (https://www.youtube.com/watch?v=MMTuoFFRCCs) </center>  </font>   
@@ -201,7 +201,7 @@ Inmobi의 엔지니어들이 최종적으로 NFFM (Neural-network Field-aware Fa
 
 
 <br>
-<center><img src="/assets/materials/recsys/inmobi_nfm/deepffm.png" align="center" alt="drawing" width="400"/></center>   
+<center><img src="/assets/materials/recsys/inmobi_nfm/deepffm.png" align="center" alt="drawing" width="600"/></center>   
 
 
 <font size="2"><center> 출처: inmobi youtube 영상 (https://www.youtube.com/watch?v=MMTuoFFRCCs) </center>  </font>   
@@ -228,7 +228,7 @@ Inmobi의 엔지니어들이 최종적으로 NFFM (Neural-network Field-aware Fa
 
 
 <br>
-<center><img src="/assets/materials/recsys/inmobi_nfm/nffm.png" align="center" alt="drawing" width="400"/></center>   
+<center><img src="/assets/materials/recsys/inmobi_nfm/nffm.png" align="center" alt="drawing" width="600"/></center>   
 
 
 <font size="2"><center> 출처: inmobi youtube 영상 (https://www.youtube.com/watch?v=MMTuoFFRCCs) </center>  </font>   
@@ -268,6 +268,9 @@ Inmobi의 엔지니어들이 최종적으로 NFFM (Neural-network Field-aware Fa
 - 분산처리된(distributed) training and serving  
 - Dropouts & Batch norm  
 - latent vector를 interpret 할 방법 (t-SNE 사용 등)  
+
+
+<br>
 
 
 ----------------
