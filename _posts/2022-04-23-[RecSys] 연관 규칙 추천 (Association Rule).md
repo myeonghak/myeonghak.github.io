@@ -1,5 +1,5 @@
 ---
-title: "[RecSys] 온라인 행동 예측을 위한 Neural-network Field-aware Factorization Machine"
+title: "(작성중) [RecSys] 온라인 행동 예측을 위한 Neural-network Field-aware Factorization Machine"
 categories:
   - Recommender Systems
 tags:
@@ -39,6 +39,101 @@ tags:
 4.  [NFFM(Neural Feature-aware Factorization Machine) 구현 디테일](#nffm)
 
 <br />
+
+
+
+
+
+
+
+
+1. https://youtu.be/AUfYCH9KsoE
+
+2.
+
+3. 비지도학습
+	- 내재적인 특성을 탐색
+	- 잠재적인 분포를 추정
+	- 밀도 추정, 군집화, 특성 탐지(novelty detection)
+
+4. 지도학습
+	- x와 y사이의 관계를 찾음
+	- y=f(x)라는 잠재적인 함수를 추정
+	- 회귀, 분류
+
+5. Association Rule Mining(ARM)
+	- Market Basket Analysis, Affinity Analysis로도 알려져 있음
+	- 목표: "어떤 것을 사면 이것도 산다"라는 규칙을 찾는 것이 목표. "A를 사는 사람은 B도 산다"로부터 찾아냄
+	- 특징
+	1) 각 행은 거래내역을 나타냄
+	2) 추천시스템에 적용됨: "우리 기록에 따르면, 네가 이걸 샀으므로 이것도 좋아할 거야"
+
+6. ARM 구현
+	- 물건의 구매 여부만을 고려하고, 수량은 고려하지 않음. 즉 빵 10개와 우유 1개, 그리고 빵 1개와 우유 1개가 동일하게 취급됨
+	- item list(각 행이 transaction을 나타내고 그 안에 상품 list가 포함된 형태) 혹은 item matrix(거래 수*아이템 수 사이즈의 매트릭스에 0,1로 표기)
+
+7. ARM의 용어
+	- Antecedent: "IF" 부분을 나타냄
+	- Consequent: "THEN" 부분을 나타냄
+	- Item set: antecedent와 consequent로 구성된 아이템 집합
+	- antecedent와 consequent는 disjoint함 (즉, 공통된 아이템이 하나도 없음)
+	- (라면, 콜라) -> (밥, 참치) : O
+	- (라면, 콜라) -> (라면, 참치) : X
+
+8. ARM 규칙 생성
+	- 많은 규칙이 가능함(예를 들어 거래 1에 대해)
+	1) 만약 계란이 구매되면, 라면도 같이 구매된다
+	2) 만약 계란과 라면이 구매되면, 참치캔도 같이 구매된다
+	3) 만약 참치캔이 구매되면, 계란이 같이 구매된다 등
+	- 매우 많은 수라서 6개의 아이템으로 구성된 인벤토리라 할지라도 수백개의 규칙이 가능해져버림
+	- 불필요한(성능이 낮은) 규칙을 배제하기 위해, 다양한 성능 지표를 적용하여 연산 효율화
+
+9. Support(지지도)
+	- Support(A->B)= P(A) or P(A,B)
+	- 기본적으로는 A라는 조건이 등장할 확률을 의미하지만(전자, P(A)), 대부분의 패키지에서는 후자로 구현함. (P(A,B))
+	- 빈번히 등장하는 아이템 집합을 찾기 위해 사용
+	- 지지도가 높을수록, 이 규칙을 적용할 가능성이 높아짐 (우리의 거래 내역에서 자주 등장하는 조합이니 자주 노출시킴)
+
+10. Confidence(신뢰도)
+	- Confidence(A->B)= P(A,B)/P(A) = P(B|A)
+	- A가 주어졌을 때 B의 조건부 확률을 나타냄
+	- 유의미한 규칙을 만들어내기 위해 사용
+
+11. Lift(향상도)
+	- lift(A->B)=P(A,B)/P(A)*P(B)
+	- 생성된 규칙의 유용도를 나타내기 위해 사용
+	- lift가 1이면 A와 B는 통계적으로 독립
+	- lift > 1은 A와 B 사이에 긍정적인 관계
+	- lift < 1은 A와 B 사이에 부정적인 관계
+	- lift가 1.25라면, 라면과 밥이 독립이라고 가정했을 때에 비해서 0.25개가 더 팔렸다. 고로 그만큼 효과적인 규칙이다
+	- confidence로 부족한 이유: 장바구니에 기본 아이템이 포함되어 있을 경우, 가령 노가리 호프집에서 맥주의 경우 맥주가 포함된 거래에서 모두 confidence는 높지만 lift는 낮을 것임
+
+12. 규칙 생성 : Brute Force
+	- 이상적으로는 모든 조합을 고려해서 계산하는 것이 좋음
+	- 그러나 아이템 수가 늘어남에 따라 연산량에 기하급수적으로 증가
+	- 모든 규칙을 리스트업하고 각각 confidence, support를 계산
+	- 그 후 최소한의 threshold를 넘지 못하는 규칙을 제거
+	- 그러나 이는 연산적으로 불가능한 알고리즘임
+
+13. 규칙 생성 : A priori
+	- 오직 빈번하게 등장하는 아이템 셋에 대해서만 고려함
+	- support로 기준점을 잡음
+	1) 아이템 셋 빈도 P(A)의 기준
+	2) antecedent와 consequent 모두를 포함하고 있는 거래의 수(%)
+	- anti-monotone property: 한 아이템셋의 support는 그의 부분집합의 support를 넘지 못한다는 support의 특성. 달리 말해 minimum support를 넘지 못하는 아이템 조합의 superset은 모두 minimum support를 넘지 못함
+	- 고로 아이템 2개짜리 조합을 고려했을 때 minimum support를 넘지 못했다면, 다음 아이템 3개짜리 조합을 고려할 때 볼 필요도 없어짐
+	- 이와 같은 규칙을 적용함에 따라 연산량을 크게 줄일 수 있음
+
+14. 실제 사용 시 고려할 점
+	- support와 lift 둘 중에 하나를 골라야 될 경우 맥락에 따라 판단이 달라져야함
+	- support가 높으면 규칙을 적용할 가능성은 높지만, lift를 사용하면 효과는 확실함
+	- 즉 support는 노출의 가능성, lift는 전환의 성공 확률을 각각 중점으로 뒀을 때 더 가중치를 둬야할 성능지표임
+
+
+
+
+
+
 
 <a id="intro"></a>
 
@@ -117,8 +212,7 @@ Inmobi의 엔지니어들이 최종적으로 NFFM (Neural-network Field-aware Fa
 #### 3-2. FM(Factorization Machine) 계속  
 
 - 각각의 feature value에 대해 k차원의 representation을 사용함  
-- 모든 피처들에 대한 second-order interaction을 잡아냄  
-  ($A^TB=\mid A\mid \cdot \mid B\mid \cdot cos(\theta)$)  
+- 모든 피처들에 대한 second-order interaction을 잡아냄($A^TB=\mid A\mid \cdot \mid B\mid \cdot cos(\theta)$)  
 - 기본적으로 쌍곡선(hyperbola)의 결합의 총합이 최종 예측에 사용됨  
 - LR 모델보다는 효과가 좋지만 여전히 트리 기반의 모델보다는 강력하지 못함  
 - 영화의 매출을 예측하는 모델을 예시로 들어 설명해 보겠음.  
