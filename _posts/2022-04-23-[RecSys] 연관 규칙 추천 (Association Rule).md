@@ -10,7 +10,8 @@ tags:
 ### 추천 시스템의 가장 원시적이지만 강력한 Baseline으로 사용되는 Association Rule에 대해 배워봅니다.  
 
 
-> 기저귀를 샀던 김씨는 맥주도 사던데, 당신도 기저귀를 샀으니 맥주를 사는거 어때요?   
+> 기저귀를 샀던 김씨는 맥주도 사던데, 당신도 기저귀를 샀으니 맥주를 사는거 어때요?  
+
 
 <center><img src="/assets/materials/recsys/inmobi_nfm/inmobi.jpg" align="center" alt="drawing" width="500"/></center>   
 
