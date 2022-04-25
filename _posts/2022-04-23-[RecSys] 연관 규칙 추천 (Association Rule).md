@@ -1,17 +1,16 @@
 ---
-title: "(작성중) [RecSys] 온라인 행동 예측을 위한 Neural-network Field-aware Factorization Machine"
+title: "(작성중) [RecSys] 연관 규칙 추천 (Association Rule Mining)"
 categories:
   - Recommender Systems
 tags:
   - Business Cases
   - Recommender Systems
-  - Factorization Machine
 ---
 
-### Inmobi에서 온라인 유저 행동 예측을 위해 Neural-network Field-aware Factorization Machine을 적용한 사례를 알아봅니다.
+### 추천 시스템의 가장 원시적이지만 강력한 Baseline으로 사용되는 Association Rule에 대해 배워봅니다.  
 
 
-> 부제: Why Neural net Field Aware Factorization Machines are able to break ground in digital behaviours prediction
+> 기저귀를 샀던 김씨는 맥주도 사던데, 당신도 기저귀를 샀으니 맥주를 사는거 어때요?   
 
 <center><img src="/assets/materials/recsys/inmobi_nfm/inmobi.jpg" align="center" alt="drawing" width="500"/></center>   
 
