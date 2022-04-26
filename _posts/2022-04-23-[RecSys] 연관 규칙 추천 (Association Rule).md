@@ -33,23 +33,32 @@ tags:
 
 <br/>
 
-1.	[들어가며](#intro)
-2.  [배경 설명](#background)
-3.  [Factorization Machine 계열 모델의 실험 결과](#fm-models)
-4.  [NFFM(Neural Feature-aware Factorization Machine) 구현 디테일](#nffm)
+1.  [연관 규칙 추천이란?](#arm)
+2.  [연관 규칙 추천의 로직](#logic)
+3.  [코드 예제](#example)
 
 <br />
 
 
 
+<a id="arm"></a>
+
+## 1. 연관 규칙 추천이란?
 
 
 
+<a id="logic"></a>
+
+## 2.
 
 
-1. https://youtu.be/AUfYCH9KsoE
 
-2.
+<a id="example"></a>
+
+## 3.
+
+
+
 
 3. 비지도학습
 	- 내재적인 특성을 탐색
@@ -134,8 +143,6 @@ tags:
 
 
 
-
-<a id="intro"></a>
 
 ### 1.들어가며
 
