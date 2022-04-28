@@ -287,7 +287,7 @@ rules.head()
 
 <br>
 
-각각의 행은 규칙을 나타내고, 조건절(antecedents)과 결과절(consequents), 그리고 각각에 쓰인 상품의 지지도(antecedent support, consequent support)와 두 상품 공통의 지지도(support)를 순서대로 확인할 수 있습니다. 이어서, 신뢰도(support)와 향상도(lift), 레버리지(leverage)와 확신도(conviction)를 볼 수 있습니다.  
+각각의 행은 규칙을 나타내고, 조건절(antecedents)과 결과절(consequents), 그리고 각각에 쓰인 상품의 지지도(antecedent support, consequent support)와 두 상품 공통의 지지도(support)를 순서대로 확인할 수 있습니다. 이어서, 신뢰도(confidence)와 향상도(lift), 레버리지(leverage)와 확신도(conviction)를 볼 수 있습니다.  
 
 
 
@@ -304,6 +304,8 @@ rules[ (rules['lift'] >= 6) &
 
 <center><img src="/assets/materials/recsys/association_rule/output_4.png" align="center" alt="drawing" width="700"/></center>    
 
+
+<br>
 
 
 
