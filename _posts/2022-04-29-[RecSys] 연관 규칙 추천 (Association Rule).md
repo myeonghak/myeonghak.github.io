@@ -3,7 +3,6 @@ title: "[RecSys] 연관 규칙 추천 (Association Rule Mining)"
 categories:
   - Recommender Systems
 tags:
-  - Business Cases
   - Recommender Systems
 ---
 
@@ -320,3 +319,4 @@ rules[ (rules['lift'] >= 6) &
 https://www.youtube.com/watch?v=AUfYCH9KsoE (고려대 강필성 교수님의 연관규칙분석 강의)
 https://www.sciencedirect.com/science/article/pii/S2314728816300460#:~:text=Conviction%20measures%20the%20implication%20strength,not%20appear%20in%20a%20transaction. (확신도 관련)
 https://askinglot.com/what-is-leverage-in-association-rules (레버리지 관련)
+https://pbpython.com/market-basket-analysis.html#:~:text=Association%20rules%20are%20normally%20written,%7BBeer%7D%20is%20the%20consequent. (파이썬 코드)
