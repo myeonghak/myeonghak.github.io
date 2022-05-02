@@ -164,22 +164,15 @@ tags:
 ## 4. 보상 최대화 알고리즘  
 
 
-탐색과 활용을 잘 절충해서,
-
-보상을 최대화하는
-
-세 가지 접근법에 대해 배워보겠습니다.
+탐색과 활용을 잘 절충해서, 보상을 최대화하는 세 가지 접근법에 대해 배워보겠습니다.
 
 
-1) Greedy 알고리즘
+### 4-1. Greedy 알고리즘
 
 
-1000번을 도박할 돈이 있을 때,
-
-30번 정도를 ① ② ③ 번 버튼에 각각 10번씩 투자한 결과가 다음과 같다고 합시다.
+다시 철용좌의 이야기로 돌아가 봅시다. 1,000번에 걸쳐 슬롯을 돌려 볼 돈이 있을 때, 30번 정도를 ① ② ③ 번 버튼에 각각 10번씩 투자한 결과가 다음과 같다고 합시다.  
 
 ﻿
-
 
 <br>
 
@@ -188,17 +181,31 @@ tags:
 <br>
 
 
-이럴 때,
-
-오케이, ① 번으로 나머지 970번 가즈아!
-
+이럴 때, 오케이, ① 번으로 나머지 970번 가즈아!
 
 
 <br>
 
-<center><img src="/assets/materials/recsys/mab/kwak_2.png" align="center" alt="drawing" width="500"/></center>   
+<center><img src="/assets/materials/recsys/mab/kwak_2.jpeg" align="center" alt="drawing" width="300"/></center>   
 
 <br>
+
+
+하는게 Greedy 알고리즘이라고 할 수 있겠습니다.  
+
+가장 수익이 잘 나오는 버튼을 **"탐욕적으로(greedy)"** 소비하는 알고리즘이라 greedy라는 이름이 붙은듯합니다.  
+
+이를 수식으로 표현하면 아래와 같습니다!
+
+
+$q_*(a) \doteq \mathbb{E}[R_t \mid A_t = a] . $  
+
+또한, $Q_t(a)$는 다음과 같이 정의됩니다.  
+
+$Q_t(a) \doteq \frac{ sum \space of \space rewards \space  when \space a \space taken \space prior \space to \space t}{number \space of \space times \space a \space taken \space prior \space to \space t} = \frac{\Sigma_{i=1}^{t-1} R_i \cdot \mathbb{1}_{A_i=a}}{\Sigma_{i=1}^{t-1} \mathbb{1}_{A_i=a}}$  
+
+
+
 
 
 
