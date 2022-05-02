@@ -214,7 +214,7 @@ $q_*(a) \doteq \mathbb{E}[R_t \mid A_t = a] . $
 
 그리고 그 추정하는 방식 중에 하나를 아래에서 소개합니다.  
 
-$Q_t(a) \doteq \frac{ sum \space of \space rewards \space  when \space a \space taken \space prior \space to \space t}{number \space of \space times \space a \space taken \space prior \space to \space t} = \frac{\Sigma_{i=1}^{t-1} R_i \cdot 1_{A_i = a} }{ \Sigma_{i=1}^{t-1} 1_{A_i=a}}$  
+$Q_t(a) \doteq \frac{ \text{sum of rewards when a taken prior to t}}{\text{number of times a taken prior to t}} = \frac{\Sigma_{i=1}^{t-1} R_i \cdot 1_{A_i = a} }{ \Sigma_{i=1}^{t-1} 1_{A_i=a}}$  
 
 
 
@@ -433,4 +433,15 @@ plt.show()
 **내용에 대한 지적, 혹은 질문을 환영합니다.**  
 
 
-**출처**  
+**출처**   
+
+Reinforcement Learning: An Introduction - by Andrew Barto and Richard S. Sutton
+
+https://wwiiiii.tistory.com/entry/MultiArmed-Bandit-Problem
+
+​
+
+https://www.youtube.com/watch?v=9LhNHK1ULxs&list=LLypIXWIsUMIMvCa6zQfOZmQ&index=4&t=0s
+
+
+https://brunch.co.kr/@chris-song/62
