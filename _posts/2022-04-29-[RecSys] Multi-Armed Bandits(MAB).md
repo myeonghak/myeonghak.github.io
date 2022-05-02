@@ -214,9 +214,7 @@ $q_*(a) \doteq \mathbb{E}[R_t \mid A_t = a] . $
 
 그리고 그 추정하는 방식 중에 하나를 아래에서 소개합니다.  
 
-$Q_t(a) \doteq \frac{ \text{sum of rewards when a taken prior to t}}{\text{number of times a taken prior to t}}$ = $ \frac{\Sigma_{i=1}^{t-1} R_i \cdot 1_{A_i = a} }{ \Sigma_{i=1}^{t-1} 1_{A_i=a}}$  
-
-\
+$Q_t(a) \doteq \frac{ \text{sum of rewards when a taken prior to t}}{\text{number of times a taken prior to t}}$ = $\frac{\Sigma_{i=1}^{t-1} R_i \cdot 1_{A_i = a} }{ \Sigma_{i=1}^{t-1} 1_{A_i=a}}$  
 
 
 이 식은 이 $Q_t(a)$를 추정하는 방법을 보여줍니다.  
