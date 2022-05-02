@@ -164,7 +164,6 @@ tags:
 ## 4. 보상 최대화 알고리즘   
 
 
-<<<<<<< HEAD
 탐색과 활용을 잘 절충해서, 보상을 최대화하는 세 가지 접근법에 대해 배워보겠습니다.
 
 
@@ -183,15 +182,6 @@ tags:
 
 
 이럴 때, 오케이, ① 번으로 나머지 970번 가즈아!
-=======
-탐색과 활용을 잘 절충해서, 보상을 최대화하는 세 가지 접근법에 대해 배워보겠습니다.  
-
-
-### 4-1. Greedy 알고리즘  
-
-
-1000번을 도박할 돈이 있을 때, 30번 정도를 ① ② ③ 번 버튼에 각각 10번씩 투자한 결과가 다음과 같다고 합시다.  
->>>>>>> a5b74ac796ead17c25481784353fb8ec61e2f696
 
 
 <br>
@@ -203,209 +193,145 @@ tags:
 
 하는게 Greedy 알고리즘이라고 할 수 있겠습니다.  
 
-<<<<<<< HEAD
 가장 수익이 잘 나오는 버튼을 **"탐욕적으로(greedy)"** 소비하는 알고리즘이라 greedy라는 이름이 붙은듯합니다.  
-=======
-> 오케이, ① 번으로 나머지 970번 가즈아!  
->>>>>>> a5b74ac796ead17c25481784353fb8ec61e2f696
 
 이를 수식으로 표현하면 아래와 같습니다!
 
 
 $q_*(a) \doteq \mathbb{E}[R_t \mid A_t = a] . $  
 
-또한, $Q_t(a)$는 다음과 같이 정의됩니다.  
+먼저 위의 식에서, $q_*(a)$는 $a$라는 임의의 버튼을 눌렀을 때 얻는 기대 보상입니다.  
+
+등호 위에 점이 하나 찍혀 있는 것은 "거의 같다" 라는 의미이구요 (is defined as),
+
+저 두꺼운 E ($\mathbb{E}$) 는 기댓값을 나타내고, 그 안의 내용은 "$t$ 시점에서 $A$(선택할 버튼, Action) 이 $a$ 라는 버튼일 때의 $R$(보상, Reward)"
+
+이라는 의미입니다.
+
+
+요약하자면 **$q_*(a)$는 $a$를 골랐을 때 $t$ 시점에서 얻을 기대 보상**이라는 뜻인데요.  
+
+
+그런데 현실에서는 $q_*(a)$를 알지 못하기 때문에, 이를 추정한 $Q_t(a)$를 사용한다는 것입니다.  
+
+그리고 그 추정하는 방식 중에 하나를 아래에서 소개합니다.  
 
 $Q_t(a) \doteq \frac{ sum \space of \space rewards \space  when \space a \space taken \space prior \space to \space t}{number \space of \space times \space a \space taken \space prior \space to \space t} = \frac{\Sigma_{i=1}^{t-1} R_i \cdot \mathbb{1}_{A_i=a}}{\Sigma_{i=1}^{t-1} \mathbb{1}_{A_i=a}}$  
 
 
 
 
+이 식은 이 $Q_t(a)$를 추정하는 방법을 보여줍니다.  
 
-하는게 Greedy 알고리즘이라고 할 수 있겠습니다.
-
-가장 잘 나오는 버튼을
-
-"탐욕적으로(greedy)" 몰빵하는 알고리즘이라
-
-greedy라는 이름이 붙은듯합니다.
+$t$기는 현재의 시점, a는 우리가 고른 버튼, $Q_t(a)$는 $t$ 시점의 $a$ 버튼의 진짜 보상의 추정치를 의미합니다.  
 
 
-이를 수식으로 표현하면 아래와 같습니다!
+맨 오른쪽 식의 1 모양은 (원래는 더 두꺼운 모양이지만), Indicator Function이라고 하는데요.  
+
+이는 $A_i$가 $a$라는 식이 성립할 때 1의 값을, 그렇지 않을 때 0의 값을 출력하는 함수입니다.
 
 
-잠시 창을 나가려는 그 손가락을 내려 놓으시고,
+하 ㅎㅎ 말이 정말 길죠. 정리하자면,  
 
-차근차근 제 설명을 들어주세요.
-
-
-먼저 위의 식에서, q*(a)는
-
-a라는 임의의 버튼을 눌렀을 때 얻는 기대 보상입니다.
-
-등호 위에 점이 하나 찍혀 있는 것은 "거의 같다" 라는 의미이구요,
-
-저 두꺼운 E는 기댓값을,
-
-그 안의 내용은
-
-"t 시점에서 A(선택할 버튼, Action) 이 a 라는 버튼일 때의 R(보상, Reward)"
-
-이라는 의미입니다.
+분모는 "$t$기 전까지 $a$가 선택된 횟수의 총 합"을, 분자는 "$t$기 전까지 $a$가 선택되었을 때 보상의 총 합"을 의미합니다.  
 
 
-요약하자면
-
-q*(a)는 a를 골랐을 때 t 시점에서 얻을 기대 보상이라는 뜻인데요.
-
-그런데 현실에서는 q*(a)를 알지 못하기 때문에,
-
-이를 추정한 Qt(a)를 사용한다는 것입니다.
-
-그리고 그 추정하는 방식 중에 하나를 아래에서 소개합니다.
-
-﻿
-
-이 식은 이 Qt(a)를 추정하는 방법을 보여줍니다.
-
-t기는 현재의 시점,
-
-a는 우리가 고른 버튼,
-
-Qt(a)는 t 시점의 a 버튼의 진짜 보상의 추정치를 의미합니다.
-
-
-맨 오른쪽 식의 해괴한 1 모양은,
-
-Indicator Function이라고 하는데요.
-
-이는 Ai가 a라는 식이 성립할 때 1의 값을,
-
-그렇지 않을 때 0의 값을 출력하는 함수입니다.
-
-
-하 ㅎㅎ 말이 정말 길죠.
-
-분모는 "t기 전까지 a가 선택된 횟수의 총 합"을,
-
-분자는 "t기 전까지 a가 선택되었을 때 보상의 총 합"을 의미합니다.
-
-
-쉽게 말해
-
-a가 뽑혔을 때 보상을 평균 내준 이 값을,
-
-a의 진짜 보상값일꺼야!
-
-라고 가정하는 것이 됩니다.
+쉽게 말해 **$a$가 뽑혔을 때 보상을 평균 내준 이 값을, $a$의 진짜 보상값일거야!** 라고 가정하는 것이 됩니다.  
 
 
 
-거의 다 왔습니다.
+거의 다 왔습니다.  
+Greedy 방식은 다음과 같은 방법으로 Action을 선택합니다.  
 
-Greedy 방식은 다음과 같은 방법으로 Action을 선택합니다.
+$A_t \doteq argmax_a Q_t(a)$  
 
 
-이 식은,
+이 식은, **우리가 선택할 Action(즉, 어떤 버튼을 선택하는지)은 아까 구한 $Q_t(a)$를 최대로 만들어 주는 $a$를 사용한다!** 라는 말입니다.  
 
-우리가 선택할 Action(즉, 어떤 버튼을 선택하는지)은
 
-아까 구한 Qt(a)를 최대로 만들어 주는 a를 사용한다!
+<br>
 
-라는 말입니다
 
 
 
 #### 4-2. $ \epsilon $ - Greedy 알고리즘  
 
 
-얼핏 보기에도 철용이형의 Greedy 알고리즘 방식은
-
-돈을 잃기 쉬워보입니다.
-
-단순히 30번의 시도로 확신을 해버린다는게 문제인데요.
+얼핏 보기에도 철용이형의 Greedy 알고리즘 방식은 돈을 잃기 쉬워보입니다. 단순히 30번의 시도로 확신을 해버린다는게 문제인데요.  
 
 
-앱실론 그리디 알고리즘은,
-
-이러한 문제를 조금 보완해 줍니다.
+$\epsilon$ (앱실론) - Greedy 알고리즘은, 이러한 문제를 조금 보완해 줍니다.  
 
 
-매 번마다 동전을 던져서,
-
-앞면이 나오면 새로운 버튼을 눌러보고,
-
-그렇지 않으면 지금까지 나온 최적의 버튼을 누르는 결정을 한다는 겁니다.
+매 번마다 동전을 던져서, 앞면이 나오면 새로운 버튼을 눌러보고, 그렇지 않으면 지금까지 나온 최적의 버튼을 누르는 결정을 한다는 겁니다.  
 
 
-여기서 앱실론(ε)은 동전을 던졌을 때
-
-앞면이 나올 확률이라고 생각할 수 있습니다.
+여기서 $\epsilon$은 동전을 던졌을 때 앞면이 나올 확률이라고 생각할 수 있습니다.  
 
 
-이런 약간의 변칙을 사용함으로써,
 
-greedy 방식(녹색 그래프)에 비해
+<br>
 
-더 나은 결과를 낳는다고 합니다.
+<center><img src="/assets/materials/recsys/mab/mab_8.png" align="center" alt="drawing" width="500"/></center>   
+
+<br>
 
 
-* 변칙적인 보상을 가질 때 더욱 효율적인 e-greedy 알고리즘 적용을 위해,
+이런 약간의 변칙을 사용함으로써, greedy 방식(녹색 그래프)에 비해 더 나은 결과를 낳는다고 합니다.  
 
-다음과 같은 방식이 적용되었습니다.
 
-exponential decay를 이용한 방법으로 생각됩니다.
+(+) 변칙적인 보상을 가질 때 더욱 효율적인 e-greedy 알고리즘 적용을 위해, 다음과 같은 방식이 적용되었습니다.  
 
-자세한 내용은 교재를 참조해 주세요.
+
+
+<br>
+
+<center><img src="/assets/materials/recsys/mab/mab_9.png" align="center" alt="drawing" width="400"/></center>   
+
+<br>
+
+
+exponential decay를 이용한 방법으로 생각됩니다.  
+
+자세한 내용은 참조에 있는 교재를 참조해 주세요.  
 
 
 #### 4-3. UCB(Upper-Confidence-Bound) 알고리즘  
 
 
-헌데 생각해보면,
+헌데 생각해보면, 이렇게 무작위로 하는 방식보다 조금 더 스마트한 방식이 있을 것 같습니다.
 
-이렇게 무작위로 하는 방식보다 조금 더 스마트한 방식이 있을 것 같습니다.
-
-그래서 등장한 것이 UCB 알고리즘입니다.
+그래서 등장한 것이 UCB 알고리즘입니다.  
 
 
-greedy 방식에서 ① 번 버튼을 누르는 것을
+greedy 방식에서 ① 번 버튼을 누르는 것을 탐욕적인 선택(greedy selection)이라고 합니다.  
 
-탐욕적인 선택(greedy selection)이라고 합니다.
-
-동전을 던져 셋 중 다른 하나를 고르는 것 보다는,
-
-좀 더 스마트한 방법을 써보자는 건데요.
+동전을 던져 셋 중 다른 하나를 고르는 것 보다는, 좀 더 스마트한 방법을 써보자는 건데요.  
 
 
 어떻게?
 
+<br>
+
+
+$A_t \doteq argmax_a [Q_t(a) + c \sqrt \frac{\ln t}{N_t(a)}]$
+
+
+<br>
+
 
 이렇게요!
 
+$N_t(a)$는 $t$기 이전까지 $a$가 선택된 총 횟수를 뜻하고,  
 
-Nt(a)는 t기 이전까지 a가 선택된 총 횟수를 뜻하고,
+$\ln t$는 시점을 뜻하는 $t$기에 자연로그를 취한 값을 의미합니다.  
 
-ln t는 시점을 뜻하는 t기에 자연로그를 취한 값을 의미합니다.
-
-Nt(a)를 분모에, ln t를 분자에 둠으로써
-
-
-a라는 버튼이 시간이 많이 흘렀는데도 덜 뽑혀봤다면,
-
-c라는 배수만큼 더 무게를 준다!
+$N_t(a)$를 분모에, $\ln t$를 분자에 둠으로써 **$a$라는 버튼이 시간이 많이 흘렀는데도 덜 뽑혀봤다면, $c$라는 배수만큼 더 무게를 준다!** 라는 전략을 표현하는 것입니다.  
 
 
-라는 전략을 표현하는 것입니다.
+요약하자면, UCB 방식은 **"아직 안살펴본 녀석을 좀 더 꼼꼼히 살펴볼거야.."**  
 
-
-요약하자면,
-
-UCB 방식은
-
-"아직 안살펴본 녀석을 좀 더 꼼꼼히 살펴볼거야.."
-
-정도로 말할 수 있겠네요.
+정도로 말할 수 있겠네요.  
 
 
 
@@ -413,29 +339,91 @@ UCB 방식은
 #### 4-4. 그 외 알고리즘
 
 
-그 외에도 확률적 경사 상승법(Stochastic Gradient Ascent)을 적용한
+그 외에도 확률적 경사 상승법(Stochastic Gradient Ascent)을 적용한 **Gradient Bandit**,
 
-Gradient Bandit,
-
-Greedy 알고리즘의 초기에 낙천적인 스탠스를 취하게 함으로써
-
-열심히 모든 선택을 탐색하게끔 유도하는
-
-Greedy with optimistic Initialization 등의 알고리즘이 있습니다.
+Greedy 알고리즘의 초기에 낙천적인 스탠스를 취하게 함으로써 열심히 모든 선택을 탐색하게끔 유도하는 **Greedy with optimistic Initialization** 등의 알고리즘이 있습니다.  
 
 
-아래의 그림은 교재에 실린 성능 비교 그래프인데요,
+아래의 그림은 교재에 실린 성능 비교 그래프인데요, 색깔별로 각각 다른 parameter를 의미합니다.  
 
-색깔별로 각각 다른 parameter를 의미합니다.
+
+
+<br>
+
+<center><img src="/assets/materials/recsys/mab/mab_11.png" align="center" alt="drawing" width="400"/></center>   
+
+<br>
 
 
 
 ### 5. 코드 예제  
 
+알고리즘을 배웠으니 예제를 살펴봐야죠!  
+파이썬으로 구현된 multi-armed bandit 알고리즘 라이브러리로는 [Bandits](https://github.com/bgalbraith/bandits), [Slots](https://github.com/roycoding/slots), [ContextualBandits](https://github.com/david-cortes/contextualbandits) 등이 있습니다.  
+
+이 외에도, ε-Greedy / UCB / LinUCB / Contextual Bandits / Kernel UCB 알고리즘의 수식과 업데이트 규칙 등을 직접 구현해 친절하고 직관적인 예제를 제공하고 있는 [레포지터리](https://github.com/akhadangi/Multi-armed-Bandits)가 있어, 한번 살펴보겠습니다.  
+
+전체 코드는 아래 커맨드로 git clone해 확인해 주세요.    
+
+
+```console
+> git clone https://github.com/akhadangi/Multi-armed-Bandits.git
+```
+
+```python
+
+#===============================
+#    Epsilon Greedy ...
+#===============================
+mab = EpsGreedy(10, 0.05)
+results_EpsGreedy, chosen_arms_EpsGreedy, cumulative_reward_EpsGreedy = offlineEvaluate(mab, arms, rewards, contexts, 800)
+print('EpsGreedy average reward', np.mean(results_EpsGreedy))
+
+#===============================
+#    UCB ...
+#===============================
+mab = UCB(10, 1.0)
+results_UCB, chosen_arms_UCB, cumulative_reward_UCB = offlineEvaluate(mab, arms, rewards, contexts, 800)
+print('UCB average reward', np.mean(results_UCB))
+
+#===============================
+#    Linear UCB (Contextual) ...
+#===============================
+mab = LinUCB(10, 10, 1.0)
+results_LinUCB, chosen_arms_LinUCB, cumulative_reward_LinUCB = offlineEvaluate(mab, arms, rewards, contexts, 800)
+print('LinUCB average reward', np.mean(results_LinUCB))
+
+#===============================
+#    Plotting results ...
+#===============================
+
+plt.figure(figsize=(12,8))
+plt.plot(cumulative_reward_LinUCB/np.linspace(1,800,800), label = r"$\alpha=1$ (LinUCB)")
+plt.plot(cumulative_reward_UCB/(np.linspace(1,800,800)), label = r"$\rho=1$ (UCB)")
+plt.plot(cumulative_reward_EpsGreedy/(np.linspace(1,800,800)), label = r"$\epsilon=0.05$ (greedy)")
+plt.legend(bbox_to_anchor=(1.2, 0.5))
+plt.xlabel("Rounds")
+plt.ylabel(r"$T^{-1}\sum_{t=1}^T\ r_{t,a}$", fontsize='large')
+plt.title("Per-round Cumulative Rewards after single simulation")
+plt.show()
+
+```
 
 
 
+<br>
 
+<center><img src="/assets/materials/recsys/mab/mab_code.png" align="center" alt="drawing" width="500"/></center>   
+
+<br>
+
+
+위의 코드는 약 1,000번의 실행동안 LinUCB와 UCB, $\epsilon$이 0.05인 greedy 알고리즘의 실행 결과를 나타냅니다. x축은 앞선 설명에서의 $t$기를 나타냅니다.    
+
+여기서 처음 소개된 LinUCB를 간단히 설명하자면, 입력 변수를 활용하는 contextual bandit의 일종으로, 입력된 피처 값을 바탕으로 선형 모델을 적합하여 보상을 예측도록 학습하는 알고리즘입니다. 다음 시간에 이러한 contextual bandits에 대해서도 다루어 보도록 하겠습니다.  
+
+
+<br>
 
 
 
