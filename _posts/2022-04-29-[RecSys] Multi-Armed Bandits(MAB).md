@@ -1,5 +1,5 @@
 ---
-title: "(작성중) [RecSys] Multi-Armed Bandits"
+title: "[RecSys] Multi-Armed Bandits"
 categories:
   - Recommender Systems
 tags:
@@ -22,14 +22,12 @@ tags:
 
 <br>
 
->  **1. 연관 규칙 추천은 "A를 사면 B도 산다"는 규칙을 찾는 것**  
+>  **1. MAB(Multi-Armed Bandits)란, 여러 선택지가 있을 때 어떤 선택이 가장 큰 보상을 얻을 수 있을지 모를 때 최적의 전략을 세우기 위한 알고리즘**  
 >
->  **2. "A를 사면"은 조건절(antecedent), "B도 산다"를 결과절(Consequent)이라고 부름**  
+>  **2. 아직 잘 모르는 선택지를 시도해보는 탐험(Exploration)과, 높은 보상을 얻을 수 있다고 알려진 선택지를 선택하는 활용(Exploitation)을 적절히 활용해야함**  
 >
->  **3. 오직 빈번하게 등장하는 아이템 셋에 대해서만 고려하는 A priori 알고리즘을 적용해 빠른 규칙 생성이 가능**  
->   
->  **4. 파이썬의 mlxtend 라이브러리를 통해 쉬운 구현이 가능함**  
-
+>  **3. 이러한 탐험과 활용 사이를 잘 조정하기 위해, $\epsilon$-greedy, UCB(Upper Confidence Bound) 등의 다양한 variant가 고안되었음**  
+>
 
 
 
@@ -216,7 +214,7 @@ $q_*(a) \doteq \mathbb{E}[R_t \mid A_t = a] . $
 
 그리고 그 추정하는 방식 중에 하나를 아래에서 소개합니다.  
 
-$Q_t(a) \doteq \frac{ sum \space of \space rewards \space  when \space a \space taken \space prior \space to \space t}{number \space of \space times \space a \space taken \space prior \space to \space t} = \frac{\Sigma_{i=1}^{t-1} R_i \cdot \mathbb{1}_{A_i=a}}{\Sigma_{i=1}^{t-1} \mathbb{1}_{A_i=a}}$  
+$Q_t(a) \doteq \frac{ sum \space of \space rewards \space  when \space a \space taken \space prior \space to \space t}{number \space of \space times \space a \space taken \space prior \space to \space t} = \frac{\Sigma_{i=1}^{t-1} R_i \cdot 1_{A_i = a} }{ \Sigma_{i=1}^{t-1} 1_{A_i=a}}$  
 
 
 
