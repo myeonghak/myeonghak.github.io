@@ -437,13 +437,10 @@ plt.show()
 
 **출처**   
 
-Reinforcement Learning: An Introduction - by Andrew Barto and Richard S. Sutton
+강화학습 교재 : Reinforcement Learning: An Introduction - by Andrew Barto and Richard S. Sutton
 
-https://wwiiiii.tistory.com/entry/MultiArmed-Bandit-Problem
+[기리이이이님 블로그 포스트](https://wwiiiii.tistory.com/entry/MultiArmed-Bandit-Problem)
 
-​
+[Henry AI Labs 유튜브 영상](https://www.youtube.com/watch?v=9LhNHK1ULxs&list=LLypIXWIsUMIMvCa6zQfOZmQ&index=4&t=0s)
 
-https://www.youtube.com/watch?v=9LhNHK1ULxs&list=LLypIXWIsUMIMvCa6zQfOZmQ&index=4&t=0s
-
-
-https://brunch.co.kr/@chris-song/62
+[Chris Song님 블로그 포스트](https://brunch.co.kr/@chris-song/62)
