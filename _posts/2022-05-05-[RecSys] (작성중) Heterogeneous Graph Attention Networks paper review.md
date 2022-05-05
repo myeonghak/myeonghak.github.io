@@ -1,5 +1,5 @@
 ---
-title: "[Recsys] HAN(Heterogeneous Graph Attention Networks) paper review"
+title: "[Recsys] (작성중) HAN(Heterogeneous Graph Attention Networks) paper review"
 categories:
   - Recommender Systems
 tags:
