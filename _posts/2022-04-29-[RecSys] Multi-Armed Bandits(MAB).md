@@ -444,3 +444,5 @@ plt.show()
 [Henry AI Labs 유튜브 영상](https://www.youtube.com/watch?v=9LhNHK1ULxs&list=LLypIXWIsUMIMvCa6zQfOZmQ&index=4&t=0s)
 
 [Chris Song님 블로그 포스트](https://brunch.co.kr/@chris-song/62)
+
+[제 네이버 블로그 포스트](https://m.blog.naver.com/nilsine11202/221912267111)
