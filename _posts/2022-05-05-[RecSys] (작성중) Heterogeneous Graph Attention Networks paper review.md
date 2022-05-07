@@ -45,21 +45,21 @@ tags:
 <a id="hetero"></a>
 
 ## 1. Heterogeneous Information Network
-	- 같은 노드지만 다양한 관계를 가질 수 있음
-	- 노드들 간의 관계를 동해 다양한 정보를 추출
-		- Path1: 같은 배우가 출연한 작품
-		- Path2: 같은 감독의 작품
+- 같은 노드지만 다양한 관계를 가질 수 있음
+- 노드들 간의 관계를 동해 다양한 정보를 추출
+	- Path1: 같은 배우가 출연한 작품
+	- Path2: 같은 감독의 작품
 
-	- 다양한 TYPE 노드를 통해 이웃을 다양하게 정의
-		- 배우 기준 m1의 이웃: m3
-		- 감독 기준 m1의 이웃: m2
+- 다양한 TYPE 노드를 통해 이웃을 다양하게 정의
+	- 배우 기준 m1의 이웃: m3
+	- 감독 기준 m1의 이웃: m2
 
-	- 이러한 다양한 관계를 각각 다르게 활용해 주어야 함
+- 이러한 다양한 관계를 각각 다르게 활용해 주어야 함
 
-	- hetero graph는 inductive bias를 추가해 준 것으로 볼 수 있음
+- hetero graph는 inductive bias를 추가해 준 것으로 볼 수 있음
 
 
-2. heterogeneous network를 쓰는 이유
+2. heterogeneous network를 쓰는 이유  
 	1) side information 활용
 	- 노드의 type, 연결 관계 등에 대한 side info를 활용함으로써 더욱 풍성한 연결 정보를 가져 올 수 있음.
 	- 기존의 GNN 방법론에 추가적으로 side info를 활용하는 방법론이 제시됨

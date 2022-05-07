@@ -1,0 +1,209 @@
+---
+title: "[RecSys] (작성중) Graphormer"
+categories:
+  - Graph Neural Networks
+tags:
+  - Graph Neural Networks
+  - Graph Classification
+  - transformer
+---
+
+### 그래프 단위에서 Transformer의 가능성을 검증한 Graphormer에 대해서 알아봅니다.  
+
+
+> 원제: Do Transformers Really Perform Bad for Graph Representation?  
+
+<center><img src="/assets/materials/graphs/graphormer/graphormer.png" align="center" alt="drawing" width="500"/></center>   
+
+
+<br/>
+
+----
+
+**본 포스트는 Graphormer (Do Transformers Really Perform Bad for Graph Representation?) 논문을 리뷰한 내용을 포함하고 있습니다.**
+[원문은 여기에서 보실 수 있습니다.](https://arxiv.org/abs/2106.05234)      
+
+----
+
+#### Contents  
+
+<br/>
+
+1.  [Introduction - 트랜스포머, 그래프에 진짜 안돼?](#intro)  
+2.  [Transformer 돌아보기](#transformer)  
+3.  [오프라인 추천 소스 만들기](#offline)
+4.  [온라인 추천 워크플로우](#online)
+5.  [평가](#eval)
+6.  [머신러닝 모델 학습](#ml)
+
+<br />
+
+
+
+<a id="intro"></a>
+## 1. Introduction - 트랜스포머, 그래프에 진짜 안돼?  
+
+오늘은 추천을 위한 Link prediction에 적용되는 GNN이 아닌, 화학 분야에서 주로 다루어지는 그래프 자체의 표현 학습(graph representaion learning)에 특화된 Graphormer라는 모델에 대해 살펴보겠습니다.  
+
+해당 논문의 도입은 다음과 같이 시작됩니다.  
+
+> 다른 도메인(자연어나 비전)에서 트랜스포머는 너무 잘 작동했음. 그런데 graph representaion learning에서는 안되는게 *미스테리* 하잖아? 우리가 그 *미스테리*를 해결해 보려고!  
+
+다른 데에서 잘 작동했으니 여기서도 잘 될거야! 라는 다소 무모(?)한 확신으로 시작하고 있지만, 확실히 다른 데이터 도메인에서의 혁신적인 성공에 비해 그래프 분야에서는 트랜스포머가 충분히 빛을 보이지 못한 것 같습니다. 저자들은 이런 확신을 증명이라도 하듯이 Graphormer라는 모델로 Transformer 방법론의 강력함을 다시 한 번 증명해 보이는데요.  
+
+## 2. Transformer 돌아보기    
+
+Transformer에 대해 다시 살펴 보고 넘어갈까요?  
+
+Transformer는 2017년에 공개된 Self-attention 기반 모델입니다. 자연어처리 분야에서 BERT, GPT 등 대형 언어 모델의 핵심 블록으로 사용되어 그 효율성이 입증된 이후로, 컴퓨터 비전, 강화학습, 추천시스템 등의 타 분야도 활발히 연구와 적용이 이루어지고 있는데요. 2022년 5월 현재 기준 무려 41,376건이 인용된 인싸중의 인싸 알고리즘입니다.  
+
+### 2-1. Transformer의 성공 비결: self-attention  
+
+
+
+
+
+2. Introduction
+	- transformer의 성공 비결은
+		1) 기존에 local receptive field에서 정보를 받던 CNN 기반 방법론을 global receptive field로 확장한 것
+		2) 기존 RNN은 순/역방향으로 단방향의 정보를 확인했지만(어텐션으로 이러한 접근의 정보 손실을 줄이기는 했으나), transformer는 양방향으로 정보를 얻어 옴으로써 정보 손실을 줄였으며 셀프 어텐션을 적용해 더욱 적합한 형태를 띰
+	- GCN의 경우 여러 레이어를 쌓음으로써 multi-hop의 이웃의 정보를 가져오지만, transformer 기반 방법은 attention score로 직접적으로 정보를 가져 온다는 차이가 있음.
+
+3. the Transformer in graph
+	- 기존 GNN은 인접행렬을 통해 edge 정보(연결 여부)를 받아옴으로써 그래프 구조 정보를 반영하여 network를 학습함
+	- graph에 transformer를 적용할 때는, NLP에서 transformer를 적용할 때도 그러하듯이, 위치 정보 및 연결 정보를 반영한 positional encoding 같은 역할을 하는 정보가 함께 사용되어야 함.
+
+## 3. Graph tasks  
+
+
+4. 그래프 네트워크 task 1 - node classification
+	- node의 label을 분류하는 task (ex. 논문 카테고리 예측)
+	- 일부의 라벨이 라벨링 되어 있는 그래프에서, 라벨이 없는 노드의 representation을 구조적인 정보를 반영하여 propagation을 통해 update함으로써 노드의 라벨을 예측함
+	- node representation이 중요
+	- X: node -> Y: node label
+	- Large graph에서 node를 기준으로 시행됨
+
+5. task 2 - link prediction
+	- node간 missing edge를 예측하는 task (ex. 소셜 네트워크에서의 친구 추천)
+	- node representation이 중요
+	- X: node pair -> Y: edge
+	- Large graph에서 node를 기준으로 시행됨 -> input으로 한번에 전체 그래프의 정보를 반영하기 어려움. 때문에 GCN같은 방법론이 많이 연구 되었음
+
+6. task 3 - graph classification
+	- graph의 class를 분류하는 task (ex. 분자구조의 화학속성 예측)
+	- graph representation이 중요 (그래프를 통째로 반영)
+	- 노드와 엣지 표현을 통합(mean, max..)하는 과정에서 정보 손실이 일어남.
+	- 이를 어떻게 잘 통합할 수 있을까?가 중점적
+	- X: nodes, edges -> Y: graph label
+	- 다수의 small graph에서 graph를 기준으로 시행됨
+
+
+
+8. 그래프 네트워크 task
+	- Readout function: Node의 값을 다시 통합하는 과정이 필요함
+		1) Sum pooling, Mean pooling
+		2) 대표 node를 추출
+		3) FC layer를 통해 학습 (GIN)
+
+	- 그러나 readout을 걸치는 과정에서 noise가 발생할 것
+	- transformer를 사용해서 그래프를 통째로 표현해보자!
+
+## 4. Graphormer    
+
+9. Graphormer
+	- transformer: 그래프를 나타내는 모든 node와 edge를 하나의 context로 표현
+		- (+) 그래프의 구조적인 특징을 반영할 수 있는 정보를 사용
+		- 그래프의 구조적 특징이란?
+			1) 그래프는 순서가 없다 (위치 정보가 없다)
+			2) edge를 통한 연결 정보만 있을 뿐, 거리는 없다
+	- Graphormer: transformer 구조에 그래프의 특징을 반영하는 구조를 개발함
+	- 기존의 GNN은 노드 단위 학습이 이루어진 뒤, 1-hop의 정보를 layer를 쌓는 방식으로 multi-hop의 정보를 받을 수 있었음 (local한 접근)
+	- 반면 graphormer는 transformer를 사용해, multi-hop의 정보를 self-attention을 통해 한번에 학습 (global한 접근)
+
+
+10. 그래프의 구조적 특징 예시
+	- degree 정보가 동일한 두 그래프가 있음
+	- 이 두 그래프를 구별하기 위한 방법은?
+		- 노드 사이의 shortest path를 찾아봄
+		- 두 그래프의 구조적인 차이로 인해, 동일한 노드 사이의 최단 경로가 다름
+
+11. Transformer & GAT
+	- GAT 역시 transformer와 굉장히 유사한 구조임
+		- 노드별로 representation이 있을 때, query와 key matrix를 만들어 이들의 내적을 통해 attention score를 구한 뒤 이들을 weight로써 사용하는 방법론
+		- adj matrix에서 연결 정보에 따라 masking한 매트릭스를 사용
+	- transformer와 차이
+		- positional encoding이 추가됨
+		- 전체 node에 대해 진행하기 때문에, masking 제거
+
+	- 추가로, transformer는 전체 그래프를 대상으로 하는 반면 GAT는 subgraph를 대상으로 진행
+
+12. Graphormer 모델
+	- transformer block을 사용
+	- node feature는 random init한 값을 사용
+	- 모델의 구성으로는 3가지 인코딩이 있음
+		1) centrality encoding
+	 	2) edge encoding
+	 	3) spatial encoding
+
+## 5. Graphormer 모델 디테일
+
+
+### 5-1. Centrality encoding
+- 그래프 내 중심성을 나타내는 지표
+	- degree, betweeness(두 노드가 연결될 때 한 노드를 지나간다면 그 사이에 얼마나 가중치가 있는가?), closeness, page rank, eigenvalue
+- 그래프에는 허브 노드가 존재함
+	- 인스타 팔로워가 많은 셀럽이 소셜 네트워크의 트렌드 예측에 더 중요
+- self-attention은 centrality 정보를 충분히 담지 못함
+- centrality encoding을 degree값을 사용하여 나타냄 (learnable parameter)
+	- 초기에 random init하기 때문에 중요한 허브 노드가 무시되는 것을 방지하기 위해, degree를 이용해 처음에 가중치를 제공하고 그 이후에는 학습을 통해 업데이트 해나가는
+- 방향성 고려: in-degree emb와 out-degree emb를 따로 사용하여, 두개의 합을 centrality로 정의함
+- 이로써 의미의 유사성(노드 피처를 통해)과 노드의 중요도(centrality encoding을 통해)를 고려한 attention을 얻을 수 있음
+
+
+### 5-2. Spatial Encoding
+- 고차원에 표현되는 노드의 위치정보를 나타내야 함
+- 그래프 내에서는 유클리드 거리를 사용할 수 없기 때문에, 절대적인 거리를 사용할 수 없음
+- BERT에서 사용됐던 relative positional encoding을 사용함.
+- relative positional encoding: Edge를 통해 연결된 정보를 기반으로, 노드 간의 거리를 측정함
+- 두 노드 간 최단 거리를 사전에 계산 해 놓음 (shortest path)
+- transformer layer에서는 모든 노드에 대한 정보를 한번에 받기 때문에, 상대적 거리에 따른 attention이 달라져야 함
+- 이렇게 거리 정보를 spatial encoding을 이용함으로써 그래프의 구조적 정보를 반영해 학습
+
+### 5-3. Edge Encoding
+- Edge embedding 값을 통해, 노드 간의 상관관계를 좀 더 표현하고자 함
+	-> 분자 구조에서 일반 결합, 이중 결합 같은 특징의 구조 표현
+	-> 연결 여부만을 binary로 표현하는 것이 아니라, 이들의 정보를 다르게 처리하는 것이 필요할
+- 최단거리를 구성하는 edge의 평균을 통해 두 노드의 관계를 표현
+	- 1-3-4번 노드를 지나가는 edge를 표현한다고 해보자
+	- edge feature의 초기 값을 random init
+		- e_1, e_2가 있음. 각각 1-3 사이, 3-4 사이에 있는 엣지임
+	- shortest path에 있는 feature SP_1이 있을 것
+	- 이 edge feature와 SP_1을 내적해 스칼라 값을 가져옴
+	- 또 마찬가지로 e2와 SP_2를 내적해 스칼라 값을 가져옴
+	- 이 둘을 평균 내 줌으로써(?) edge encoding의 값 E_14를 얻음
+- edge의 feature를 통해 특징을 표현해내고, shortest path 내에 있는 노드의 피처를 반영한 결과를 얻어 냄
+
+### 5-4. Special Node
+- readout function 대신, 전체 노드와 연결되는 가상의 node 생성
+- BERT에서 CLS 토큰과 유사한 역할을 함
+- [Vnode] (=virtual node)는 일반 노드처럼 앞선 과정을 똑같이 수행함 (단, 실존하는 허브 노드와는 구별함)
+	-> spatial encoding에서 다른 값으로 처리함
+
+- 학습시, [Vnode] 값을 통해, Graph Classification을 진행
+- [Vnode]는 전체 그래프에 대한 정보를 담음
+- self-attention 없이 [Vnode] 사용시, over smoothing 문제 발생
+	-> 적절한 weight를 학습한다면, 그래프를 나타낼 정보를 적절히 모든 노드에서 가져올 수 있음을 의미
+
+- 이 노드는 전체 노드와 연결된 채로 동일한 조건의 인코딩 방법을 적용해 학습됨
+- gcn에서도 동일한 방법을 시도했으나 over smoothing 문제를 겪음
+
+----------------
+
+
+**개선을 위한 여러분의 피드백과 제안을 코멘트로 공유해 주세요.**
+**내용에 대한 지적, 혹은 질문을 환영합니다.**  
+
+
+**출처**  
+
+https://www.youtube.com/watch?v=7Bp2kgkry1s
