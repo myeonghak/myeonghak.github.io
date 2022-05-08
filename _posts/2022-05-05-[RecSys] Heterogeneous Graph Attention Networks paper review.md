@@ -1,5 +1,5 @@
 ---
-title: "[Recsys] (작성중) HAN(Heterogeneous Graph Attention Networks) paper review"
+title: "[Recsys] HAN(Heterogeneous Graph Attention Networks) paper review"
 categories:
   - Recommender Systems
 tags:
@@ -28,6 +28,9 @@ tags:
 <br/>
 
 ----
+
+**본 포스트는 고려대학교 산업경영공학부 DSBA 연구실 이정호님의 세미나 영상을 토대로 작성한 노트입니다.**
+[영상은 여기에서 보실 수 있습니다.](https://www.youtube.com/watch?v=zj_k_8dXs7o)  
 
 #### Contents  
 
