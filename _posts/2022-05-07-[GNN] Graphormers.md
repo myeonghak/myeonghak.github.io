@@ -31,7 +31,7 @@ tags:
 
 1.  [Introduction - 트랜스포머, 그래프에 진짜 안돼?](#intro)  
 2.  [Transformer 돌아보기](#transformer)  
-3.  [오프라인 추천 소스 만들기](#offline)
+3.  [Graphomer란?](#offline)
 4.  [온라인 추천 워크플로우](#online)
 5.  [평가](#eval)
 6.  [머신러닝 모델 학습](#ml)
@@ -95,8 +95,16 @@ GCN의 경우 여러 개의 Convolution Layer를 쌓음으로써 multi-hop의(�
 기존 GNN은 인접행렬을 통해 edge 정보(연결 여부)를 받아옴으로써 그래프 구조 정보를 반영하여 network를 학습했습니다. graph에 transformer를 적용하게 된다면 NLP에서 transformer를 적용할 때도 그러하듯이, 위치 정보 및 연결 정보를 반영한 positional encoding 같은 역할을 하는 정보가 함께 사용되어야 하겠죠. Graphormer는 이러한 위치 인코딩 방식을 어떻게 비유클리드적으로 정의되는 그래프 구조에서 적용할 수 있을지에 대한 해결책을 제시합니다.  
 
 
-## 3. Graphormer's Approach    
+## 3. Graphormer란?    
 
+앞서 언급했듯이, Graphormer는 그래프 자체의 표현 학습인 Graph representaion learning에 강점을 가진 방법론입니다. 일반적인 GNN 방법론은 node의 representation을 얻어 이들의 label을 분류하거나(node classification) 이렇게 얻은 node representation을 활용해 유사도를 구하여 link를 예측하는(link prediction) 문제를 풀어 왔습니다.  
+
+그런데 그래프 자체의 구조의 표현을 사용해야 하는 경우에는 어떨까요?   
+가령, 네트워크 내의 군집이 있을 때 이들이 어떤 동아리인지를 분류한다거나, 분자 구조가 주어졌을 때 화학적인 어떠한 특성을 예측해 낸다거나 하는 작업이 있을 것입니다.   
+
+기존에는 node와 edge의 표현을 잘 통합하는 Readout function에 통과시킴으로써 그래프 자체의 임베딩을 얻어 내는 방식을 사용했습니다. Sum/Mean과 같은 단순한 함수를 사용하기도 하고, GIN(Graph Isomorphism Network)에서는 FC Layer (Fully-Connected Layer)를 학습하여 어떤 이상적인 Readout Function을 근사하는 방법을 시도하기도 하였습니다.  
+
+그러나 Readout Function을 걸치는 과정에서 어떠한 정보 손실, 혹은 노이즈가 발생할 수도 있을 것 같습니다. 가령 ss
 
 6. task 3 - graph classification
 	- graph의 class를 분류하는 task (ex. 분자구조의 화학속성 예측)
