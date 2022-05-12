@@ -95,24 +95,8 @@ GCN의 경우 여러 개의 Convolution Layer를 쌓음으로써 multi-hop의(�
 기존 GNN은 인접행렬을 통해 edge 정보(연결 여부)를 받아옴으로써 그래프 구조 정보를 반영하여 network를 학습했습니다. graph에 transformer를 적용하게 된다면 NLP에서 transformer를 적용할 때도 그러하듯이, 위치 정보 및 연결 정보를 반영한 positional encoding 같은 역할을 하는 정보가 함께 사용되어야 하겠죠. Graphormer는 이러한 위치 인코딩 방식을 어떻게 비유클리드적으로 정의되는 그래프 구조에서 적용할 수 있을지에 대한 해결책을 제시합니다.  
 
 
+## 3. Graphormer's Approach    
 
-## 3. Graph tasks  
-
-그래프 
-
-
-4. 그래프 네트워크 task 1 - node classification
-	- node의 label을 분류하는 task (ex. 논문 카테고리 예측)
-	- 일부의 라벨이 라벨링 되어 있는 그래프에서, 라벨이 없는 노드의 representation을 구조적인 정보를 반영하여 propagation을 통해 update함으로써 노드의 라벨을 예측함
-	- node representation이 중요
-	- X: node -> Y: node label
-	- Large graph에서 node를 기준으로 시행됨
-
-5. task 2 - link prediction
-	- node간 missing edge를 예측하는 task (ex. 소셜 네트워크에서의 친구 추천)
-	- node representation이 중요
-	- X: node pair -> Y: edge
-	- Large graph에서 node를 기준으로 시행됨 -> input으로 한번에 전체 그래프의 정보를 반영하기 어려움. 때문에 GCN같은 방법론이 많이 연구 되었음
 
 6. task 3 - graph classification
 	- graph의 class를 분류하는 task (ex. 분자구조의 화학속성 예측)
@@ -133,7 +117,6 @@ GCN의 경우 여러 개의 Convolution Layer를 쌓음으로써 multi-hop의(�
 	- 그러나 readout을 걸치는 과정에서 noise가 발생할 것
 	- transformer를 사용해서 그래프를 통째로 표현해보자!
 
-## 4. Graphormer    
 
 9. Graphormer
 	- transformer: 그래프를 나타내는 모든 node와 edge를 하나의 context로 표현
