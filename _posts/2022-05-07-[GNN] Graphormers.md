@@ -59,21 +59,46 @@ Transformer는 2017년에 공개된 Self-attention 기반 모델입니다. 자�
 
 ### 2-1. Transformer의 성공 비결: self-attention  
 
+Transformer가 자연어처리 분야의 SOTA를 갈아치우며 주목을 끌게 된 데에는, 그 핵심적인 아이디어인 self-attention에 있습니다. self-attention이란, 말 그대로 모델이 스스로 어떤 것에 주목해야 하는지를 알아서 학습한다는, 개념 그 자체로 딥러닝스러운 학습 방법인데요.  
 
 
+### 2-2. Self-attention의 직관적인 설명    
+Q(Query), K(Key), V(Value)가 주어졌을 때 Q와 K의 내적으로 구한 attention score, 즉 유사도 값을 기반으로 해당 key를 나타내는 representation인 Value를 얼마만큼 주목해서 볼 것인지를 결정하게 되는 방법입니다.   
+
+가령 ["안녕", "나는", "러닝머신","이야"]라는 시퀀스가 있을 때, "나는"이라는 단어가 주어졌을 때 어떤 단어를 주목해서 봐야할지를 찾아낸다고 해보겠습니다.  
+
+"나는"이라는 단어가 내가 알고 싶은 질의 단어이기 때문에 Query는 "나는"이 되고, 얼마나 주목할지 알고 싶은 대상인 다른 단어들 ["안녕","러닝머신","이야"]는 그들과의 유사도를 계산하는데 사용할 Key의 주인이자 representation인 Value의 주인이라고 할 수 있겠습니다.  
+
+여기서 "나는"이라는 단어와 다른 단어와의 유사도를 "나는"의 query 벡터와 다른 단어들의 key 벡터를 내적함으로써 계산합니다. 그 결과를 합이 1이 되도록 표준화(softmax)하니, [0.2, 0.7, 0.1]이라는 값이 나왔다고 해보겠습니다. 이 결과로써 나온 저 값을 attenion score라고 하고, 이들만큼의 가중치를 두어 각 단어들의 value를 크게 반영하여 다음 레이어에 전달합니다.  
+
+### 2-3. Self-attention의 성공 비결
+이와 같은 방식이 성공한 이유는, Transformer 이전에 많은 성공을 이루어 낸 기존의 두 방법론의 한계를 극복한 것에서 찾아볼 수 있을 것 같습니다.  
+
+#### 1) CNN의 local receptive field 극복  
+
+CNN의 경우 자신의 주변에 있는 픽셀들의 정보만을 받아들임으로써, 지역적인 receptive field를 사용한다는 특징이 있습니다. 이러한 특징은 연산을 효율적으로 만들고, 또 직관적으로 국소적인 유의미한 패턴을 감지해낸다는 점에서 큰 이점이 있었으나 전체적인 큰 그림을 보지는 못한다는 한계가 있었습니다.  
+
+transformer는 전체 개체들에 대해 전역적인, 즉 global receptive field를 가짐으로써 CNN이 나무만을 보고 있을 때 숲을 함께 볼 수 있는 시야를 가졌다는 장점을 가질 수 있었습니다.  
+
+#### 2) RNN의 단방향적 정보 습득 방식 극복  
+RNN의 경우 순방향, 혹은 역방향으로 단방향의 정보를 확인했습니다. attention을 활용해 이러한 접근으로 발생하는 정보 손실을 줄이기는 했으나, transformer는 구조적으로 양방향으로 정보를 얻어옴으로써 정보 손실을 줄일 수 있었습니다.  
 
 
-2. Introduction
-	- transformer의 성공 비결은
-		1) 기존에 local receptive field에서 정보를 받던 CNN 기반 방법론을 global receptive field로 확장한 것
-		2) 기존 RNN은 순/역방향으로 단방향의 정보를 확인했지만(어텐션으로 이러한 접근의 정보 손실을 줄이기는 했으나), transformer는 양방향으로 정보를 얻어 옴으로써 정보 손실을 줄였으며 셀프 어텐션을 적용해 더욱 적합한 형태를 띰
-	- GCN의 경우 여러 레이어를 쌓음으로써 multi-hop의 이웃의 정보를 가져오지만, transformer 기반 방법은 attention score로 직접적으로 정보를 가져 온다는 차이가 있음.
+### 2-4. GNN에서 self-attention 방식의 적용  
 
-3. the Transformer in graph
-	- 기존 GNN은 인접행렬을 통해 edge 정보(연결 여부)를 받아옴으로써 그래프 구조 정보를 반영하여 network를 학습함
-	- graph에 transformer를 적용할 때는, NLP에서 transformer를 적용할 때도 그러하듯이, 위치 정보 및 연결 정보를 반영한 positional encoding 같은 역할을 하는 정보가 함께 사용되어야 함.
+기존의 CNN 방법론을 그래프 표현 학습에 적용한 GCN의 학습 방식을 떠올려보면, 앞서 살펴본 장점을 GNN에서도 얻을 수 있을 것이라고 기대해볼 수 있습니다.  
+
+GCN의 경우 여러 개의 Convolution Layer를 쌓음으로써 multi-hop의(여러 다리를 걸쳐 떨어진) 이웃의 정보를 가져옵니다. Convolution Layer는 지역적인 이웃의 정보를 살펴 aggregation하는, local receptive field를 갖는 전파 방식이라고 생각할 수 있겠습니다.  
+
+반면 transformer 기반 방법은 global하게 전체 노드와의 중요도를 살펴보아 attention score로 직접적으로 정보를 가져 오는 접근일 것이며, 이러한 방식을 적용함으로써 CNN의 한계를 Transformer가 극복했듯이 얼마간의 학습 효율을 가져올 수 있을 것이라고 생각해볼 수 있겠죠.  
+
+기존 GNN은 인접행렬을 통해 edge 정보(연결 여부)를 받아옴으로써 그래프 구조 정보를 반영하여 network를 학습했습니다. graph에 transformer를 적용하게 된다면 NLP에서 transformer를 적용할 때도 그러하듯이, 위치 정보 및 연결 정보를 반영한 positional encoding 같은 역할을 하는 정보가 함께 사용되어야 하겠죠. Graphormer는 이러한 위치 인코딩 방식을 어떻게 비유클리드적으로 정의되는 그래프 구조에서 적용할 수 있을지에 대한 해결책을 제시합니다.  
+
+
 
 ## 3. Graph tasks  
+
+그래프 
 
 
 4. 그래프 네트워크 task 1 - node classification
