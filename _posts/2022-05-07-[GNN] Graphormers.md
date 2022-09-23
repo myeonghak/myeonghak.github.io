@@ -104,10 +104,12 @@ GCN의 경우 여러 개의 Convolution Layer를 쌓음으로써 multi-hop의(�
 
 기존에는 node와 edge의 표현을 잘 통합하는 Readout function에 통과시킴으로써 그래프 자체의 임베딩을 얻어 내는 방식을 사용했습니다. Sum/Mean과 같은 단순한 함수를 사용하기도 하고, GIN(Graph Isomorphism Network)에서는 FC Layer (Fully-Connected Layer)를 학습하여 어떤 이상적인 Readout Function을 근사하는 방법을 시도하기도 하였습니다.  
 
-그러나 Readout Function을 걸치는 과정에서 어떠한 정보 손실, 혹은 노이즈가 발생할 수도 있을 것 같습니다. 가령 ss
+그러나 Readout Function을 걸치는 과정에서 어떠한 정보 손실, 혹은 노이즈가 발생할 수도 있을 것 같습니다. 가령
+
+
 
 6. task 3 - graph classification
-	- graph의 class를 분류하는 task (ex. 분자구조의 화학속성 예측)
+	- graph의 class를 분류하는 task (ex. 분자구조의 화학속성 예측).
 	- graph representation이 중요 (그래프를 통째로 반영)
 	- 노드와 엣지 표현을 통합(mean, max..)하는 과정에서 정보 손실이 일어남.
 	- 이를 어떻게 잘 통합할 수 있을까?가 중점적
