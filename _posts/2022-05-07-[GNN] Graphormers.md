@@ -31,11 +31,8 @@ tags:
 
 1.  [Introduction - 트랜스포머, 그래프에 진짜 안돼?](#intro)  
 2.  [Transformer 돌아보기](#transformer)  
-3.  [Graphomer란?](#offline)
-4.  [온라인 추천 워크플로우](#online)
-5.  [평가](#eval)
-6.  [머신러닝 모델 학습](#ml)
-
+3.  [Graphormer란?](#offline)
+4.  [Graphormer 모델 디테일](#online)
 <br />
 
 
@@ -97,6 +94,8 @@ GCN의 경우 여러 개의 Convolution Layer를 쌓음으로써 multi-hop의(�
 
 ## 3. Graphormer란?    
 
+### 3-1. Motivation
+
 앞서 언급했듯이, Graphormer는 그래프 자체의 표현 학습인 Graph representaion learning에 강점을 가진 방법론입니다. 일반적인 GNN 방법론은 node의 representation을 얻어 이들의 label을 분류하거나(node classification) 이렇게 얻은 node representation을 활용해 유사도를 구하여 link를 예측하는(link prediction) 문제를 풀어 왔습니다.  
 
 그런데 그래프 자체의 구조의 표현을 사용해야 하는 경우에는 어떨까요?   
@@ -104,27 +103,12 @@ GCN의 경우 여러 개의 Convolution Layer를 쌓음으로써 multi-hop의(�
 
 기존에는 node와 edge의 표현을 잘 통합하는 Readout function에 통과시킴으로써 그래프 자체의 임베딩을 얻어 내는 방식을 사용했습니다. Sum/Mean과 같은 단순한 함수를 사용하기도 하고, GIN(Graph Isomorphism Network)에서는 FC Layer (Fully-Connected Layer)를 학습하여 어떤 이상적인 Readout Function을 근사하는 방법을 시도하기도 하였습니다.  
 
-그러나 Readout Function을 걸치는 과정에서 어떠한 정보 손실, 혹은 노이즈가 발생할 수도 있을 것 같습니다. 가령 ss
+그러나 Readout Function을 걸치는 과정에서 어떠한 정보 손실, 혹은 노이즈가 발생할 수도 있을 것 같습니다. 가령 노드의 임베딩을 평균으로, 즉 readout function을 mean으로 사용한다면, 분명히 다른 특색을 가진 그래프임에도 불구하고 동일한 임베딩을 갖게되는 경우를 생각해볼 수 있겠죠.  
 
-6. task 3 - graph classification
-	- graph의 class를 분류하는 task (ex. 분자구조의 화학속성 예측)
-	- graph representation이 중요 (그래프를 통째로 반영)
-	- 노드와 엣지 표현을 통합(mean, max..)하는 과정에서 정보 손실이 일어남.
-	- 이를 어떻게 잘 통합할 수 있을까?가 중점적
-	- X: nodes, edges -> Y: graph label
-	- 다수의 small graph에서 graph를 기준으로 시행됨
+따라서 이러한 한계점을 극복하고자, 여기에 Transformer를 적용해서 그래프 자체를 통째로 표현해보자! 라는 것이 Graphormer의 아이디어입니다.  
 
 
-
-8. 그래프 네트워크 task
-	- Readout function: Node의 값을 다시 통합하는 과정이 필요함
-		1) Sum pooling, Mean pooling
-		2) 대표 node를 추출
-		3) FC layer를 통해 학습 (GIN)
-
-	- 그러나 readout을 걸치는 과정에서 noise가 발생할 것
-	- transformer를 사용해서 그래프를 통째로 표현해보자!
-
+### 3-2. Graphormer의 특징
 
 9. Graphormer
 	- transformer: 그래프를 나타내는 모든 node와 edge를 하나의 context로 표현
