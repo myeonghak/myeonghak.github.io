@@ -110,15 +110,14 @@ GCN의 경우 여러 개의 Convolution Layer를 쌓음으로써 multi-hop의(�
 
 ### 3-2. Graphormer의 특징
 
-9. Graphormer
-	- transformer: 그래프를 나타내는 모든 node와 edge를 하나의 context로 표현
-		- (+) 그래프의 구조적인 특징을 반영할 수 있는 정보를 사용
-		- 그래프의 구조적 특징이란?
-			1) 그래프는 순서가 없다 (위치 정보가 없다)
-			2) edge를 통한 연결 정보만 있을 뿐, 거리는 없다
-	- Graphormer: transformer 구조에 그래프의 특징을 반영하는 구조를 개발함
-	- 기존의 GNN은 노드 단위 학습이 이루어진 뒤, 1-hop의 정보를 layer를 쌓는 방식으로 multi-hop의 정보를 받을 수 있었음 (local한 접근)
-	- 반면 graphormer는 transformer를 사용해, multi-hop의 정보를 self-attention을 통해 한번에 학습 (global한 접근)
+Transformer는 그래프를 나타내는 모든 node와 edge를 하나의 context로 표현할 수 있습니다. transformer가 주로 사용되었던 자연어 데이터에 대입해보면, node는 문장의 토큰을, edge는 문장 구성 요소(토큰)간의 의미상 연결 관계로 바라볼 수 있습니다. self-attention을 통해 문장이라는 그래프를 구성하는 node와 edge의 의미적인 표현을 얻어낸다고 생각해 볼 수 있겠죠.  
+
+Graphormer는 이러한 transformer에 그래프의 구조적인 특징을 반영할 수 있는 구조를 개발했습니다. 여기서 그래프의 구조적인 특징이란, 첫째로 위치 정보가 없다는 점(즉, 그래프 구성요소에는 순서가 없다는 것)과 둘째로 edge를 통한 연결 정보만 존재할 뿐, 거리 정보는 없다는 점입니다.  
+
+기존의 GNN 방법론은 multi-hop의 정보를 받아들이도록 학습하기 위해, 노드 단위로 학습이 이루어진 뒤 1-hop의 정보를 여러 layer로 쌓았습니다. 그러나 이는 직접으로 layer마다 연결된 노드끼리의 정보를 활용한다는 점에서 local한 접근으로 볼 수 있습니다.  
+
+반면에 Graphormer는 transformer의 구조를 사용해 multi-hop의 정보를 self-attention을 통해 한번에 학습합니다. 즉, global한 접근으로 multi-hop 정보를 학습합니다.  
+
 
 
 10. 그래프의 구조적 특징 예시
