@@ -112,44 +112,23 @@ GCN의 경우 여러 개의 Convolution Layer를 쌓음으로써 multi-hop의(�
 
 Transformer는 그래프를 나타내는 모든 node와 edge를 하나의 context로 표현할 수 있습니다. transformer가 주로 사용되었던 자연어 데이터에 대입해보면, node는 문장의 토큰을, edge는 문장 구성 요소(토큰)간의 의미상 연결 관계로 바라볼 수 있습니다. self-attention을 통해 문장이라는 그래프를 구성하는 node와 edge의 의미적인 표현을 얻어낸다고 생각해 볼 수 있겠죠.  
 
-Graphormer는 이러한 transformer에 그래프의 구조적인 특징을 반영할 수 있는 구조를 개발했습니다. 여기서 그래프의 구조적인 특징이란, 첫째로 위치 정보가 없다는 점(즉, 그래프 구성요소에는 순서가 없다는 것)과 둘째로 edge를 통한 연결 정보만 존재할 뿐, 거리 정보는 없다는 점입니다.  
+Graphormer는 이러한 transformer에 그래프의 구조적인 특징을 반영할 수 있는 구조를 개발했습니다. 여기서 그래프의 구조적인 특징이란, 첫째로 위치 정보가 없다는 점(즉, 그래프 구성요소에는 순서가 없다는 것)과 둘째로 edge를 통한 연결 정보만 존재할 뿐, 거리 정보는 없다는 점 등을 들 수 있습니다.  
 
 기존의 GNN 방법론은 multi-hop의 정보를 받아들이도록 학습하기 위해, 노드 단위로 학습이 이루어진 뒤 1-hop의 정보를 여러 layer로 쌓았습니다. 그러나 이는 직접으로 layer마다 연결된 노드끼리의 정보를 활용한다는 점에서 local한 접근으로 볼 수 있습니다.  
 
 반면에 Graphormer는 transformer의 구조를 사용해 multi-hop의 정보를 self-attention을 통해 한번에 학습합니다. 즉, global한 접근으로 multi-hop 정보를 학습합니다.  
 
+Attention을 Graph에 적용한 Graph Attention Network (GAT) 역시 Transformer와 유사한 구조를 띠고 있습니다. 그래프를 구성하는 노드별로 representation이 주어졌을 때, 앞서 설명한대로 query와 key matrix를 만들어 이들의 내적을 통해 attention score를 구한 뒤, 이들을 weight로써 사용하는 방법론입니다. GAT는 adjacency matrix 내에서 연결 정보에 따라서 masking된 매트릭스를 사용합니다. 즉, 연결된 노드에 대해서만 attention score를 구합니다.  
 
+transformer는 이러한 attention 구조에 positional encoding이 추가되어 있습니다. 또, 전체 node에 대해서 attention을 수행하기 때문에, masking이 없다는 차이점이 있습니다. 더불어 GAT는 subgraph를 대상으로 연산이 이루어지는 반면 transformer는 전체 그래프를 입력으로 받습니다.  
 
-10. 그래프의 구조적 특징 예시
-	- degree 정보가 동일한 두 그래프가 있음
-	- 이 두 그래프를 구별하기 위한 방법은?
-		- 노드 사이의 shortest path를 찾아봄
-		- 두 그래프의 구조적인 차이로 인해, 동일한 노드 사이의 최단 경로가 다름
+Graphormer 모델은 이와 같은 transformer block을 사용하고, node feature로는 random하게 initialization한 값을 사용합니다. 여기에, 뒤에서 설명할 3가지 방법의 인코딩(centrality, edge, spatial encoding)을 적용함으로써 graph의 구조적인 정보를 임베딩에 반영합니다.
 
-11. Transformer & GAT
-	- GAT 역시 transformer와 굉장히 유사한 구조임
-		- 노드별로 representation이 있을 때, query와 key matrix를 만들어 이들의 내적을 통해 attention score를 구한 뒤 이들을 weight로써 사용하는 방법론
-		- adj matrix에서 연결 정보에 따라 masking한 매트릭스를 사용
-	- transformer와 차이
-		- positional encoding이 추가됨
-		- 전체 node에 대해 진행하기 때문에, masking 제거
-
-	- 추가로, transformer는 전체 그래프를 대상으로 하는 반면 GAT는 subgraph를 대상으로 진행
-
-12. Graphormer 모델
-	- transformer block을 사용
-	- node feature는 random init한 값을 사용
-	- 모델의 구성으로는 3가지 인코딩이 있음
-		1) centrality encoding
-	 	2) edge encoding
-	 	3) spatial encoding
 
 ## 5. Graphormer 모델 디테일
 
-
 ### 5-1. Centrality encoding
-- 그래프 내 중심성을 나타내는 지표
-	- degree, betweeness(두 노드가 연결될 때 한 노드를 지나간다면 그 사이에 얼마나 가중치가 있는가?), closeness, page rank, eigenvalue
+Centrality encoding은, 그래프 내 중심성을 반영하는 방법입니다. 그래프 내에서 어떤 노드가 중심인지를 나타내는 데 사용되는 지표로는, degree(노드에 연결된 엣지의 개수), betweeness(두 노드가 연결될 때 한 노드를 지나간다면 그 사이에 얼마나 가중치가 있는가를 측정), closeness, page rank, eigenvalue 등이 있습니다.  
 - 그래프에는 허브 노드가 존재함
 	- 인스타 팔로워가 많은 셀럽이 소셜 네트워크의 트렌드 예측에 더 중요
 - self-attention은 centrality 정보를 충분히 담지 못함
