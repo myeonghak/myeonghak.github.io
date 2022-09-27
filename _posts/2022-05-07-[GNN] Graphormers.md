@@ -129,17 +129,18 @@ Graphormer 모델은 이와 같은 transformer block을 사용하고, node featu
 
 ### 5-1. Centrality encoding
 Centrality encoding은, 그래프 내 중심성을 반영하는 방법입니다. 그래프 내에서 어떤 노드가 중심인지를 나타내는 데 사용되는 지표로는, degree(노드에 연결된 엣지의 개수), betweeness(두 노드가 연결될 때 한 노드를 지나간다면 그 사이에 얼마나 가중치가 있는가를 측정), closeness, page rank, eigenvalue 등이 있습니다.  
-- 그래프에는 허브 노드가 존재함
-	- 인스타 팔로워가 많은 셀럽이 소셜 네트워크의 트렌드 예측에 더 중요
-- self-attention은 centrality 정보를 충분히 담지 못함
-- centrality encoding을 degree값을 사용하여 나타냄 (learnable parameter)
-	- 초기에 random init하기 때문에 중요한 허브 노드가 무시되는 것을 방지하기 위해, degree를 이용해 처음에 가중치를 제공하고 그 이후에는 학습을 통해 업데이트 해나가는
-- 방향성 고려: in-degree emb와 out-degree emb를 따로 사용하여, 두개의 합을 centrality로 정의함
-- 이로써 의미의 유사성(노드 피처를 통해)과 노드의 중요도(centrality encoding을 통해)를 고려한 attention을 얻을 수 있음
+
+그래프에는 허브 노드가 존재합니다. 이러한 허브 노드는 우리가 풀고자 하는 다양한 문제에서 다른 일반적인 노드에 비해 상대적으로 더 큰 중요성을 갖습니다. 가령, 인스타 팔로워가 많은 셀럽이 소셜 네트워크의 트렌드 예측에 더 중요한 것처럼 말이죠.  
+
+그런데, self-attention은 centrality 정보를 충분히 담지 못합니다. 그래프를 구성하는 노드들 간의 중요성을 나타내는 attention score는 해당 노드가 전체 그래프 관점에서 갖는 중요도를 충분히 반영하기 못하기 때문이라고 이해할 수 있겠습니다.   
+
+Graphormer에서는, centrality encoding을 degree값을 사용하여 나타냈습니다. 초기에 random init하기 때문에 중요한 허브 노드가 무시되는 것을 방지하기 위해, degree를 이용해 초기에 가중치를 제공하고 그 이후에는 learnable parameter를 학습 시킴으로써 그 인코딩된 정보를 업데이트 해나가는 방식으로 학습합니다.  
+
+여기서는 방향성 역시 고려하는데, in-degree emb와 out-degree emb를 따로 사용하여, 두개의 합을 centrality로 정의합니다. 한쪽으로 편향된 노드의 경우 허브 노드로 간주하기 어려울 것 같습니다. 무작정 following만 수 만명을 클릭한 유저를 인스타그램 트랜드 예측에 중요한 허브 노드로 볼 수 없는 것처럼 말이죠. 이러한 방법으로, 의미의 유사성(노드 피처를 통해)과 노드의 중요도(centrality encoding을 통해)를 고려한 attention을 얻을 수 있게 됐습니다.  
 
 
 ### 5-2. Spatial Encoding
-- 고차원에 표현되는 노드의 위치정보를 나타내야 함
+그래프에서 고차원에 표현되는 노드의 위치정보를 나타내야
 - 그래프 내에서는 유클리드 거리를 사용할 수 없기 때문에, 절대적인 거리를 사용할 수 없음
 - BERT에서 사용됐던 relative positional encoding을 사용함.
 - relative positional encoding: Edge를 통해 연결된 정보를 기반으로, 노드 간의 거리를 측정함
