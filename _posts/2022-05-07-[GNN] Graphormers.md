@@ -32,7 +32,7 @@ tags:
 1.  [Introduction - 트랜스포머, 그래프에 진짜 안돼?](#intro)  
 2.  [Transformer 돌아보기](#transformer)  
 3.  [Graphormer란?](#offline)
-4.  [Graphormer 모델 디테일](#online)
+4.  [Graphormer의 세가지 인코딩 방법](#online)
 <br />
 
 
@@ -125,7 +125,7 @@ transformer는 이러한 attention 구조에 positional encoding이 추가되어
 Graphormer 모델은 이와 같은 transformer block을 사용하고, node feature로는 random하게 initialization한 값을 사용합니다. 여기에, 뒤에서 설명할 3가지 방법의 인코딩(centrality, edge, spatial encoding)을 적용함으로써 graph의 구조적인 정보를 임베딩에 반영합니다.
 
 
-## 5. Graphormer 모델 디테일
+## 5. Graphormer의 세가지 인코딩 방법
 
 ### 5-1. Centrality encoding
 Centrality encoding은, 그래프 내 중심성을 반영하는 방법입니다. 그래프 내에서 어떤 노드가 중심인지를 나타내는 데 사용되는 지표로는, degree(노드에 연결된 엣지의 개수), betweeness(두 노드가 연결될 때 한 노드를 지나간다면 그 사이에 얼마나 가중치가 있는가를 측정), closeness, page rank, eigenvalue 등이 있습니다.  
@@ -140,18 +140,16 @@ Graphormer에서는, centrality encoding을 degree값을 사용하여 나타냈�
 
 
 ### 5-2. Spatial Encoding
-그래프에서 고차원에 표현되는 노드의 위치정보를 나타내야
-- 그래프 내에서는 유클리드 거리를 사용할 수 없기 때문에, 절대적인 거리를 사용할 수 없음
-- BERT에서 사용됐던 relative positional encoding을 사용함.
-- relative positional encoding: Edge를 통해 연결된 정보를 기반으로, 노드 간의 거리를 측정함
-- 두 노드 간 최단 거리를 사전에 계산 해 놓음 (shortest path)
-- transformer layer에서는 모든 노드에 대한 정보를 한번에 받기 때문에, 상대적 거리에 따른 attention이 달라져야 함
-- 이렇게 거리 정보를 spatial encoding을 이용함으로써 그래프의 구조적 정보를 반영해 학습
+
+고차원 공간 상에 표현되는 노드의 위치 정보를 활용한다면, 더 나은 그래프의 임베딩을 얻을 수 있을 것 같습니다. 그런데, 그래프 내에서는 유클리드 거리를 사용할 수 없기 때문에 절대적인 거리 measure를 사용할 수 없습니다. 기존의 BERT에서는 sequential한 데이터에 위치 정보를 반영하기 위해 relative positional encoding을 사용했습니다. Graphormer에 적용된 relative positional encoding은 Edge를 통해 연결된 정보를 기반으로, 노드 간의 거리를 측정하는 방법입니다.  
+
+relative positional encoding 적용을 위해, 먼저 두 노드 간 최단 거리(shortest path)를 사전에 계산 해 놓습니다. transformer layer에서는 모든 노드에 대한 정보를 한번에 받기 때문에, 상대적 거리에 따른 attention이 달라져야 합는데, 이렇게 미리 구해 놓은 거리 정보를 spatial encoding으로 이용함으로써 그래프의 구조적 정보를 반영해 학습하게 됩니다.  
 
 ### 5-3. Edge Encoding
-- Edge embedding 값을 통해, 노드 간의 상관관계를 좀 더 표현하고자 함
-	-> 분자 구조에서 일반 결합, 이중 결합 같은 특징의 구조 표현
-	-> 연결 여부만을 binary로 표현하는 것이 아니라, 이들의 정보를 다르게 처리하는 것이 필요할
+Graphormer는 단순히 노드 정보만으로 그래프의 임베딩을 얻는 것이 아니라, Edge의 정보 또한 반영함으로써 노드 간의 상관관계를 녹여내려고 했습니다. 가령 분자 구조의 경우 일반 결합, 이중 결합처럼 다른 연결 특성이 있을 때 이를 고려한 표현을 얻어내는 것이 타당하겠죠. 단순히 연결 여부만을 binary로 표현하는 것이 아닌, 이러한 다양한 연결 정보를 다르게 처리하는 것이 필요해 보입니다.  
+
+먼저 최단거리를 구성하는 edge의 평균을 통해 두 노드의 관계를 표현합니다. 가령, 1-3-4번 노드를 지나가는 edge를 표현한다고 했을 때, edge feature 값을 random하게 초기화합니다.
+
 - 최단거리를 구성하는 edge의 평균을 통해 두 노드의 관계를 표현
 	- 1-3-4번 노드를 지나가는 edge를 표현한다고 해보자
 	- edge feature의 초기 값을 random init
@@ -163,18 +161,13 @@ Graphormer에서는, centrality encoding을 degree값을 사용하여 나타냈�
 - edge의 feature를 통해 특징을 표현해내고, shortest path 내에 있는 노드의 피처를 반영한 결과를 얻어 냄
 
 ### 5-4. Special Node
-- readout function 대신, 전체 노드와 연결되는 가상의 node 생성
-- BERT에서 CLS 토큰과 유사한 역할을 함
-- [Vnode] (=virtual node)는 일반 노드처럼 앞선 과정을 똑같이 수행함 (단, 실존하는 허브 노드와는 구별함)
-	-> spatial encoding에서 다른 값으로 처리함
+Special Node란, 그래프 내의 전체 노드와 연결되는 가상의 노드를 의미합니다. readout function을 사용하는 대신, special node를 도입하여 전체 그래프의 표현을 담아냅니다. 이는 BERT의 CLS 토큰과 유사한 역할을 한다고 생각해볼 수 있습니다.  
 
-- 학습시, [Vnode] 값을 통해, Graph Classification을 진행
-- [Vnode]는 전체 그래프에 대한 정보를 담음
-- self-attention 없이 [Vnode] 사용시, over smoothing 문제 발생
-	-> 적절한 weight를 학습한다면, 그래프를 나타낼 정보를 적절히 모든 노드에서 가져올 수 있음을 의미
+이러한 노드를 [Vnode] (=virtual node)로 표기합니다. 이 [Vnode]는 일반 노드처럼 앞서 설명한 인코딩 과정을 똑같이 수행하게 됩니다. 이 때, spatial encoding에서 다른 값으로 처리함으로써 실제로 존재하는 허브 노드와는 구별됩니다.  
 
-- 이 노드는 전체 노드와 연결된 채로 동일한 조건의 인코딩 방법을 적용해 학습됨
-- gcn에서도 동일한 방법을 시도했으나 over smoothing 문제를 겪음
+학습 시, [Vnode] 값을 통해 Graph Classification을 진행합니다. BERT의 CLS 토큰이 문장 전체의 임베딩을 담아내어 Text Classification과 같은 downstream task를 수행하는데 사용되는 것과 동일한 방식입니다. 이 [Vnode]를 self-attention 없이 사용하게 된다면, over smoothing 문제가 발생하게 됩니다. 즉, 전체 노드에 연결되어 있는 [Vnode]의 특성 상 여러 관계 없는 노드들 사이를 연결짓게 되고, 그 결과 각 노드의 표현을 얻어냄에 있어 차별화 되지 않는, 지나치게 서로 비슷한 결과를 얻게 되는 것입니다. 반면에 self-attention을 사용하여 적절한 weight를 가하여 aggregation한다면, 그래프를 대표할 수 있는 정보를 모든 노드에서부터 적절히 가져올 수 있음을 의미합니다. 이렇게 얻어진 [Vnode]를 통해 그래프를 대표할 수 있는 표현을 얻게 되고, 이로써 다양한 graph level의 task를 효과적으로 수행할 수 있다고 합니다.  
+
+
 
 ----------------
 
@@ -185,4 +178,4 @@ Graphormer에서는, centrality encoding을 degree값을 사용하여 나타냈�
 
 **출처**  
 
-https://www.youtube.com/watch?v=7Bp2kgkry1s
+https://www.youtube.com/watch?v=G2PoGAyg-1k&t=1672s
