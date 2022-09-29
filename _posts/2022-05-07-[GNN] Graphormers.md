@@ -150,15 +150,14 @@ Graphormer는 단순히 노드 정보만으로 그래프의 임베딩을 얻는 
 
 먼저 최단거리를 구성하는 edge의 평균을 통해 두 노드의 관계를 표현합니다. 가령, 1-3-4번 노드를 지나가는 edge를 표현한다고 했을 때, edge feature 값을 random하게 초기화합니다.
 
-- 최단거리를 구성하는 edge의 평균을 통해 두 노드의 관계를 표현
-	- 1-3-4번 노드를 지나가는 edge를 표현한다고 해보자
-	- edge feature의 초기 값을 random init
-		- e_1, e_2가 있음. 각각 1-3 사이, 3-4 사이에 있는 엣지임
-	- shortest path에 있는 feature SP_1이 있을 것
-	- 이 edge feature와 SP_1을 내적해 스칼라 값을 가져옴
-	- 또 마찬가지로 e2와 SP_2를 내적해 스칼라 값을 가져옴
-	- 이 둘을 평균 내 줌으로써(?) edge encoding의 값 E_14를 얻음
-- edge의 feature를 통해 특징을 표현해내고, shortest path 내에 있는 노드의 피처를 반영한 결과를 얻어 냄
+최단거리를 구성하는 edge의 평균을 통해 두 노드의 관계를 표현하는 방법에 대해서 설명하겠습니다.  
+
+
+위의 그림에서, 1-3-4번 노드를 지나가는 edge를 표현한다고 해보겠습니다.
+e_1, e_2가 주어졌다고 합시다. 각각 노드1-노드3 사이, 노드3-노드4 사이에 있는 엣지입니다. 먼저, edge feature의 초기 값을 random하게 초기화합니다.  
+
+shortest path에 있는 feature SP_1이 있습니다. 이 SP_1을 edge feature와 내적해 스칼라 값을 가져옵니다. 또, 마찬가지로 e2와 SP_2를 내적해 스칼라 값을 가져옵니다. 이 둘을 평균 내 줌으로써(?) edge encoding의 값 E_14를 얻습니다. edge의 feature를 통해 특징을 표현하고, shortest path 내에 있는 노드의 피처를 반영한 결과를 얻어 내게 됩니다.  
+
 
 ### 5-4. Special Node
 Special Node란, 그래프 내의 전체 노드와 연결되는 가상의 노드를 의미합니다. readout function을 사용하는 대신, special node를 도입하여 전체 그래프의 표현을 담아냅니다. 이는 BERT의 CLS 토큰과 유사한 역할을 한다고 생각해볼 수 있습니다.  
