@@ -13,7 +13,7 @@ tags:
 
 > 원제: Do Transformers Really Perform Bad for Graph Representation?  
 
-<center><img src="/assets/materials/graphs/graphormer/graphormer_00.png" align="center" alt="drawing" width="400"/></center>   
+<center><img src="/assets/materials/graphs/graphormer/graphormer_00.png" align="center" alt="drawing" width="500"/></center>   
 
 <br>
 
@@ -188,7 +188,7 @@ GCN의 경우 여러 개의 Convolution Layer를 쌓음으로써 multi-hop의(�
 ### 3-2. Graphormer의 특징
 
 
-<center><img src="/assets/materials/graphs/graphormer/graphormer_00.png" align="center" alt="drawing" width="400"/></center>   
+<center><img src="/assets/materials/graphs/graphormer/graphormer_00.png" align="center" alt="drawing" width="500"/></center>   
 
 <br>
 
@@ -215,7 +215,7 @@ Graphormer 모델은 이와 같은 transformer block을 사용하고, node featu
 
 <br>
 
-<center><img src="/assets/materials/graphs/graphormer/graphormer_06.png" align="center" alt="drawing" width="450"/></center>   
+<center><img src="/assets/materials/graphs/graphormer/graphormer_06.png" align="center" alt="drawing" width="350"/></center>   
 
 <br>
 
@@ -242,7 +242,7 @@ Graphormer에서는, centrality encoding을 degree값을 사용하여 나타냈�
 
 <br>
 
-<center><img src="/assets/materials/graphs/graphormer/graphormer_07.png" align="center" alt="drawing" width="450"/></center>   
+<center><img src="/assets/materials/graphs/graphormer/graphormer_07.png" align="center" alt="drawing" width="250"/></center>   
 
 <br>
 
@@ -258,7 +258,7 @@ relative positional encoding 적용을 위해, 먼저 두 노드 간 최단 거�
 
 <br>
 
-<center><img src="/assets/materials/graphs/graphormer/graphormer_08.png" align="center" alt="drawing" width="450"/></center>   
+<center><img src="/assets/materials/graphs/graphormer/graphormer_08.png" align="center" alt="drawing" width="250"/></center>   
 
 <br>
 
@@ -273,7 +273,7 @@ Graphormer는 단순히 노드 정보만으로 그래프의 임베딩을 얻는 
 
 <br>
 
-<center><img src="/assets/materials/graphs/graphormer/graphormer_09.png" align="center" alt="drawing" width="450"/></center>   
+<center><img src="/assets/materials/graphs/graphormer/graphormer_09.png" align="center" alt="drawing" width="250"/></center>   
 
 <br>
 
