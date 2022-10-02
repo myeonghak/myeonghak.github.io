@@ -13,11 +13,9 @@ tags:
 
 > 원제: Do Transformers Really Perform Bad for Graph Representation?  
 
-<center><img src="/assets/materials/graphs/graphormer/graphormer_00.png" align="center" alt="drawing" width="500"/></center>   
+<center><img src="/assets/materials/graphs/graphormer/graphormer_00.png" align="center" alt="drawing" width="400"/></center>   
 
 <br>
-
-<br/>
 
 ----
 
