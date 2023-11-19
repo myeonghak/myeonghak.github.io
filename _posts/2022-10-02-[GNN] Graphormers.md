@@ -1,5 +1,5 @@
 ---
-title: "[GNN] Graphormer 훑어보기"
+title: "[LLM] Graphormer 훑어보기"
 categories:
   - Graph Neural Networks
 tags:
