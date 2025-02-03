@@ -110,8 +110,33 @@ Spark의 빠른 데이터 처리 기능에는 몇 가지 이유가 있습니다:
 본질적으로 Spark의 아키텍처와 설계 원칙은 일관되게 작동하여 효율적이고 신속하며 확장 가능한 데이터 처리를 보장합니다. 인메모리 컴퓨팅, 최적화된 계산, 병렬 처리 등 Spark 설계의 모든 측면이 선도적인 빅 데이터 처리 프레임워크로서의 위상에 기여합니다. 이러한 기초적인 이해를 바탕으로 다음 섹션에서는 Pyspark를 사용한 데이터 전처리에 대해 자세히 알아보겠습니다!
 
 
+<br />
 
+---
 
+<a id="prepro1"></a>
+## 3. Pyspark 전처리 1 - 간단한 DF 조작과 결측치 처리
+
+이번 섹션에서는 Pyspark의 DataFrame(이하 DF)을 Pandas처럼 가볍게 핸들링하는 방법을 살펴봅니다. 특히, 결측치를 처리하기 위한 간단한 기능들도 같이 다룰 예정입니다.
+
+### 3.1 SparkSession 생성과 데이터 불러오기
+Spark를 사용하려면 가장 먼저 `SparkSession`을 생성해야 합니다. Spark 2.0 이후로는 `SparkContext` 대신 `SparkSession`을 이용해 작업하는 방식이 일반적입니다.
+
+```python
+from pyspark.sql import SparkSession
+
+# SparkSession 생성
+spark = SparkSession.builder \
+    .appName("MyPysparkApp") \
+    .getOrCreate()
+
+# 데이터 불러오기 (CSV 예시)
+df = spark.read.csv("sample_data.csv", header=True, inferSchema=True)
+
+# 간단히 내용 살펴보기
+df.show(5)
+df.printSchema()
+```
 
 
 
