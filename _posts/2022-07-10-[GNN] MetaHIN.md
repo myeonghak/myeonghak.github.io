@@ -135,7 +135,7 @@ $$
 
 HIN(Heterogeneous Information Network)은 knowledge graph의 일종으로 볼 수 있는데요, 이 블로그에서는 [HAN 리뷰](https://myeonghak.github.io/recommender%20systems/RecSys-Heterogeneous-Graph-Attention-Networks-paper-review/)와 [DisenHAN 포스트](https://myeonghak.github.io/graph%20neural%20networks/GNN-DisenHAN/)에서도 다룬 바 있습니다.
 
-- **Heterogeneous**: 노드의 종류도 여러 가지이고, 엣지의 종류도 여러 가지임. 유저/영화/감독/배우 등의 노드가 있고, 평점·출연·연출 등의 다양한 관계가 엣지로 존재함
+- **Heterogeneous**: 노드의 종류도 여러 가지이고, 엣지의 종류도 여러 가지임. 유저/영화/감독/배우 등의 노드가 있고, 평점, 출연, 연출 등의 다양한 관계가 엣지로 존재함
 - user-item interaction뿐 아니라 user-user, item-item 관계도 함께 모델링할 수 있음
 - 따라서 **직접적인 피드백이 존재하지 않는 user-item 간의 관계**도 잡아낼 수 있음 (예: 내가 좋아한 감독의 다른 영화)
 
@@ -258,7 +258,7 @@ MAML의 inner loop가 "task별" 한 겹이었다면, MetaHIN은 "meta-path별 + 
 
 **3) Optimization: query set으로 global update**
 
-이제 MAML의 outer loop에 해당하는 global update입니다. 유저·semantic context별로 로컬 업데이트한 파라미터를 바탕으로, query set $\mathcal{Q}_u$를 이용해 global prior $\theta = \lbrace \phi, \omega \rbrace$를 업데이트합니다.
+이제 MAML의 outer loop에 해당하는 global update입니다. 유저, semantic context별로 로컬 업데이트한 파라미터를 바탕으로, query set $\mathcal{Q}_u$를 이용해 global prior $\theta = \lbrace \phi, \omega \rbrace$를 업데이트합니다.
 
 $$
 \min_\theta \sum_{\mathcal{T}_u \in \mathcal{T}^{tr}} \mathcal{L}_{\mathcal{T}_u}(\omega_u, x_u, \mathcal{Q}_u^{\mathcal{R}})
@@ -293,7 +293,7 @@ loss가 큰 semantic space일수록 가중치가 작아지도록 한, 아주 직
 
 ### 비교 모델
 
-- **Traditional**: FM, NeuMF, GC-MC(유저-아이템 피드백을 bipartite graph로 표현해 graph autoencoder로 link prediction 수행). MetaHIN과의 공정한 비교를 위해 배우·감독 같은 heterogeneous 정보를 유저/아이템 피처로 넣어 줌 (연결 구조까지는 고려하지 않음)
+- **Traditional**: FM, NeuMF, GC-MC(유저-아이템 피드백을 bipartite graph로 표현해 graph autoencoder로 link prediction 수행). MetaHIN과의 공정한 비교를 위해 배우, 감독 같은 heterogeneous 정보를 유저/아이템 피처로 넣어 줌 (연결 구조까지는 고려하지 않음)
 - **HIN-based**: metapath2vec, HERec. MetaHIN과 동일한 meta-path 구조를 사용함
 - **Cold-start**: content 기반의 DropoutNet, 메타러닝 기반의 MeLU, MetaEmb. 여기서도 heterogeneous 정보를 피처로 넣어 줌
 
@@ -336,9 +336,9 @@ $\phi$에 대한 업데이트(semantic-wise)나 global prior의 공유를 빼면
 - **MetaHIN-TA**: 유저별(task-wise) 메타러닝만 적용함. semantic context는 사용하지만 facet을 구분하지 않고 하나로 합쳐 버림. MeLU와 유사한 구조
 - **MetaHIN-ID**: meta-path별로 task-wise adaptation을 독립적으로 수행함. 여러 semantic facet이 공유하는 global prior 없이, 각 facet마다 prior를 따로 학습함
 
-- MetaHIN-TA가 MeLU보다 대체로 좋음 → HIN의 semantic context 자체가 cold-start 완화에 도움이 됨
-- 그래도 MetaHIN에는 못 미침 → semantic context를 그냥 뭉쳐 넣는 것만으로는 부족하고, facet별 세분화된 적응(semantic-wise adaptation)이 중요함
-- MetaHIN-ID도 MetaHIN보다 낮음 → facet 간에 공유되는 global prior가 있어야 HIN 위의 context로 학습하는 일반적인 지식을 잃지 않음
+- MetaHIN-TA가 MeLU보다 대체로 좋음 -> HIN의 semantic context 자체가 cold-start 완화에 도움이 됨
+- 그래도 MetaHIN에는 못 미침 -> semantic context를 그냥 뭉쳐 넣는 것만으로는 부족하고, facet별 세분화된 적응(semantic-wise adaptation)이 중요함
+- MetaHIN-ID도 MetaHIN보다 낮음 -> facet 간에 공유되는 global prior가 있어야 HIN 위의 context로 학습하는 일반적인 지식을 잃지 않음
 
 참고로 파라미터 분석에서는 semantic-wise, task-wise adaptation step을 각각 1번만 해도(s = t = 1) 성능이 충분히 안정적이었다고 합니다. 온라인 추천에서 효율을 생각하면 반가운 결과죠.
 

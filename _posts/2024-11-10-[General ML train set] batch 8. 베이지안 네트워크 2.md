@@ -222,7 +222,7 @@ P(B=True , E=True  | jc, mc) = 0.0006
 
 지금까지의 풀이 흐름을 정리하면 항상 같았습니다.  
 
-- full joint를 만듦 → 원하는 부분 joint가 되도록 hidden variable을 marginalize함 → 조건부 확률을 계산함 → 라벨(assignment)을 결정함  
+- full joint를 만듦 -> 원하는 부분 joint가 되도록 hidden variable을 marginalize함 -> 조건부 확률을 계산함 -> 라벨(assignment)을 결정함  
 
 따라서 계산의 핵심은 joint probability를 구하는 일이고, 여기에는 아주 많은 곱셈과 덧셈이 필요합니다. 예를 들어 5개 변수 중 3개($a, b, mc$)만 관측된 상황에서 partial joint를 구해 보겠습니다.  
 
@@ -361,10 +361,10 @@ $$
 
 $A$에 대한 evidence가 들어와 $\psi(A, B)$가 바뀌면 다음 순서로 전파됩니다.  
 
-1) $\psi^{*}(A, B)$를 $A$에 대해 marginalize → $\phi^{*}(B) = P^{*}(B)$  
-2) $P^{*}(B)$로 $\psi(B, C)$를 업데이트 → $P^{*}(B, C)$  
-3) 다시 $B$에 대해 marginalize → $\phi^{*}(C) = P^{*}(C)$  
-4) $\psi(C, D)$를 업데이트 → $P^{*}(C, D)$  
+1) $\psi^{*}(A, B)$를 $A$에 대해 marginalize -> $\phi^{*}(B) = P^{*}(B)$  
+2) $P^{*}(B)$로 $\psi(B, C)$를 업데이트 -> $P^{*}(B, C)$  
+3) 다시 $B$에 대해 marginalize -> $\phi^{*}(C) = P^{*}(C)$  
+4) $\psi(C, D)$를 업데이트 -> $P^{*}(C, D)$  
 
 이렇게 recursive하게 끝까지 전파됩니다. 도미노가 넘어가는 모습을 떠올리시면 될 것 같습니다.  
 

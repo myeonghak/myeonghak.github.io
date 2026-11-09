@@ -24,9 +24,9 @@ tags:
 
 >  **1. LangChain은 LLM 호출 자체보다는, LLM을 프롬프트 / 외부 데이터 / 도구 / 메모리와 "연결(chain)"하는 접착제 역할을 하는 프레임워크임**
 >
->  **2. 사내 문서, 책, 유튜브 자막처럼 모델이 모르는 데이터는 Loader → Splitter → Embedding → VectorStore로 인덱싱한 뒤, 질문 시 관련 chunk만 찾아 프롬프트에 넣는 RAG 방식으로 다룸**
+>  **2. 사내 문서, 책, 유튜브 자막처럼 모델이 모르는 데이터는 Loader -> Splitter -> Embedding -> VectorStore로 인덱싱한 뒤, 질문 시 관련 chunk만 찾아 프롬프트에 넣는 RAG 방식으로 다룸**
 >
->  **3. Agent는 ReAct 논문의 Thought → Action → Observation 루프를 구현한 것으로, LLM이 스스로 어떤 도구(검색, 계산기, API)를 쓸지 결정함**
+>  **3. Agent는 ReAct 논문의 Thought -> Action -> Observation 루프를 구현한 것으로, LLM이 스스로 어떤 도구(검색, 계산기, API)를 쓸지 결정함**
 
 <br/>
 
@@ -132,7 +132,7 @@ LLM의 출력은 결국 문자열이기 때문에, 이를 프로그램에서 쓰
 
 위 예제의 `LLMChain`은 가장 기본적인 체인으로, **PromptTemplate + LLM (+ OutputParser)** 를 묶은 것입니다. 실제 애플리케이션에서는 한 번의 호출로 끝나지 않는 경우가 많은데요,  
 
-- `SimpleSequentialChain`: 앞 체인의 출력을 다음 체인의 입력으로 그대로 넘김 (예: 지역을 받아 대표 요리를 고르고 → 그 요리의 레시피를 생성)  
+- `SimpleSequentialChain`: 앞 체인의 출력을 다음 체인의 입력으로 그대로 넘김 (예: 지역을 받아 대표 요리를 고르고 -> 그 요리의 레시피를 생성)  
 - `SequentialChain`: 여러 입력/출력 변수를 이름으로 주고받는 일반화된 버전  
 - `RetrievalQA`, `load_summarize_chain` 등: 자주 쓰는 패턴을 미리 조립해 둔 완성형 체인  
 
@@ -175,7 +175,7 @@ LLM API는 기본적으로 stateless입니다. "아까 내가 처음에 뭐라�
 2. 벡터 저장소에서 코사인 유사도 기준 Top-k chunk를 찾음  
 3. 질문 + 검색된 chunk를 프롬프트에 넣고 LLM이 답변을 생성함  
 
-여기서 `RecursiveCharacterTextSplitter`가 "recursive"인 이유가 궁금하실 수 있는데요, 문단(`\n\n`) → 줄바꿈(`\n`) → 공백 → 글자 순으로 구분자를 바꿔가며 chunk가 지정 크기 이하가 될 때까지 재귀적으로 쪼개기 때문입니다. 덕분에 가능한 한 의미 단위(문단, 문장)를 보존하면서 자를 수 있습니다. overlap을 주는 이유는 chunk 경계에서 문맥이 끊기는 것을 완화하기 위함이고요.  
+여기서 `RecursiveCharacterTextSplitter`가 "recursive"인 이유가 궁금하실 수 있는데요, 문단(`\n\n`) -> 줄바꿈(`\n`) -> 공백 -> 글자 순으로 구분자를 바꿔가며 chunk가 지정 크기 이하가 될 때까지 재귀적으로 쪼개기 때문입니다. 덕분에 가능한 한 의미 단위(문단, 문장)를 보존하면서 자를 수 있습니다. overlap을 주는 이유는 chunk 경계에서 문맥이 끊기는 것을 완화하기 위함이고요.  
 
 코드로 보면 다음과 같은 흐름입니다.  
 
@@ -312,7 +312,7 @@ LangChain의 Agent는 이 루프를 그대로 구현합니다.
 - 비용을 줄이려면 LLM에 넘기는 텍스트(특히 HTML)를 최대한 줄이라는 조언이 핵심임  
 
 **토픽 추출과 구조화**  
-- 팟캐스트 녹취록에서 주제명과 한 줄 설명을 뽑고(GPT-4) → 스키마에 맞춰 구조화하고(function calling) → 주제별로 상세 요약과 타임스탬프를 추가함(GPT-3.5)  
+- 팟캐스트 녹취록에서 주제명과 한 줄 설명을 뽑고(GPT-4) -> 스키마에 맞춰 구조화하고(function calling) -> 주제별로 상세 요약과 타임스탬프를 추가함(GPT-3.5)  
 - 추론이 많이 필요한 단계와 단순 반복 단계에 서로 다른 모델을 쓰는 것이 비용 측면에서 현실적인 선택임  
 
 **문체 / 어조 제어**  

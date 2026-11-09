@@ -168,7 +168,7 @@ Karatzoglou의 발표는 이제 그래프 이야기로 넘어갑니다. 요즘 �
 
 여기에 context를 추가하면 user-item뿐만 아니라 **user-context-item**의 관계를 담은 N-partite graph를 만들 수 있습니다.
 
-- 예: "user 1이 코펜하겐에서, 토요일 밤에, 직전에 'Oh La La'를 들었다" → 다음 곡은?
+- 예: "user 1이 코펜하겐에서, 토요일 밤에, 직전에 'Oh La La'를 들었다" -> 다음 곡은?
 - 하나의 interaction이 발생하면 그 user와 item이 당시의 context 노드들(시간, 장소, 직전 곡...)과 동시에 연결됨
 - 이를 행렬로 펼치면 앞서 본 매우 sparse한 텐서가 되는데, 그래프로 보면 context 노드를 매개로 정보가 퍼져나갈 수 있다는 점이 다름
 

@@ -239,7 +239,7 @@ GNNExplainer는 GNN의 forward를 마음대로 호출하고 gradient만 받을 �
 설명 기법을 평가할 때 가장 어려운 점은 "정답 설명"이 무엇인지 모른다는 것입니다. 그래서 논문에서는 정답을 알고 있는 synthetic 그래프를 만들어 평가합니다.  
 
 - Barabasi-Albert(BA) 그래프나 balanced tree 같은 base 그래프에, house, cycle, grid 모양의 **motif**를 붙임  
-- 노드의 label은 해당 노드가 motif의 어느 위치에 속하는지에 따라 결정됨 → 모델이 올바르게 예측하려면 motif 구조를 봐야 하므로, motif가 곧 정답 설명이 됨  
+- 노드의 label은 해당 노드가 motif의 어느 위치에 속하는지에 따라 결정됨 -> 모델이 올바르게 예측하려면 motif 구조를 봐야 하므로, motif가 곧 정답 설명이 됨  
 - 설명 기법이 각 edge에 매긴 중요도 점수를 예측 점수로, 정답 motif에 속하는지 여부를 label로 보고 이진 분류처럼 **explanation accuracy**를 계산함  
 - 비교 대상은 gradient 기반 saliency(**Grad**)와 GAT의 attention 가중치(**Att**)임  
 

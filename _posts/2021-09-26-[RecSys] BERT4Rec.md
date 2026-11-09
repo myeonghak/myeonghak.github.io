@@ -54,7 +54,7 @@ tags:
 
 **1) Sequential Recommendation**
 
-- 상품1 → 상품2 → 상품3처럼 유저가 순서대로 소비한 기록을 활용하는 방법임
+- 상품1 -> 상품2 -> 상품3처럼 유저가 순서대로 소비한 기록을 활용하는 방법임
 - 시퀀스 데이터를 다루는 문제이다 보니, 자연어처리에서 개발된 방법론(RNN, CNN, Self-Attention 등)이 그대로 응용되는 경우가 많음
 - 오늘 다룰 BERT4Rec이 바로 이 갈래에 속함
 
@@ -108,7 +108,7 @@ MF든 BPR이든 공통점은 **유저의 과거 행동을 순서 없는 집합�
 
 순차 추천은 특히 e-commerce처럼 유저의 관심사가 세션 단위로 빠르게 바뀌는 상황에서 유용합니다. 방금 노트북을 샀다면 다음엔 노트북 파우치나 마우스를 보여주는 게 자연스럽겠죠. 이 분야는 자연어처리의 발전을 거의 그대로 따라왔다고 해도 과언이 아닌데, 대략 다음과 같은 흐름입니다.
 
-> **GRU4Rec (RNN) → Caser (CNN) → SASRec (Self-Attention) → BERT4Rec (Bidirectional Self-Attention)**
+> **GRU4Rec (RNN) -> Caser (CNN) -> SASRec (Self-Attention) -> BERT4Rec (Bidirectional Self-Attention)**
 
 ### Markov Chain 계열은 왜 잘 됐을까?
 
@@ -255,7 +255,7 @@ inference       : ['v1', 'v2', 'v3', 'v4', 'v5', '[mask]']
 
 ### 성능 향상은 양방향 덕분일까, Cloze 덕분일까?
 
-좋은 질문인데요, 논문에서도 이 둘을 분리해서 확인합니다. Cloze task에서 마지막 아이템 하나만 마스킹하도록 제한한 "BERT4Rec (1 mask)"를 만들어 SASRec과 비교하면, 두 모델의 차이는 사실상 양방향 attention 여부뿐입니다. Beauty 기준 HR@10이 SASRec 0.2653 → BERT4Rec (1 mask) 0.2940 → BERT4Rec 0.3025로 올라가는데, **양방향 구조와 Cloze 목적함수 모두 성능에 기여**한다는 것을 알 수 있습니다.
+좋은 질문인데요, 논문에서도 이 둘을 분리해서 확인합니다. Cloze task에서 마지막 아이템 하나만 마스킹하도록 제한한 "BERT4Rec (1 mask)"를 만들어 SASRec과 비교하면, 두 모델의 차이는 사실상 양방향 attention 여부뿐입니다. Beauty 기준 HR@10이 SASRec 0.2653 -> BERT4Rec (1 mask) 0.2940 -> BERT4Rec 0.3025로 올라가는데, **양방향 구조와 Cloze 목적함수 모두 성능에 기여**한다는 것을 알 수 있습니다.
 
 ### Attention은 어디를 보고 있을까?
 

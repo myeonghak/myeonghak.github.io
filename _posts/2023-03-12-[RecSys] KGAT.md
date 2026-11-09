@@ -366,9 +366,9 @@ KGAT는 모든 데이터셋에서 가장 좋은 성능을 보였고, 가장 강�
 
 ### Ablation에서 눈여겨볼 점  
 
-- **레이어 깊이**: KGAT-1 → 2 → 3으로 쌓을수록 성능이 꾸준히 오르고, KGAT-4는 소폭 개선에 그침. 3차(third-order) 관계 정도면 충분히 정보를 담는다는 의미임  
+- **레이어 깊이**: KGAT-1 -> 2 -> 3으로 쌓을수록 성능이 꾸준히 오르고, KGAT-4는 소폭 개선에 그침. 3차(third-order) 관계 정도면 충분히 정보를 담는다는 의미임  
 - **Aggregator**: (KGAT-1 기준) Bi-Interaction > GCN > GraphSAGE. GraphSAGE는 $\mathbf{e}_h$와 $\mathbf{e}_{\mathcal{N}_h}$의 상호작용을 포기하기 때문이라고 분석함  
-- **KGE와 Attention 제거**: TransR 학습(KGE)을 빼거나 attention을 빼면 모두 성능이 떨어지고, 둘 다 빼면 가장 크게 떨어짐 (Amazon-book recall 0.1393 → 0.1367)  
+- **KGE와 Attention 제거**: TransR 학습(KGE)을 빼거나 attention을 빼면 모두 성능이 떨어지고, 둘 다 빼면 가장 크게 떨어짐 (Amazon-book recall 0.1393 -> 0.1367)  
 
 
 <a id="explain"></a>

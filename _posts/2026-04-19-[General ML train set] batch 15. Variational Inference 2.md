@@ -296,7 +296,7 @@ hidden끼리의 coordinate update(E-step 내부)와 hidden-파라미터 사이�
 
 #### Gibbs sampling과 비교  
 
-5×5 격자의 가로·세로 막대 10개를 토픽으로 삼아 300개의 가상 문서를 만들고, 위의 variational EM과 13편의 collapsed Gibbs sampling으로 각각 토픽을 복원해 보았습니다. (둘 다 numpy로 단순하게 짠 구현입니다.)  
+5×5 격자의 가로, 세로 막대 10개를 토픽으로 삼아 300개의 가상 문서를 만들고, 위의 variational EM과 13편의 collapsed Gibbs sampling으로 각각 토픽을 복원해 보았습니다. (둘 다 numpy로 단순하게 짠 구현입니다.)  
 
 <br>
 
@@ -327,7 +327,7 @@ hidden끼리의 coordinate update(E-step 내부)와 hidden-파라미터 사이�
 
 이번 포스트에서는 평균과 정밀도를 모르는 가우시안 모델로 mean-field VI를 처음부터 끝까지 유도해 보고, 같은 레시피를 LDA에 적용해 Gibbs sampling과 비교해 보았습니다.  
 
-그리고 이 포스트로 [General ML Train set] 시리즈를 마무리합니다. 확률과 MLE·MAP에서 출발해 룰 기반 학습과 Decision Tree, 나이브 베이즈, 로지스틱 회귀, 정규화, 베이지안 네트워크, GMM과 EM, HMM, Sampling을 거쳐 Variational Inference까지 왔네요. 2021년에 첫 글을 올렸으니 생각보다 꽤 오래 걸렸습니다. 중간에 손을 놓았던 기간도 길었지만, 그래도 끝까지 왔다는 데에 작은 의미를 두고 싶습니다.  
+그리고 이 포스트로 [General ML Train set] 시리즈를 마무리합니다. 확률과 MLE, MAP에서 출발해 룰 기반 학습과 Decision Tree, 나이브 베이즈, 로지스틱 회귀, 정규화, 베이지안 네트워크, GMM과 EM, HMM, Sampling을 거쳐 Variational Inference까지 왔네요. 2021년에 첫 글을 올렸으니 생각보다 꽤 오래 걸렸습니다. 중간에 손을 놓았던 기간도 길었지만, 그래도 끝까지 왔다는 데에 작은 의미를 두고 싶습니다.  
 
 정리하면서 새삼 느낀 것은, 이 고전적인 아이디어들이 지금도 전혀 낡지 않았다는 점입니다. VAE는 이번 편의 ELBO를 신경망과 reparameterization trick으로 최적화하는 모델이고, diffusion model의 학습 목표 역시 ELBO에서 유도됩니다. LLM을 학습시키는 cross-entropy loss는 1편의 MLE 그 자체이며, RLHF에서 정책이 원래 모델에서 너무 멀어지지 않도록 붙이는 KL penalty도 이번에 다룬 KL divergence입니다. 도구는 바뀌어도 그 밑에 깔린 언어는 여전히 확률과 추론인 것 같습니다. 부족한 글을 끝까지 읽어 주셔서 감사합니다.  
 

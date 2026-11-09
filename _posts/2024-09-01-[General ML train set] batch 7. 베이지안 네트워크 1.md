@@ -288,7 +288,7 @@ Alarm에서 JohnCalls와 MaryCalls가 갈라져 나오는 구조입니다.
 
 #### Cascading (head-to-tail)  
 
-Burglary → Alarm → MaryCalls처럼 순차적으로 이어진 구조입니다.  
+Burglary -> Alarm -> MaryCalls처럼 순차적으로 이어진 구조입니다.  
 
 - $A$가 주어지면 $B$와 $M$은 독립: $B \perp M \mid A$  
 - 즉, $P(M \mid B, A) = P(M \mid A)$  

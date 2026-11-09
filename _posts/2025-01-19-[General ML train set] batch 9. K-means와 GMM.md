@@ -396,8 +396,8 @@ $$
 P(x) = \sum_{k=1}^{K} \pi_k \, \mathcal{N}(x \mid \mu_k, \Sigma_k)
 $$
 
-- $\pi_k$: **mixing coefficient**. $k$번째 집단이 전체에서 차지하는 비중으로, $\pi_k \ge 0, \sum_k \pi_k = 1$을 만족함 → **다항 분포**로 모델링함  
-- $\mathcal{N}(x \mid \mu_k, \Sigma_k)$: **mixture component**. $k$번째 subpopulation의 분포 → **다변수 가우시안 분포**로 모델링함  
+- $\pi_k$: **mixing coefficient**. $k$번째 집단이 전체에서 차지하는 비중으로, $\pi_k \ge 0, \sum_k \pi_k = 1$을 만족함 -> **다항 분포**로 모델링함  
+- $\mathcal{N}(x \mid \mu_k, \Sigma_k)$: **mixture component**. $k$번째 subpopulation의 분포 -> **다변수 가우시안 분포**로 모델링함  
 
 <br>
 
@@ -411,8 +411,8 @@ $$
 
 이제 데이터 포인트가 **여러 개의 다변수 가우시안 분포를 혼합한 분포에서 뽑혀 왔다**고 가정해 보겠습니다. 데이터가 생성되는 과정을 다음과 같이 이야기로 풀어 볼 수 있습니다.  
 
-1) 먼저 $K$면짜리 (공정하지 않은) 주사위를 던져 어느 군집에서 뽑을지 고름 → $z$  
-2) 선택된 군집 $k$의 가우시안 분포에서 $x$를 하나 뽑음 → $x \mid z$  
+1) 먼저 $K$면짜리 (공정하지 않은) 주사위를 던져 어느 군집에서 뽑을지 고름 -> $z$  
+2) 선택된 군집 $k$의 가우시안 분포에서 $x$를 하나 뽑음 -> $x \mid z$  
 
 여기서 $z$는 one-hot 벡터인 **selection variable**로, 앞에서 본 다항 분포를 따릅니다.  
 

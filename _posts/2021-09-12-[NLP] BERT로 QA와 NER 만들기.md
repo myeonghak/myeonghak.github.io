@@ -226,12 +226,12 @@ BERT로 QA를 만드는 게 이렇게 간단하다는 것을 알고 나니, 반�
 
 문장을 질문으로 바꾸는 규칙은 질문 유형별로 다릅니다.
 
-- **Binary question**: yes/no로 답할 수 있는 질문. 문장에서 동사와 주어(명사)를 찾아 위치를 바꿔 질문을 만듦 (He is a doctor → Is he a doctor?)
-- **Compound question**: 일반 동사가 있는 경우, 조동사(do/does/did)를 만들어 문장 맨 앞으로 꺼내고 동사는 원형으로 바꿈 (John likes Gucci → Does John like Gucci?)
-- **형용사 변환**: POS(Part-Of-Speech) 태깅으로 형용사를 찾아 유의어나 반의어로 바꿔 질문을 다양화함 (Is he good? → Is he nice?)
+- **Binary question**: yes/no로 답할 수 있는 질문. 문장에서 동사와 주어(명사)를 찾아 위치를 바꿔 질문을 만듦 (He is a doctor -> Is he a doctor?)
+- **Compound question**: 일반 동사가 있는 경우, 조동사(do/does/did)를 만들어 문장 맨 앞으로 꺼내고 동사는 원형으로 바꿈 (John likes Gucci -> Does John like Gucci?)
+- **형용사 변환**: POS(Part-Of-Speech) 태깅으로 형용사를 찾아 유의어나 반의어로 바꿔 질문을 다양화함 (Is he good? -> Is he nice?)
 - **Wh-question**: NER로 문장 속 개체(사람, 장소, 시간 등)를 찾고, 그 개체 자리를 who / where / when 등으로 바꿔 질문을 만듦
 
-전체 흐름은 "문서 → 토크나이징 → 대명사 변환 → binary question 생성 → NER을 이용한 wh-question 생성"이고, 결과는 `{"who": [...], "when": [...], "what": [...]}`처럼 **wh 유형을 key로, 해당 유형의 질문 리스트를 value로 갖는 dict** 형태로 나옵니다.
+전체 흐름은 "문서 -> 토크나이징 -> 대명사 변환 -> binary question 생성 -> NER을 이용한 wh-question 생성"이고, 결과는 `{"who": [...], "when": [...], "what": [...]}`처럼 **wh 유형을 key로, 해당 유형의 질문 리스트를 value로 갖는 dict** 형태로 나옵니다.
 
 생성된 질문을 반환할 때는 유형 간 빈도 차이를 고려합니다. 보통 binary 질문은 많이 만들어지고 why 질문은 적게 만들어지니, **희소한 유형의 질문부터 우선적으로 반환** 해 질문의 다양성을 확보하는 방식입니다.
 
@@ -263,7 +263,7 @@ binary 질의의 예를 들어 보겠습니다.
 
 발표는 "BERT가 기본 도구가 되어가는데, 나도 한 번 제대로 써 봐야겠다!"라는 동기에서 출발합니다. 진행 순서는 다음과 같았다고 합니다.
 
-**task 정의 → 데이터 탐색 → 결과물 형태 결정 → contribution 정의 → evaluation**
+**task 정의 -> 데이터 탐색 -> 결과물 형태 결정 -> contribution 정의 -> evaluation**
 
 마지막 evaluation을 특히 강조하셨는데요, 각 단계를 정리해 보면 다음과 같습니다.
 

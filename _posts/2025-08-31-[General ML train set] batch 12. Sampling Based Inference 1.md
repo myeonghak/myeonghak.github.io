@@ -78,11 +78,11 @@ GMM이나 HMM에서 EM으로 parameter inference를 했던 것을 떠올려 보�
 
 한 번의 샘플링은 다음과 같이 진행됩니다.  
 
-1) $B$를 $P(B)$에서 뽑음 → False  
-2) $E$를 $P(E)$에서 뽑음 → False  
-3) $A$를 $P(A \mid B=F, E=F)$에서 뽑음 → True  
-4) $JC$를 $P(JC \mid A=T)$에서 뽑음 → True  
-5) $MC$를 $P(MC \mid A=T)$에서 뽑음 → False  
+1) $B$를 $P(B)$에서 뽑음 -> False  
+2) $E$를 $P(E)$에서 뽑음 -> False  
+3) $A$를 $P(A \mid B=F, E=F)$에서 뽑음 -> True  
+4) $JC$를 $P(JC \mid A=T)$에서 뽑음 -> True  
+5) $MC$를 $P(MC \mid A=T)$에서 뽑음 -> False  
 
 이렇게 하면 $(B, E, A, JC, MC) = (F, F, T, T, F)$라는 샘플 하나가 완성됩니다. 이 과정을 무수히 반복한 뒤, 관심 있는 케이스의 개수를 세면 됩니다. 예를 들어 $P(E \mid MC)$가 궁금하다면 다음과 같이 계산합니다.  
 
@@ -264,9 +264,9 @@ Exact              : 0.4046
 1) $SumSW = NormSW = 0$으로 초기화  
 2) 아래를 여러 번 반복  
    - Sampling weight $SW = 1$  
-   - $B$, $E$를 평소처럼 샘플링 → 예: $B=F, E=F$  
+   - $B$, $E$를 평소처럼 샘플링 -> 예: $B=F, E=F$  
    - $A$는 evidence이므로 $A=F$로 고정하고, $SW \leftarrow SW \times P(A=F \mid B=F, E=F) = 1 \times 0.999$  
-   - $JC$는 평소처럼 샘플링 → 예: True (질의와 무관하므로 중요하지 않음)  
+   - $JC$는 평소처럼 샘플링 -> 예: True (질의와 무관하므로 중요하지 않음)  
    - $MC$는 evidence이므로 $MC=T$로 고정하고, $SW \leftarrow SW \times P(MC=T \mid A=F) = 0.999 \times 0.01$  
    - 이 샘플에서 $E=T$였다면 $SumSW \mathrel{+}= SW$  
    - 모든 샘플에 대해 $NormSW \mathrel{+}= SW$  
@@ -281,7 +281,7 @@ Exact              : 0.4046
 | 분자 $\sum_l \tilde{r}^l f(z^l)$ | $SumSW$ |
 | 분모 $\sum_l \tilde{r}^l$ | $NormSW$ |
 
-세 방법을 실제로 비교해 보겠습니다. 백만 개를 뽑아서 forward → rejection 결과와 likelihood weighting 결과를 정답과 비교합니다.  
+세 방법을 실제로 비교해 보겠습니다. 백만 개를 뽑아서 forward -> rejection 결과와 likelihood weighting 결과를 정답과 비교합니다.  
 
 ```python
 import numpy as np

@@ -99,7 +99,7 @@ GNN 논문을 읽다 보면 대부분 3번(새로운 aggregation, 새로운 atte
 
 이 조건에 잘 맞는 것이 Pinterest의 [PinSAGE (Ying et al., KDD 2018)](https://arxiv.org/abs/1806.01973)입니다. PinSAGE는 Pin(이미지)과 Board(Pin을 모아둔 보드)로 이루어진 이분 그래프 위에서 동작하는 GraphSAGE 계열 모델로, 핵심 아이디어를 간단히 정리하면 다음과 같습니다.
 
-- **Random-walk 기반 이웃 샘플링**: 모든 이웃을 다 보는 대신 Pin → Board → Pin으로 짧은 random walk를 여러 번 돌려, 방문 빈도가 높은 상위 $T$개의 Pin을 "중요한 이웃"으로 삼음
+- **Random-walk 기반 이웃 샘플링**: 모든 이웃을 다 보는 대신 Pin -> Board -> Pin으로 짧은 random walk를 여러 번 돌려, 방문 빈도가 높은 상위 $T$개의 Pin을 "중요한 이웃"으로 삼음
 - **Importance pooling**: 이렇게 얻은 방문 빈도를 가중치로 이웃 임베딩을 가중 평균함
 - **Max-margin ranking loss + hard negative**: 쿼리 $q$와 positive 아이템 $i$의 점수가 negative 아이템 $n_k$보다 margin $\Delta$ 이상 크도록 학습함
 
