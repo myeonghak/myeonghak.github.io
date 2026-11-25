@@ -29,6 +29,7 @@ logo                     : "/assets/images/dataSiensMeme.jpg" # path of logo ima
 masthead_title           : # overrides the website title displayed in the masthead, use " " for no title
 # breadcrumbs            : false # true, false (default)
 words_per_minute         : 150
+date_format              : "%Y년 %-m월 %-d일" # post date display (strftime); e.g. "%Y-%m-%d"
 comments:
   provider               : "disqus" # false (default), "disqus", "discourse", "facebook", "staticman", "staticman_v2", "utterances", "custom"
   disqus:
